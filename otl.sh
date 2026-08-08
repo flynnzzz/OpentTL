@@ -1,4 +1,4 @@
-MODULE_PATH="./lib"
+MODULE_PATH="./lib/linux"
 ADD_MODULES="javafx.controls"
 JAR_FILE="./target/opentierlist.jar"
 LOG_FILE="./otl.log"
