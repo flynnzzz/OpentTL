@@ -2,7 +2,7 @@
 setlocal
 
 set "MODULE_PATH=.\lib\windows"
-set "BINARIES=.\lib\windows\bin"
+set "BINARIES=.\lib\windows\dll"
 set "ADD_MODULES=javafx.controls"
 set "JAR_FILE=.\target\opentierlist.jar"
 set "LOG_FILE=.\otl.log"
