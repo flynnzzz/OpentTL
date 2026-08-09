@@ -15,8 +15,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import net.flynn.opentierlist.model.enums.TieredStatus;
-import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.ui.manual.*;
@@ -26,7 +24,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GraphicsController {
 
@@ -243,7 +240,10 @@ public class GraphicsController {
     saveChooser.getExtensionFilters().addAll(filter);
     saveChooser.setInitialDirectory(initialDir);
 
-    saveChooser.setInitialFileName(tierListController.getTierListName() + ".tson");
+    saveChooser.setInitialFileName(
+            tierListController.getTierListName() +
+                    filter.getExtensions().getFirst().replace("*", "")
+    );
 
     return saveChooser;
   }

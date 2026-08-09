@@ -36,8 +36,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.flynn.opentierlist.controller.TierListController;
-import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
-import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
@@ -60,12 +58,12 @@ public class TierBox extends HBox {
   private final int tierHash;
   private String oldTextValue;
 
-  private ContextMenu contextMenu;
-  private MenuItem delete;
-  private MenuItem duplicate;
-  private MenuItem color;
+  private ContextMenu colorPickerMenu;
+  private MenuItem deleteOption;
+  private MenuItem duplicateOption;
+  private MenuItem colorOption;
 
-  public TierBox(int tierHash, TierListController tierListController, GraphicsController graphicsController) {;
+  public TierBox(int tierHash, TierListController tierListController, GraphicsController graphicsController) {
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
     this.tierHash = tierHash;
@@ -102,11 +100,11 @@ public class TierBox extends HBox {
           ConfigHolder.DEFAULT_TIER_PADDING_LEFT));
     }
 
-    contextMenu = new ContextMenu();
-    delete = new MenuItem("Delete");
-    duplicate = new MenuItem("Duplicate");
-    color = new MenuItem("Color");
-    contextMenu.getItems().addAll(delete, duplicate, color);
+    colorPickerMenu = new ContextMenu();
+    deleteOption = new MenuItem("Delete");
+    duplicateOption = new MenuItem("Duplicate");
+    colorOption = new MenuItem("Color");
+    colorPickerMenu.getItems().addAll(deleteOption, duplicateOption, colorOption);
 
     setupEditButton();
     setupDragAndDrop();
@@ -141,24 +139,24 @@ public class TierBox extends HBox {
     final Tooltip tooltip = new Tooltip("Click to drag and move");
     tierNameLabel.setTooltip(tooltip);
 
-    editTierButton.setOnAction(_ -> contextMenu.show(editTierButton, Side.BOTTOM, 0, 0));
+    editTierButton.setOnAction(_ -> colorPickerMenu.show(editTierButton, Side.BOTTOM, 0, 0));
 
-    delete.setOnAction(_ -> {
+    deleteOption.setOnAction(_ -> {
       tier.getTiered().forEach(tierListController::unTier);
 
       tierListController.removeTier(tier);
       graphicsController.updateTierList();
     });
 
-    duplicate.setOnAction(_ -> {
-      final var clone = tier.copy();
+    duplicateOption.setOnAction(_ -> {
+      final var clone = tier.emptyCopy();
       tierListController.addTier(clone);
       tierListController.moveTier(clone, tierListController.getTiers().indexOf(tier) + 1);
 
       graphicsController.updateTierList();
     });
 
-    color.setOnAction(_ -> {
+    colorOption.setOnAction(_ -> {
       final var mainStage = graphicsController.getMainStage();
       colorStage.show();
       colorStage.setX(mainStage.getX() + (mainStage.getWidth() - colorStage.getWidth()) / 2.0);

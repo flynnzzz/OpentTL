@@ -188,6 +188,10 @@ public class Tier {
     return new Tier(header.name(), header.color(), tiered);
   }
 
+  public Tier emptyCopy() {
+    return new Tier(header.name(), header.color());
+  }
+
   public int indexOf(TierItem element) {
     return tiered.indexOf(element);
   }
