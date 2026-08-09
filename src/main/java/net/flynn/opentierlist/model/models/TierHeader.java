@@ -12,13 +12,13 @@ public record TierHeader(String name, String color) implements Comparable<TierHe
 
   public TierHeader {
     if (name.isBlank())
-      throw new IllegalArgumentException("--- Tier name cannot be blank ---");
+      throw new IllegalArgumentException("[ERROR] --- Tier name cannot be blank ---");
     if (color.isBlank())
-      throw new IllegalArgumentException("--- Tier color string cannot be blank ---");
+      throw new IllegalArgumentException("[ERROR] --- Tier color string cannot be blank ---");
     try {
       Color.valueOf(color);
     } catch (IllegalArgumentException _) {
-      throw new IllegalArgumentException("--- Invalid color: " + color + " ---");
+      throw new IllegalArgumentException("[ERROR] --- Invalid color: " + color + " ---");
     }
   }
 

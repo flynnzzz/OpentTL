@@ -1,7 +1,7 @@
 package net.flynn.opentierlist.model.models;
 
 import net.flynn.opentierlist.model.enums.TierStringFormat;
-import net.flynn.opentierlist.model.exceptions.TierElementNotFoundException;
+import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,16 +26,16 @@ public class Tier {
   public static final Tier UNTIERED = new Tier("__UNTIERED__", "#ffffff");
 
   private TierHeader header;
-  protected final List<TierElement> tiered;
+  protected final List<TierItem> tiered;
 
   private static long NEXT_ID = 1;
   private final long id;
 
-  private Tier(TierHeader header, List<TierElement> tiered) {
+  private Tier(TierHeader header, List<TierItem> tiered) {
 
     Objects.requireNonNull(header);
     if (header.name().isBlank())
-      throw new IllegalArgumentException("--- Tier name cannot be null ---");
+      throw new IllegalArgumentException("[ERROR] --- Tier name cannot be null ---");
 
     this.header = header;
     this.tiered = Objects.requireNonNull(tiered);
@@ -50,7 +50,7 @@ public class Tier {
    * @param tiered list to associate to this tier
    * @throws IllegalArgumentException if the header's name is blank
    */
-  public Tier(String name, String color, List<TierElement> tiered) {
+  public Tier(String name, String color, List<TierItem> tiered) {
     this(new TierHeader(name, color), tiered);
   }
 
@@ -87,7 +87,7 @@ public class Tier {
       @JsonProperty("name") String name,
       @JsonProperty("color") String color,
       @JsonProperty("id") long id,
-      @JsonProperty("tiered") List<TierElement> tiered) {
+      @JsonProperty("tiered") List<TierItem> tiered) {
     setHeader(new TierHeader(name, color));
     this.id = id;
     this.tiered = tiered;
@@ -99,53 +99,53 @@ public class Tier {
    * @param element element to add
    * @return true if successful
    */
-  public boolean add(TierElement element) {
+  public boolean add(TierItem element) {
     return tiered.add(element);
   }
 
-  public boolean remove(TierElement element) throws TierElementNotFoundException {
+  public boolean remove(TierItem element) throws TierItemNotFoundException {
     if (!tiered.remove(element))
-      throw new TierElementNotFoundException(
-              "--- Removal of element: " + element + " was not successful ---"
+      throw new TierItemNotFoundException(
+              "[ERROR] --- Removal of element: " + element + " was not successful ---"
       );
     else
       return true;
   }
 
-  public TierElement remove(int i) throws TierElementNotFoundException {
+  public TierItem remove(int i) throws TierItemNotFoundException {
     try {
       return tiered.remove(i);
     } catch (IndexOutOfBoundsException _) {
-      throw new TierElementNotFoundException(
-              "--- Removal of element at index: " + i + " was not successful ---"
+      throw new TierItemNotFoundException(
+              "[ERROR] --- Removal of element at index: " + i + " was not successful ---"
       );
     }
   }
 
-  public void swap(TierElement src, TierElement dest) throws TierElementNotFoundException {
+  public void swap(TierItem src, TierItem dest) throws TierItemNotFoundException {
     try {
       swap(tiered.indexOf(src), tiered.indexOf(dest));
     } catch (IndexOutOfBoundsException _) {
-      throw new TierElementNotFoundException("--- Cannot swap elements: " + src + ", " + dest + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Cannot swap elements: " + src + ", " + dest + " ---");
     }
 
   }
 
-  public void swap(int src, int dest) throws TierElementNotFoundException {
+  public void swap(int src, int dest) throws TierItemNotFoundException {
     try {
       Collections.swap(tiered, src, dest);
     } catch (IndexOutOfBoundsException _) {
-      throw new TierElementNotFoundException(
-              "---  Cannot swap elements: " + src + ", " + dest + " ---"
+      throw new TierItemNotFoundException(
+              "[ERROR] ---  Cannot swap elements: " + src + ", " + dest + " ---"
       );
     }
   }
 
-  public boolean contains(TierElement element) {
+  public boolean contains(TierItem element) {
     return tiered.contains(element);
   }
 
-  public int elementsCount() {
+  public int itemCount() {
     return tiered.size();
   }
 
@@ -154,13 +154,13 @@ public class Tier {
    * 
    * @param src  element to move
    * @param dest destination
-   * @throws TierElementNotFoundException if element is not found
+   * @throws TierItemNotFoundException if element is not found
    */
-  public void move(TierElement src, TierElement dest) throws TierElementNotFoundException {
+  public void move(TierItem src, TierItem dest) throws TierItemNotFoundException {
     if (!tiered.contains(src))
-      throw new TierElementNotFoundException("--- Element to move not found: " + src + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + src + " ---");
     if (!tiered.contains(dest))
-      throw new TierElementNotFoundException("--- Element to move not found: " + src + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + src + " ---");
     final var destIndex = indexOf(dest);
     tiered.remove(src);
     tiered.add(destIndex, src);
@@ -171,14 +171,14 @@ public class Tier {
    * 
    * @param element element to move
    * @param toIndex destination index
-   * @throws TierElementNotFoundException if element is not found
+   * @throws TierItemNotFoundException if element is not found
    */
-  public void move(TierElement element, int toIndex) throws TierElementNotFoundException {
+  public void move(TierItem element, int toIndex) throws TierItemNotFoundException {
     if (!this.contains(element))
-      throw new TierElementNotFoundException("--- Element to move not found: " + element + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + element + " ---");
 
     if (toIndex > tiered.size())
-      throw new TierElementNotFoundException("--- Index to move to is out of bounds: " + toIndex + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Index to move to is out of bounds: " + toIndex + " ---");
 
     tiered.remove(element);
     tiered.add(toIndex, element);
@@ -188,21 +188,25 @@ public class Tier {
     return new Tier(header.name(), header.color(), tiered);
   }
 
-  public int indexOf(TierElement element) {
+  public Tier emptyCopy() {
+    return new Tier(header.name(), header.color());
+  }
+
+  public int indexOf(TierItem element) {
     return tiered.indexOf(element);
   }
 
   public void setName(String name) throws IllegalArgumentException {
     Objects.requireNonNull(name);
     if (name.isBlank())
-      throw new IllegalArgumentException("--- Tier name cannot be set to null ---");
+      throw new IllegalArgumentException("[ERROR] --- Tier name cannot be set to null ---");
     setHeader(new TierHeader(name, this.header.color()));
   }
 
   public void setColor(String color) throws IllegalArgumentException {
     Objects.requireNonNull(color);
     if (color.isBlank())
-      throw new IllegalArgumentException("--- Color string must not me blank ---");
+      throw new IllegalArgumentException("[ERROR] --- Color string must not me blank ---");
     setHeader(new TierHeader(getName(), color));
   }
 
@@ -227,15 +231,15 @@ public class Tier {
    * 
    * @return this tier instance's elements
    */
-  public List<TierElement> getTiered() {
+  public List<TierItem> getTiered() {
     return List.copyOf(tiered);
   }
 
-  public TierElement get(int i) { return tiered.get(i); }
+  public TierItem get(int i) { return tiered.get(i); }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tiered, header, id);
+    return Objects.hash(header, id);
   }
 
   @Override
@@ -246,8 +250,7 @@ public class Tier {
     if (!(obj instanceof Tier other)) {
       return false;
     }
-    return Objects.equals(tiered, other.tiered)
-        && Objects.equals(header, other.header)
+    return Objects.equals(header, other.header)
         && Objects.equals(id, other.id);
   }
 
@@ -267,12 +270,12 @@ public class Tier {
     return Objects.equals(header, other.header);
   }
 
-  private String toStringElements(List<TierElement> elements) {
+  private String toStringItems(List<TierItem> items) {
     var sb = new StringBuilder();
     sb.append("[ ");
-    for (TierElement e : elements) {
+    for (TierItem e : items) {
       sb.append(e);
-      if (!elements.getLast().equals(e))
+      if (!items.getLast().equals(e))
         sb.append(", ");
       else
         sb.append(".");
@@ -307,7 +310,7 @@ public class Tier {
   }
 
   private String toStringCompact() {
-    return getHeader().name() + ": " + toStringElements(getTiered());
+    return getHeader().name() + ": " + toStringItems(getTiered());
   }
 
   private String toStringExtended() {
@@ -315,7 +318,7 @@ public class Tier {
     sb.append(getHeader().name()).append(":").append(System.lineSeparator());
     sb.append("[");
     sb.append(System.lineSeparator());
-    for (TierElement e : tiered) {
+    for (TierItem e : tiered) {
       sb.append("\t");
       sb.append(e);
       if (!tiered.getLast().equals(e))

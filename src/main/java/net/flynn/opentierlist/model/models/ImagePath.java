@@ -17,7 +17,7 @@ import net.flynn.opentierlist.persistence.ResourceHolder;
  * @since v1.7.0
  */
 public record ImagePath(URI uri) {
-  private static final String DEFAULT_IMAGE_RESOURCE = ResourceHolder.DEFAULT_ELEMENT_IMAGE;
+  private static final String DEFAULT_IMAGE_RESOURCE = ResourceHolder.DEFAULT_ITEM_IMAGE;
 
   public static ImagePath of(File file) throws IllegalArgumentException {
     if (file != null && file.exists()) {
@@ -31,7 +31,7 @@ public record ImagePath(URI uri) {
     try {
       return ImagePath.of(new URI(uri));
     } catch (URISyntaxException _) {
-      System.err.println("--- Invalid url: " + uri + " ---");
+      System.err.println("[ERROR] --- Invalid url: " + uri + " ---");
       return defaultResource();
     }
   }
@@ -41,7 +41,7 @@ public record ImagePath(URI uri) {
     try {
       return ImagePath.of(new File(uri));
     } catch (IllegalArgumentException _) {
-      System.err.println("--- Invalid url: " + uri + " ---");
+      System.err.println("[ERROR] --- Invalid url: " + uri + " ---");
       return ImagePath.defaultResource();
     }
 
@@ -54,7 +54,7 @@ public record ImagePath(URI uri) {
     try {
       return new ImagePath(url.toURI());
     } catch (URISyntaxException e) {
-      System.err.println("--- Default resource not found, aborting ---");
+      System.err.println("[ERROR] --- Default resource not found, aborting ---");
       System.exit(-1);
       return null;
     }

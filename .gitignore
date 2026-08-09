@@ -5,5 +5,5 @@ bin/
 .project
 .classpath
 .settings
-log
-/target/
+*.log
+/target

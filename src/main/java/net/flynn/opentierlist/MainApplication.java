@@ -10,24 +10,32 @@ import net.flynn.opentierlist.model.models.TierList;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import net.flynn.opentierlist.ui.manual.MainPane;
 
+import java.awt.*;
+
 public class MainApplication extends Application {
+
   @Override
   public void start(Stage stage) {
 
     final var controller = TierListController.ofDefaultTiers();
     final BorderPane root = new MainPane(controller, stage);
-    final Scene scene = new Scene(root);
+    final var scene = new Scene(root);
 
-    stage.setTitle(TierList.DEFAULT_TIER_LIST_NAME);
+    stage.setTitle("OpenTL - " + TierList.DEFAULT_TIER_LIST_NAME);
     stage.setHeight(900);
     stage.setWidth(1100);
 
-    stage.getIcons().add(new Image(ResourceHolder.APPLICATION_ICON));
+    stage.getIcons().add(
+            new Image(ResourceHolder.APPLICATION_ICON)
+    );
     stage.setScene(scene);
 
+
+    final var dim = Toolkit.getDefaultToolkit().getScreenSize();
     stage.show();
-    stage.setX((1980 - stage.getWidth()) / 2);
-    stage.setY(1080 - stage.getHeight() / 2);
+    stage.setX((dim.getWidth() - stage.getWidth()) / 2);
+    stage.setY(dim.getHeight() - stage.getHeight() / 2);
+
   }
 
 }

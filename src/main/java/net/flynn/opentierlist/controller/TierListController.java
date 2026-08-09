@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.models.Tier;
-import net.flynn.opentierlist.model.models.TierElement;
+import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.ui.manual.SPTiered;
+import net.flynn.opentierlist.ui.manual.TieredPane;
 
 /**
  * Controller interface for creating and modifying tier lists.
@@ -47,7 +47,7 @@ public interface TierListController {
    * @param unTiered element to rank
    * @param toTier   destination
    */
-  void tier(TierElement unTiered, Tier toTier);
+  void tier(TierItem unTiered, Tier toTier);
 
   /**
    * Rank an untiered element to a specified position
@@ -56,7 +56,7 @@ public interface TierListController {
    * @param toTier   destination
    * @param position destination position
    */
-  void tier(TierElement unTiered, Tier toTier, TierElement position);
+  void tier(TierItem unTiered, Tier toTier, TierItem position);
 
   /**
    * Rank an untiered element to a specified position
@@ -65,14 +65,14 @@ public interface TierListController {
    * @param toTier   destination
    * @param toIndex  position
    */
-  void tier(TierElement unTiered, Tier toTier, int toIndex);
+  void tier(TierItem unTiered, Tier toTier, int toIndex);
 
   /**
    * Un-rank a tiered element
    *
    * @param tiered element to un-rank
    */
-  void unTier(TierElement tiered);
+  void unTier(TierItem tiered);
 
   /**
    * Un-rank a tiered element to a specified position
@@ -80,7 +80,7 @@ public interface TierListController {
    * @param tiered   element to un-rank
    * @param position destination position
    */
-  void unTier(TierElement tiered, TierElement position);
+  void unTier(TierItem tiered, TierItem position);
 
   /**
    * Un-rank a tiered element to a specified position
@@ -88,7 +88,7 @@ public interface TierListController {
    * @param tiered  element to un-rank
    * @param toIndex position
    */
-  void unTier(TierElement tiered, int toIndex);
+  void unTier(TierItem tiered, int toIndex);
 
   /**
    * Add a tier to the tier list
@@ -107,7 +107,7 @@ public interface TierListController {
    *
    * @param unTiered element to add
    */
-  void addUnTiered(TierElement unTiered);
+  void addUnTiered(TierItem unTiered);
 
   /**
    * Remove a tier from the tier list
@@ -121,7 +121,7 @@ public interface TierListController {
    *
    * @param element to delete
    */
-  void removeElement(TierElement element);
+  void removeItem(TierItem element);
 
   /**
    * Move and append a ranked element to a specified tier
@@ -129,25 +129,25 @@ public interface TierListController {
    * @param tiered element to append
    * @param toTier destination
    */
-  void moveElement(TierElement tiered, Tier toTier);
+  void moveItem(TierItem tiered, Tier toTier);
 
   /**
    * Move and a ranked element to a specified tier
    *
-   * @param element  to move
+   * @param item  to move
    * @param toTier   destination
    * @param position to move to
    */
-  void insertElement(TierElement element, Tier toTier, TierElement position);
+  void insertItem(TierItem item, Tier toTier, TierItem position);
 
   /**
-   * Move and a ranked element to a specified tier
+   * Move and a ranked item to a specified tier
    *
-   * @param element to move
+   * @param item to move
    * @param toTier  destination
    * @param index   to move to
    */
-  void insertElement(TierElement element, Tier toTier, int index);
+  void insertItem(TierItem item, Tier toTier, int index);
 
   /**
    * Move a tier to a destination
@@ -171,27 +171,28 @@ public interface TierListController {
 
   void setTierName(Tier tier, String name);
 
-  Optional<Tier> getTierByElement(TierElement element);
+  Optional<Tier> getTierByItem(TierItem item);
 
-  Optional<TierElement> getElementByHash(String hashCode);
+  TierItem getItemByHash(Integer hashCode);
 
-  Optional<Tier> getTierByHash(String hashCode);
+  Tier getTierByHash(Integer hashCode);
 
-  List<TierElement> getUnTiered();
+  List<TierItem> getUnTiered();
 
   List<Tier> getTiers();
 
   String getTierListName();
 
-  void saveTierList();
+  boolean saveTierList();
 
-  void saveTierList(Path path);
+  boolean saveTierList(Path path);
 
-  void exportTierList(SPTiered node);
+  boolean exportTierList(TieredPane node);
 
-  void exportTierList(SPTiered node, Path path);
+  boolean exportTierList(TieredPane node, Path path);
 
-  @Deprecated void saveTierListAs(String name);
+  @Deprecated
+  void saveTierListAs(String name);
 
   Optional<TierList> loadTierList(File file);
 
@@ -199,15 +200,15 @@ public interface TierListController {
 
   String toString(TierStringFormat format);
 
-  boolean elementExists(Long id);
+  boolean itemExists(Integer hash);
 
   /**
-   * Remove an unranked element from the tier list
+   * Remove an unranked item from the tier list
    *
-   * @param unTiered element to delete
+   * @param unTiered item to delete
    */
   @Deprecated
-  void deleteUnTiered(TierElement unTiered);
+  void deleteUnTiered(TierItem unTiered);
 
   /**
    * Swaps the positions of two tiers
@@ -226,7 +227,7 @@ public interface TierListController {
    * @param b    second element
    */
   @Deprecated
-  void swapTiered(Tier tier, TierElement a, TierElement b);
+  void swapTiered(Tier tier, TierItem a, TierItem b);
 
   /**
    * Swaps the positions of two unranked elements
@@ -235,7 +236,7 @@ public interface TierListController {
    * @param b second element
    */
   @Deprecated
-  void swapUnTiered(TierElement a, TierElement b);
+  void swapUnTiered(TierItem a, TierItem b);
 
   /**
    * Move and append a ranked element to a specified tier
@@ -244,7 +245,7 @@ public interface TierListController {
    * @param toTier destination
    */
   @Deprecated
-  void appendTiered(TierElement tiered, Tier toTier);
+  void appendTiered(TierItem tiered, Tier toTier);
 
   /**
    * Move a ranked element to a specified tier and position
@@ -254,7 +255,7 @@ public interface TierListController {
    * @param toElement position
    */
   @Deprecated
-  void moveTiered(TierElement tiered, Tier toTier, TierElement toElement);
+  void moveTiered(TierItem tiered, Tier toTier, TierItem toElement);
 
   /**
    * Move a ranked element to a specified tier and position
@@ -264,7 +265,7 @@ public interface TierListController {
    * @param toIndex position
    */
   @Deprecated
-  void moveTiered(TierElement tiered, Tier toTier, int toIndex);
+  void moveTiered(TierItem tiered, Tier toTier, int toIndex);
 
   /**
    * Move an unranked element to a specified position
@@ -273,7 +274,7 @@ public interface TierListController {
    * @param toElement position
    */
   @Deprecated
-  void moveUnTiered(TierElement unTiered, TierElement toElement);
+  void moveUnTiered(TierItem unTiered, TierItem toElement);
 
   /**
    * Move an unranked element to a specified position
@@ -282,6 +283,6 @@ public interface TierListController {
    * @param toIndex  position
    */
   @Deprecated
-  void moveUnTiered(TierElement unTiered, int toIndex);
+  void moveUnTiered(TierItem unTiered, int toIndex);
 
 }

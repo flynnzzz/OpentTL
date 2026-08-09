@@ -15,42 +15,42 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.ui.manual.SPTiered;
+import net.flynn.opentierlist.ui.manual.TieredPane;
 
 import javax.imageio.ImageIO;
 
 public class TierListWriter {
-	public static void write(File file, TierList tierList) throws IOException, StreamReadException, DatabindException {
-		final var tierMapper = new ObjectMapper();
-		tierMapper.writeValue(file, tierList);
-	}
+  public static void write(File file, TierList tierList) throws IOException, StreamReadException, DatabindException {
+    final var tierMapper = new ObjectMapper();
+    tierMapper.writeValue(file, tierList);
+  }
 
-	private static WritableImage screenshot(SPTiered node) {
+  private static WritableImage screenshot(TieredPane node) {
 
-		final double inboundWidth = node.getContent().getBoundsInLocal().getWidth(),
-				inboundHeight = node.getContent().getBoundsInLocal().getHeight();
+    final double inboundWidth = node.getContent().getBoundsInLocal().getWidth(),
+        inboundHeight = node.getContent().getBoundsInLocal().getHeight();
 
-		final WritableImage image = new WritableImage((int) inboundWidth, (int) inboundHeight);
+    final WritableImage image = new WritableImage((int) inboundWidth, (int) inboundHeight);
 
-		final var params = new SnapshotParameters();
-		params.setTransform(new Scale(1, 1));
+    final var params = new SnapshotParameters();
+    params.setTransform(new Scale(1, 1));
 
-		if (Application.getUserAgentStylesheet().equals(new NordDark().getUserAgentStylesheet()))
-			// background color appears white in the screenshot otherwise
-			params.setFill(Color.valueOf("#2e3440"));
+    if (Application.getUserAgentStylesheet().equals(new NordDark().getUserAgentStylesheet()))
+      // background color appears white in the screenshot otherwise
+      params.setFill(Color.valueOf("#2e3440"));
 
-		node.hideEditButtons();
+    node.hideEditButtons();
 
-		node.getContent().snapshot(params, image);
+    node.getContent().snapshot(params, image);
 
-		node.showEditButtons();
+    node.showEditButtons();
 
-		return image;
-	}
+    return image;
+  }
 
-	public static void export(File file, SPTiered node) throws  IOException {
+  public static void export(File file, TieredPane node) throws IOException {
 
-		ImageIO.write(SwingFXUtils.fromFXImage(screenshot(node), null), "png", file);
+    ImageIO.write(SwingFXUtils.fromFXImage(screenshot(node), null), "png", file);
 
-	}
+  }
 }

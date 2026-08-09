@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.enums.TieredStatus;
-import net.flynn.opentierlist.model.exceptions.TierElementNotFoundException;
+import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
 
 /**
@@ -27,7 +27,6 @@ public class TierList {
   private String tierListName;
   private final List<Tier> tiers;
   private final Tier unTiered;
-
   public static final String DEFAULT_TIER_LIST_NAME = "New Tier List";
 
   /**
@@ -40,14 +39,12 @@ public class TierList {
    * @param tiers        preset tiers
    * @throws IllegalArgumentException if name is blank
    */
-  public TierList(String tierListName, List<TierElement> unTiered, List<Tier> tiers) throws IllegalArgumentException {
+  public TierList(String tierListName, List<TierItem> unTiered, List<Tier> tiers) throws IllegalArgumentException {
     this.tierListName = Objects.requireNonNull(tierListName);
-    this.unTiered = new Tier(
-            "__UNTIERED__", "#ffffff", Objects.requireNonNull(unTiered)
-    );
+    this.unTiered = Tier.UNTIERED;
     this.tiers = Objects.requireNonNull(tiers);
     if (tierListName.isBlank())
-      throw new IllegalArgumentException("--- TierList name cannot be blank ---");
+      throw new IllegalArgumentException("[ERROR] --- TierList name cannot be blank ---");
   }
 
   /**
@@ -59,7 +56,7 @@ public class TierList {
    * @param unTiered     elements to rank
    * @throws IllegalArgumentException if name is blank
    */
-  public TierList(String tierListName, List<TierElement> unTiered) throws IllegalArgumentException {
+  public TierList(String tierListName, List<TierItem> unTiered) throws IllegalArgumentException {
     this(tierListName, unTiered, new ArrayList<>());
   }
 
@@ -70,7 +67,7 @@ public class TierList {
    * 
    * @param unTiered elements to rank
    */
-  public TierList(List<TierElement> unTiered) {
+  public TierList(List<TierItem> unTiered) {
     this(DEFAULT_TIER_LIST_NAME, unTiered);
   }
 
@@ -103,156 +100,156 @@ public class TierList {
   @JsonCreator
   public TierList(
       @JsonProperty("tiers") List<Tier> tiers,
-      @JsonProperty("unTiered") List<TierElement> unTiered) {
+      @JsonProperty("unTiered") List<TierItem> unTiered) {
     this.tiers = tiers;
     this.unTiered = new Tier("__UNTIERED__", "#ffffff", unTiered);
   }
 
   /**
-   * Ranks a {@link TierElement}
+   * Ranks a {@link TierItem}
    *
    * @param unTiered element to rank
    * @param tier     tier to rank to
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already tiered
    */
-  public void tier(TierElement unTiered, Tier tier) throws TierNotFoundException, TierElementNotFoundException {
+  public void tier(TierItem unTiered, Tier tier) throws TierNotFoundException, TierItemNotFoundException {
 
     if (unTiered.getStatus() != TieredStatus.UNTIERED)
-      throw new IllegalArgumentException("--- Cannot tier: " + unTiered + " as it's already tiered ---");
+      throw new IllegalArgumentException("[ERROR] --- Cannot tier: " + unTiered + " as it's already tiered ---");
     if (tier.equalsTier(Tier.UNTIERED))
       return;
 
-    moveElement(unTiered, tier);
+    moveItem(unTiered, tier);
 
   }
 
   /**
-   * Ranks a {@link TierElement} to a specified position
+   * Ranks a {@link TierItem} to a specified position
    *
    * @param unTiered element to rank
    * @param tier     tier to rank to
    * @param position destination
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already tiered
    */
-  public void tierInsert(TierElement unTiered, Tier tier, TierElement position)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void tierInsert(TierItem unTiered, Tier tier, TierItem position)
+      throws TierNotFoundException, TierItemNotFoundException {
     if (!tiers.contains(tier))
       throw new TierNotFoundException(
-              "--- Tier not found: " + tier + " ---"
+              "[ERROR] --- Tier not found: " + tier + " ---"
       );
 
     if (!tier.contains(position))
-      throw new TierElementNotFoundException(
-              "--- Position to move to: " + position + " doesn't exist ---"
+      throw new TierItemNotFoundException(
+              "[ERROR] --- Position to move to: " + position + " doesn't exist ---"
       );
 
     if (unTiered.getStatus() != TieredStatus.UNTIERED)
-      throw new IllegalArgumentException("--- Cannot tier: " + unTiered + " as it's already tiered ---");
+      throw new IllegalArgumentException("[ERROR] --- Cannot tier: " + unTiered + " as it's already tiered ---");
 
-    insertElement(unTiered, tier, position);
+    insertItem(unTiered, tier, position);
   }
 
   /**
-   * Ranks a {@link TierElement}
+   * Ranks a {@link TierItem}
    *
    * @param unTiered  element to rank
    * @param tierIndex tier to rank to
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already tiered
    */
   @Deprecated
-  public void tier(TierElement unTiered, int tierIndex) throws TierNotFoundException, TierElementNotFoundException {
+  public void tier(TierItem unTiered, int tierIndex) throws TierNotFoundException, TierItemNotFoundException {
 
     if (unTiered.getStatus() != TieredStatus.UNTIERED)
-      throw new IllegalArgumentException("--- Cannot tier: " + unTiered + " as it's already tiered ---");
+      throw new IllegalArgumentException("[ERROR] --- Cannot tier: " + unTiered + " as it's already tiered ---");
 
-    moveElement(unTiered, tiers.get(tierIndex));
+    moveItem(unTiered, tiers.get(tierIndex));
   }
 
   /**
-   * Ranks a {@link TierElement} to a specified position
+   * Ranks a {@link TierItem} to a specified position
    *
    * @param unTiered element to rank
    * @param tier     tier to rank to
    * @param index    destination index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already tiered
    */
-  public void tierInsert(TierElement unTiered, Tier tier, int index)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void tierInsert(TierItem unTiered, Tier tier, int index)
+      throws TierNotFoundException, TierItemNotFoundException {
 
     if (!this.contains(tier))
       throw new TierNotFoundException(
-              "--- Tier not found: " + tier + " ---"
+              "[ERROR] --- Tier not found: " + tier + " ---"
       );
 
     try {
       tierInsert(unTiered, tier, tier.getTiered().get(index));
     }
     catch (IndexOutOfBoundsException _) {
-      throw new TierElementNotFoundException("--- Index to move to: " + index + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Index to move to: " + index + " ---");
     }
   }
 
   /**
-   * Un-ranks a {@link TierElement}
+   * Un-ranks a {@link TierItem}
    *
    * @param tiered element to un-rank
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already untiered
    */
-  public void unTier(TierElement tiered) throws TierNotFoundException, TierElementNotFoundException {
+  public void unTier(TierItem tiered) throws TierNotFoundException, TierItemNotFoundException {
 
     if (tiered.getStatus() != TieredStatus.TIERED)
-      throw new IllegalArgumentException("--- Cannot untier: " + tiered + " as it's already untiered ---");
+      throw new IllegalArgumentException("[ERROR] --- Cannot untier: " + tiered + " as it's already untiered ---");
 
-    moveElement(tiered, Tier.UNTIERED);
+    moveItem(tiered, Tier.UNTIERED);
   }
 
   /**
-   * Un-ranks a {@link TierElement} to a specified position
+   * Un-ranks a {@link TierItem} to a specified position
    *
    * @param tiered   element to rank
    * @param position destination
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already untiered
    */
-  public void unTierInsert(TierElement tiered, TierElement position)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void unTierInsert(TierItem tiered, TierItem position)
+      throws TierNotFoundException, TierItemNotFoundException {
 
     if (tiered.getStatus() != TieredStatus.TIERED)
-      throw new IllegalArgumentException("--- Cannot untier: " + tiered + " as it's already untiered ---");
+      throw new IllegalArgumentException("[ERROR] --- Cannot untier: " + tiered + " as it's already untiered ---");
 
-    insertElement(tiered, Tier.UNTIERED, position);
+    insertItem(tiered, Tier.UNTIERED, position);
   }
 
   /**
-   * Un-ranks a {@link TierElement} to a specified position
+   * Un-ranks a {@link TierItem} to a specified position
    *
    * @param tiered element to rank
    * @param index  destination index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    * @throws IllegalArgumentException     if the element is already untiered
    */
-  public void unTierInsert(TierElement tiered, int index)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void unTierInsert(TierItem tiered, int index)
+      throws TierNotFoundException, TierItemNotFoundException {
 
-    if (index < 0 || index > unTiered.elementsCount()) {
-      throw new TierElementNotFoundException(
-              "--- Destination index out of bounds: " + index + " ---"
+    if (index < 0 || index > unTiered.itemCount()) {
+      throw new TierItemNotFoundException(
+              "[ERROR] --- Destination index out of bounds: " + index + " ---"
       );
     }
 
-    if (index == unTiered.elementsCount())
+    if (index == unTiered.itemCount())
       unTier(tiered);
     else
       unTierInsert(tiered, unTiered.get(index));
@@ -262,7 +259,7 @@ public class TierList {
     tiers.add(tier);
   }
 
-  public void addElement(TierElement element, Tier toTier) throws TierNotFoundException {
+  public void addItem(TierItem element, Tier toTier) throws TierNotFoundException {
 
     if (toTier.equalsTier(Tier.UNTIERED)) {
       unTiered.add(element);
@@ -271,46 +268,46 @@ public class TierList {
 
     if (!tiers.contains(toTier))
       throw new TierNotFoundException(
-          "--- Could not add " + element + " to tier: " + toTier + " as it doesn't exists ---"
+          "[ERROR] --- Could not add " + element + " to tier: " + toTier + " as it doesn't exists ---"
       );
 
     toTier.add(element);
 
   }
 
-  public void addElement(TierElement element, Tier toTier, TierElement position) throws TierNotFoundException, TierElementNotFoundException {
+  public void addItem(TierItem element, Tier toTier, TierItem position) throws TierNotFoundException, TierItemNotFoundException {
 
     final var destination = toTier.equalsTier(Tier.UNTIERED) ? unTiered : toTier;
     final int index = destination.indexOf(position);
 
     if (!destination.contains(position)) {
-      throw new TierElementNotFoundException("--- Position to move to: " + position + " doesn't exist ---");
+      throw new TierItemNotFoundException("[ERROR] --- Position to move to: " + position + " doesn't exist ---");
     }
 
-    addElement(element, toTier);
+    addItem(element, toTier);
     destination.move(element, index);
 
   }
 
-  public void addElement(TierElement element, Tier toTier, int index) throws TierNotFoundException, TierElementNotFoundException {
+  public void addItem(TierItem element, Tier toTier, int index) throws TierNotFoundException, TierItemNotFoundException {
 
     final var destination = toTier.equalsTier(Tier.UNTIERED) ? unTiered : toTier;
 
-    if (index == destination.elementsCount()) {
+    if (index == destination.itemCount()) {
       destination.add(element);
       return;
     }
 
     try {
-      addElement(element, toTier, destination.get(index));
+      addItem(element, toTier, destination.get(index));
     } catch (IndexOutOfBoundsException _) {
-      throw new TierElementNotFoundException("--- Element index is out of bounds: " + index + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Element index is out of bounds: " + index + " ---");
     }
 
   }
 
-  public void addAllElements(List<TierElement> elements, Tier toTier) throws TierNotFoundException {
-    elements.forEach(e -> addElement(e, toTier));
+  public void addAllItems(List<TierItem> items, Tier toTier) throws TierNotFoundException {
+    items.forEach(e -> addItem(e, toTier));
   }
 
   public void removeTier(int index) throws TierNotFoundException {
@@ -318,53 +315,53 @@ public class TierList {
       tiers.remove(index);
 
     } catch (IndexOutOfBoundsException _) {
-      throw new TierNotFoundException("--- Indexes out of bounds for removal, max = " + tiersQuantity() + " ---");
+      throw new TierNotFoundException("[ERROR] --- Indexes out of bounds for removal, max = " + tiersQuantity() + " ---");
 
     } catch (UnsupportedOperationException _) {
-      throw new TierNotFoundException("--- Unsupported removal operation ---");
+      throw new TierNotFoundException("[ERROR] --- Unsupported removal operation ---");
     }
   }
 
   public void removeTier(Tier tier) throws TierNotFoundException {
     try {
       if (!tiers.remove(tier))
-        throw new TierNotFoundException("--- Tier to remove not found: " + tier + " ---");
+        throw new TierNotFoundException("[ERROR] --- Tier to remove not found: " + tier + " ---");
 
     } catch (IndexOutOfBoundsException _) {
-      throw new TierNotFoundException("--- Indexes out of bounds for removal, max = " + tiersQuantity() + " ---");
+      throw new TierNotFoundException("[ERROR] --- Indexes out of bounds for removal, max = " + tiersQuantity() + " ---");
 
     } catch (UnsupportedOperationException _) {
-      throw new TierNotFoundException("--- Unsupported removal operation ---");
+      throw new TierNotFoundException("[ERROR] --- Unsupported removal operation ---");
     }
   }
 
-  public void removeElement(TierElement element) throws TierElementNotFoundException {
+  public void removeItem(TierItem item) throws TierItemNotFoundException {
 
-    if (unTiered.contains(element)) {
-      unTiered.remove(element);
+    if (unTiered.contains(item)) {
+      unTiered.remove(item);
       return;
     }
 
     var potentialTier = tiers.stream()
-        .filter(t -> t.contains(element))
+        .filter(t -> t.contains(item))
         .findFirst();
 
     potentialTier.ifPresentOrElse(
-            tier -> tier.remove(element),
+            tier -> tier.remove(item),
             () -> {
-              throw new TierElementNotFoundException("--- No element: " + element + " to remove ---");
+              throw new TierItemNotFoundException("[ERROR] --- No item: " + item + " to remove ---");
             });
   }
 
-  public void removeAllElements(Set<TierElement> elements) {
-    elements.forEach(this::removeElement);
+  public void removeAllItems(Set<TierItem> items) {
+    items.forEach(this::removeItem);
   }
 
   public void swapTiers(int src, int dest) throws TierNotFoundException {
     try {
       Collections.swap(tiers, src, dest);
     } catch (IndexOutOfBoundsException _) {
-      throw new TierNotFoundException("--- Indexes out of bounds for swapping, max = " + tiersQuantity() + " ---");
+      throw new TierNotFoundException("[ERROR] --- Indexes out of bounds for swapping, max = " + tiersQuantity() + " ---");
     }
   }
 
@@ -372,7 +369,7 @@ public class TierList {
     try {
       swapTiers(indexOf(src), indexOf(dest));
     } catch (IndexOutOfBoundsException _) {
-      throw new TierNotFoundException("--- Indexes out of bounds for swapping, max = " + tiersQuantity() + " ---");
+      throw new TierNotFoundException("[ERROR] --- Indexes out of bounds for swapping, max = " + tiersQuantity() + " ---");
     }
   }
 
@@ -387,7 +384,7 @@ public class TierList {
   public int indexOf(Tier tier) throws TierNotFoundException {
     final var i = tiers.indexOf(tier);
     if (i == -1)
-      throw new TierNotFoundException("--- Could not find index of tier: " + tier.toString(TierStringFormat.COMPACT));
+      throw new TierNotFoundException("[ERROR] --- Could not find index of tier: " + tier.toString(TierStringFormat.COMPACT));
     return i;
   }
 
@@ -398,7 +395,7 @@ public class TierList {
    * @return the element's index within it's tier
    * @throws TierNotFoundException if tier doesn't exist
    */
-  public int indexOf(TierElement element) throws TierNotFoundException {
+  public int indexOf(TierItem element) throws TierNotFoundException {
 
     final Optional<Integer> i = unTiered.contains(element) ?
             Optional.of(unTiered.indexOf(element)) :
@@ -409,21 +406,21 @@ public class TierList {
 
     if (i.isEmpty() || i.get() == -1)
       throw new TierNotFoundException(
-          "--- Could not find index of tier: " + element.toString(TierStringFormat.COMPACT));
+          "[ERROR] --- Could not find index of tier: " + element.toString(TierStringFormat.COMPACT));
     return i.get();
   }
 
-  private Tier tierByElement(TierElement element) throws TierElementNotFoundException {
+  private Tier tierByItem(TierItem item) throws TierItemNotFoundException {
 
-    if (unTiered.contains(element))
+    if (unTiered.contains(item))
       return Tier.UNTIERED;
 
     var matching = tiers.stream()
-        .filter(tier -> tier.contains(element))
+        .filter(tier -> tier.contains(item))
         .findFirst();
 
     if (matching.isEmpty())
-      throw new TierElementNotFoundException("--- No tier contains element: " + element + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- No tier contains item: " + item + " ---");
 
     return matching.get();
   }
@@ -432,7 +429,7 @@ public class TierList {
     return tiers.size();
   }
 
-  public boolean contains(TierElement element) {
+  public boolean contains(TierItem element) {
 
     return Stream
         .concat(
@@ -453,13 +450,13 @@ public class TierList {
   public void moveTier(Tier from, Tier to) throws TierNotFoundException, UnsupportedOperationException {
 
     if (from.equalsTier(Tier.UNTIERED) || to.equalsTier(Tier.UNTIERED))
-      throw new UnsupportedOperationException("--- Cannot move UNTIERED tier ---");
+      throw new UnsupportedOperationException("[ERROR] --- Cannot move UNTIERED tier ---");
 
     int fromIndex, toIndex;
     if ((fromIndex = tiers.indexOf(from)) == -1)
-      throw new TierNotFoundException("--- Index out of bounds 'from': " + fromIndex + " ---");
+      throw new TierNotFoundException("[ERROR] --- Index out of bounds 'from': " + fromIndex + " ---");
     if ((toIndex = tiers.indexOf(to)) == -1)
-      throw new TierNotFoundException("--- Index out of bounds 'to': " + toIndex + " ---");
+      throw new TierNotFoundException("[ERROR] --- Index out of bounds 'to': " + toIndex + " ---");
 
     tiers.remove(fromIndex);
     tiers.add(toIndex, from);
@@ -469,63 +466,63 @@ public class TierList {
 
     int fromIndex;
     if ((fromIndex = tiers.indexOf(from)) == -1)
-      throw new TierNotFoundException("--- Index out of bounds 'from': " + fromIndex + " ---");
+      throw new TierNotFoundException("[ERROR] --- Index out of bounds 'from': " + fromIndex + " ---");
 
     tiers.remove(fromIndex);
     tiers.add(toIndex, from);
   }
 
-  public void moveElement(TierElement element, Tier toTier) {
+  public void moveItem(TierItem element, Tier toTier) {
 
     final var destination = toTier.equalsTier(Tier.UNTIERED) ? unTiered : toTier;
 
     if (!this.contains(element))
-      throw new TierElementNotFoundException("--- Element to move: " + element + " not found ---");
+      throw new TierItemNotFoundException("[ERROR] --- Element to move: " + element + " not found ---");
 
     if (!this.contains(destination))
-      throw new TierNotFoundException("--- Tier to move to: " + toTier + " not found ---");
+      throw new TierNotFoundException("[ERROR] --- Tier to move to: " + toTier + " not found ---");
 
-    removeElement(element);
-    addElement(element, destination);
+    removeItem(element);
+    addItem(element, destination);
 
     final var updatedStatus = toTier.equalsTier(Tier.UNTIERED) ? UNTIERED : TIERED;
     element.changeTo(updatedStatus);
   }
 
-  public void insertElement(TierElement element, Tier toTier, TierElement position) {
+  public void insertItem(TierItem item, Tier toTier, TierItem position) {
     if (!this.contains(position))
-      throw new TierElementNotFoundException("--- Position to move to: " + position + " not found ---");
+      throw new TierItemNotFoundException("[ERROR] --- Position to move to: " + position + " not found ---");
 
     final var destination = toTier.equalsTier(Tier.UNTIERED) ? unTiered : toTier;
 
     final int index = destination.indexOf(position);
 
-    moveElement(element, toTier);
+    moveItem(item, toTier);
 
-    destination.move(element, index);
+    destination.move(item, index);
   }
 
-  public void insertElement(TierElement element, Tier toTier, int index) {
+  public void insertItem(TierItem item, Tier toTier, int index) {
 
     final var destination = toTier.equalsTier(Tier.UNTIERED) ? unTiered : toTier;
 
-    if (index < 0 || destination.elementsCount() < index)
-      throw new TierElementNotFoundException("--- Index to move to: " + index + " not found ---");
+    if (index < 0 || destination.itemCount() < index)
+      throw new TierItemNotFoundException("[ERROR] --- Index to move to: " + index + " not found ---");
 
-    if (index == destination.elementsCount()) {
-      moveElement(element, destination);
+    if (index == destination.itemCount()) {
+      moveItem(item, destination);
       return;
     }
 
-    final TierElement position = destination.get(index);
+    final TierItem position = destination.get(index);
 
-    insertElement(element, destination, position);
+    insertItem(item, destination, position);
   }
 
   public void setTierListName(String name) throws IllegalArgumentException {
     Objects.requireNonNull(name);
     if (name.isBlank())
-      throw new IllegalArgumentException("--- The tier list's name cannot be blank ---");
+      throw new IllegalArgumentException("[ERROR] --- The tier list's name cannot be blank ---");
     this.tierListName = name;
   }
 
@@ -550,7 +547,7 @@ public class TierList {
     return tierListName;
   }
 
-  public List<TierElement> getUnTiered() {
+  public List<TierItem> getUnTiered() {
     return List.copyOf(unTiered.getTiered());
   }
 
@@ -602,26 +599,26 @@ public class TierList {
   }
 
   @Deprecated
-  public void removeUnTiered(TierElement element) throws TierElementNotFoundException {
+  public void removeUnTiered(TierItem element) throws TierItemNotFoundException {
     verifyElementExistence(element, unTiered.getTiered());
     unTiered.remove(element);
     element.changeTo(TIERED);
   }
 
   @Deprecated
-  public void removeFromTier(int tierIndex, TierElement element)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void removeFromTier(int tierIndex, TierItem element)
+      throws TierNotFoundException, TierItemNotFoundException {
     verifyElementExistenceInTier(element, tierIndex);
     if (!tiers.get(tierIndex).remove(element))
-      throw new TierElementNotFoundException();
+      throw new TierItemNotFoundException();
   }
 
   @Deprecated
-  public void removeFromTier(Tier tier, TierElement element)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void removeFromTier(Tier tier, TierItem element)
+      throws TierNotFoundException, TierItemNotFoundException {
     verifyElementExistenceInTier(element, tier);
     if (!tier.remove(element))
-      throw new TierElementNotFoundException();
+      throw new TierItemNotFoundException();
   }
 
   /**
@@ -631,11 +628,11 @@ public class TierList {
    * @param a         first element
    * @param b         second element
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void swapTiered(int tierIndex, TierElement a, TierElement b)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void swapTiered(int tierIndex, TierItem a, TierItem b)
+      throws TierNotFoundException, TierItemNotFoundException {
 
     verifyElementExistenceInTier(a, tierIndex);
     verifyElementExistenceInTier(b, tierIndex);
@@ -651,11 +648,11 @@ public class TierList {
    * @param a    first element
    * @param b    second element
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void swapTiered(Tier tier, TierElement a, TierElement b)
-      throws TierNotFoundException, TierElementNotFoundException {
+  public void swapTiered(Tier tier, TierItem a, TierItem b)
+      throws TierNotFoundException, TierItemNotFoundException {
 
     verifyElementExistenceInTier(a, tier);
     verifyElementExistenceInTier(b, tier);
@@ -668,10 +665,10 @@ public class TierList {
    * 
    * @param a first element
    * @param b second element
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void swapUnTiered(TierElement a, TierElement b) throws TierElementNotFoundException {
+  public void swapUnTiered(TierItem a, TierItem b) throws TierItemNotFoundException {
 
     int index1 = verifyElementExistence(a, unTiered.getTiered()),
         index2 = verifyElementExistence(b, unTiered.getTiered());
@@ -680,20 +677,20 @@ public class TierList {
   }
 
   @Deprecated
-  public void addUnTiered(TierElement element) {
+  public void addUnTiered(TierItem element) {
     unTiered.add(element);
     element.changeTo(UNTIERED);
   }
 
   @Deprecated
-  public void addToTier(int tierIndex, TierElement element) throws TierNotFoundException {
+  public void addToTier(int tierIndex, TierItem element) throws TierNotFoundException {
     verifyTierExistence(tierIndex);
     element.changeTo(TIERED);
     tiers.get(tierIndex).add(element);
   }
 
   @Deprecated
-  public void addToTier(Tier tier, TierElement element) throws TierNotFoundException {
+  public void addToTier(Tier tier, TierItem element) throws TierNotFoundException {
     verifyTierExistence(tier);
     element.changeTo(TIERED);
     tier.add(element);
@@ -727,9 +724,9 @@ public class TierList {
   }
 
   @Deprecated
-  private int verifyElementExistence(TierElement element, List<TierElement> inList)
-      throws TierElementNotFoundException {
-    var exception = new TierElementNotFoundException(
+  private int verifyElementExistence(TierItem element, List<TierItem> inList)
+      throws TierItemNotFoundException {
+    var exception = new TierItemNotFoundException(
         "Element \"" + element + "\" not found in list \"" + inList + "\"");
     try {
       int elementIndex = inList.indexOf(element);
@@ -742,15 +739,15 @@ public class TierList {
   }
 
   @Deprecated
-  private void verifyElementExistenceInTier(TierElement element, int tierIndex)
-      throws TierElementNotFoundException, TierNotFoundException {
+  private void verifyElementExistenceInTier(TierItem element, int tierIndex)
+      throws TierItemNotFoundException, TierNotFoundException {
     verifyTierExistence(tierIndex);
     verifyElementExistence(element, tiers.get(tierIndex).getTiered());
   }
 
   @Deprecated
-  private void verifyElementExistenceInTier(TierElement element, Tier tier)
-      throws TierElementNotFoundException, TierNotFoundException {
+  private void verifyElementExistenceInTier(TierItem element, Tier tier)
+      throws TierItemNotFoundException, TierNotFoundException {
     verifyTierExistence(tier);
     verifyElementExistence(element, tier.getTiered());
   }
@@ -761,15 +758,15 @@ public class TierList {
    * @param element     element to move
    * @param toTierIndex tier destination index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void moveToTier(TierElement element, int toTierIndex)
-      throws TierElementNotFoundException, TierNotFoundException {
+  public void moveToTier(TierItem element, int toTierIndex)
+      throws TierItemNotFoundException, TierNotFoundException {
 
     verifyTierExistence(toTierIndex);
 
-    int fromTierIndex = tiers.indexOf(tierByElement(element));
+    int fromTierIndex = tiers.indexOf(tierByItem(element));
     if (tiers.get(fromTierIndex).remove(element))
       tiers.get(toTierIndex).add(element);
   }
@@ -780,14 +777,14 @@ public class TierList {
    * @param element element to move
    * @param toTier  tier destination index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void moveToTier(TierElement element, Tier toTier) throws TierElementNotFoundException, TierNotFoundException {
+  public void moveToTier(TierItem element, Tier toTier) throws TierItemNotFoundException, TierNotFoundException {
 
     verifyTierExistence(toTier);
 
-    if (tierByElement(element).remove(element)) {
+    if (tierByItem(element).remove(element)) {
       toTier.add(element);
     }
   }
@@ -799,15 +796,15 @@ public class TierList {
    * @param toTierIndex    tier destination index
    * @param toElementIndex destination position index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void moveToTier(TierElement element, int toTierIndex, int toElementIndex)
-      throws TierElementNotFoundException, TierNotFoundException {
+  public void moveToTier(TierItem element, int toTierIndex, int toElementIndex)
+      throws TierItemNotFoundException, TierNotFoundException {
 
     verifyTierExistence(toTierIndex);
 
-    int fromTierIndex = tiers.indexOf(tierByElement(element));
+    int fromTierIndex = tiers.indexOf(tierByItem(element));
     if (tiers.get(fromTierIndex).remove(element)) {
       tiers.get(toTierIndex).add(element);
       tiers.get(toTierIndex).move(element, toElementIndex);
@@ -821,15 +818,15 @@ public class TierList {
    * @param toTier         tier destination index
    * @param toElementIndex destination position index
    * @throws TierNotFoundException        if tier doesn't exist
-   * @throws TierElementNotFoundException if tier element doesn't exist
+   * @throws TierItemNotFoundException if tier element doesn't exist
    */
   @Deprecated
-  public void moveToTier(TierElement element, Tier toTier, int toElementIndex)
-      throws TierElementNotFoundException, TierNotFoundException {
+  public void moveToTier(TierItem element, Tier toTier, int toElementIndex)
+      throws TierItemNotFoundException, TierNotFoundException {
 
     verifyTierExistence(toTier);
 
-    int fromTierIndex = tiers.indexOf(tierByElement(element));
+    int fromTierIndex = tiers.indexOf(tierByItem(element));
     if (tiers.get(fromTierIndex).remove(element)) {
       toTier.add(element);
       toTier.move(element, toElementIndex);

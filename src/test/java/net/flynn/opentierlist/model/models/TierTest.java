@@ -2,7 +2,7 @@ package net.flynn.opentierlist.model.models;
 
 import javafx.scene.paint.Color;
 import net.flynn.opentierlist.model.enums.TieredStatus;
-import net.flynn.opentierlist.model.exceptions.TierElementNotFoundException;
+import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +15,17 @@ import static org.junit.Assert.*;
 public class TierTest {
 
     Tier defaultTier, a, b, c, d;
-    TierElement el1, el2, el3, el4, el0, elm1;
+    TierItem el1, el2, el3, el4, el0, elm1;
 
     @Before
     public void setUp() {
 
-        elm1 = new TierElement();
-        el0 = new TierElement();
-        el1 = new TierElement("elementName1");
-        el2 = new TierElement("elementName2");
-        el3 = new TierElement("elementName3");
-        el4 = new TierElement("elementName4");
+        elm1 = new TierItem();
+        el0 = new TierItem();
+        el1 = new TierItem("elementName1");
+        el2 = new TierItem("elementName2");
+        el3 = new TierItem("elementName3");
+        el4 = new TierItem("elementName4");
 
         defaultTier = new Tier();
         a = new Tier("a");
@@ -47,17 +47,17 @@ public class TierTest {
     @Test
     public void add() {
 
-        assertEquals(0, a.elementsCount());
+        assertEquals(0, a.itemCount());
         assertEquals(TieredStatus.UNTIERED, elm1.getStatus());
 
         a.add(elm1);
-        assertEquals(1, a.elementsCount());
+        assertEquals(1, a.itemCount());
 
         assertTrue(a.add(elm1));
-        assertEquals(2, a.elementsCount());
+        assertEquals(2, a.itemCount());
 
         a.add(el0);
-        assertEquals(3, a.elementsCount());
+        assertEquals(3, a.itemCount());
 
         assertEquals(TieredStatus.UNTIERED, a.getTiered().getFirst().getStatus());
         assertEquals(TieredStatus.UNTIERED, a.getTiered().get(1).getStatus());
@@ -67,28 +67,28 @@ public class TierTest {
     @Test
     public void remove() {
 
-        assertThrows(TierElementNotFoundException.class, () -> b.remove(el1));
-        assertThrows(TierElementNotFoundException.class, () -> b.remove(100));
+        assertThrows(TierItemNotFoundException.class, () -> b.remove(el1));
+        assertThrows(TierItemNotFoundException.class, () -> b.remove(100));
 
         a.add(elm1); a.add(elm1); a.add(el0); a.add(el0);
         a.add(elm1); a.add(elm1); a.add(el0); a.add(el0);
 
         assertEquals(elm1, a.remove(0));
-        assertEquals(7, a.elementsCount());
+        assertEquals(7, a.itemCount());
 
         assertTrue(a.remove(elm1));
-        assertEquals(6, a.elementsCount());
+        assertEquals(6, a.itemCount());
 
         for (var element : a.getTiered()) assertTrue(a.remove(element));
 
-        assertEquals(0, a.elementsCount());
+        assertEquals(0, a.itemCount());
 
     }
 
     @Test
     public void swapPointers() {
 
-        final int secondLastIndex = c.elementsCount() - 2, lastIndex = c.elementsCount() - 1;
+        final int secondLastIndex = c.itemCount() - 2, lastIndex = c.itemCount() - 1;
 
         var first = c.getTiered().getFirst();
         var secondLast = c.getTiered().get(secondLastIndex);
@@ -98,21 +98,21 @@ public class TierTest {
         assertEquals(first, c.getTiered().getFirst());
         assertEquals(secondLast, c.getTiered().get(secondLastIndex));
         assertEquals(List.of(el1, el2, el3, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.swap(first, secondLast);
         // 3, 2, 1, 4
         assertEquals(first, c.getTiered().get(secondLastIndex));
         assertEquals(secondLast, c.getTiered().getFirst());
         assertEquals(List.of(el3, el2, el1, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         secondLast = c.getTiered().get(secondLastIndex);
         last = c.getTiered().getLast();
 
         c.swap(secondLast, last);
         // 3, 2, 4, 1
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el3, el2, el4, el1), c.getTiered());
 
     }
@@ -120,7 +120,7 @@ public class TierTest {
     @Test
     public void swapIndexes() {
 
-        final int secondLastIndex = c.elementsCount() - 2, lastIndex = c.elementsCount() - 1;
+        final int secondLastIndex = c.itemCount() - 2, lastIndex = c.itemCount() - 1;
 
         var first = c.getTiered().getFirst();
         var secondLast = c.getTiered().get(secondLastIndex);
@@ -129,18 +129,18 @@ public class TierTest {
         assertEquals(first, c.getTiered().getFirst());
         assertEquals(secondLast, c.getTiered().get(secondLastIndex));
         assertEquals(List.of(el1, el2, el3, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.swap(0, secondLastIndex);
         // 3, 2, 1, 4
         assertEquals(first, c.getTiered().get(secondLastIndex));
         assertEquals(secondLast, c.getTiered().getFirst());
         assertEquals(List.of(el3, el2, el1, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.swap(secondLastIndex, lastIndex);
         // 3, 2, 4, 1
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el3, el2, el4, el1), c.getTiered());
 
     }
@@ -155,29 +155,29 @@ public class TierTest {
 
         assertFalse(c.contains(elm1));
         assertFalse(c.contains(el0));
-        assertFalse(c.contains(new TierElement()));
+        assertFalse(c.contains(new TierItem()));
 
     }
 
     @Test
-    public void elementsCount() {
+    public void itemCount() {
 
-        assertEquals(0, defaultTier.elementsCount());
-        assertEquals(0, a.elementsCount());
-        assertEquals(0, b.elementsCount());
-        assertEquals(4, c.elementsCount());
-        assertEquals(0, d.elementsCount());
+        assertEquals(0, defaultTier.itemCount());
+        assertEquals(0, a.itemCount());
+        assertEquals(0, b.itemCount());
+        assertEquals(4, c.itemCount());
+        assertEquals(0, d.itemCount());
         d.add(el0);
-        assertEquals(1, d.elementsCount());
+        assertEquals(1, d.itemCount());
         d.remove(el0);
-        assertEquals(0, d.elementsCount());
+        assertEquals(0, d.itemCount());
 
     }
 
     @Test
     public void movePointer() {
 
-        final int secondLastIndex = c.elementsCount() - 2, lastIndex = c.elementsCount() - 1;
+        final int secondLastIndex = c.itemCount() - 2, lastIndex = c.itemCount() - 1;
 
         var first = c.getTiered().getFirst();
         var secondLast = c.getTiered().get(secondLastIndex);
@@ -187,21 +187,21 @@ public class TierTest {
         assertEquals(first, c.getTiered().getFirst());
         assertEquals(secondLast, c.getTiered().get(secondLastIndex));
         assertEquals(List.of(el1, el2, el3, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.move(first, secondLast);
         // 2, 1, 3, 4
         assertEquals(List.of(el2, el3, el1, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.move(secondLast, last);
         // 2, 1, 4, 3
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el2, el1, el4, el3), c.getTiered());
 
         c.move(secondLast, first);
         // 2, 3, 1, 4
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el2, el3, el1, el4), c.getTiered());
 
     }
@@ -209,28 +209,28 @@ public class TierTest {
     @Test
     public void moveIndex() {
 
-        final int secondLastIndex = c.elementsCount() - 2, lastIndex = c.elementsCount() - 1;
+        final int secondLastIndex = c.itemCount() - 2, lastIndex = c.itemCount() - 1;
 
         var first = c.getTiered().getFirst();
         var secondLast = c.getTiered().get(secondLastIndex);
 
         // 1, 2, 3, 4
         assertEquals(List.of(el1, el2, el3, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.move(first, secondLastIndex);
         // 2, 1, 3, 4
         assertEquals(List.of(el2, el3, el1, el4), c.getTiered());
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
 
         c.move(secondLast, lastIndex);
         // 2, 1, 4, 3
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el2, el1, el4, el3), c.getTiered());
 
         c.move(secondLast, 0);
         // 3, 2, 1, 4
-        assertEquals(lastIndex + 1, c.elementsCount());
+        assertEquals(lastIndex + 1, c.itemCount());
         assertEquals(List.of(el3, el2, el1, el4), c.getTiered());
 
     }
@@ -256,9 +256,9 @@ public class TierTest {
     public void indexOf() {
 
         assertEquals(0, c.indexOf(el1));
-        assertEquals(c.elementsCount() - 3, c.indexOf(el2));
-        assertEquals(c.elementsCount() - 2, c.indexOf(el3));
-        assertEquals(c.elementsCount() - 1, c.indexOf(el4));
+        assertEquals(c.itemCount() - 3, c.indexOf(el2));
+        assertEquals(c.itemCount() - 2, c.indexOf(el3));
+        assertEquals(c.itemCount() - 1, c.indexOf(el4));
 
         c.swap(0, 2);
         assertEquals(2, c.indexOf(el1));
