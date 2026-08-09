@@ -313,7 +313,7 @@ public class StandardTierListController implements TierListController {
 
   @Override
   public String getTierListName() {
-    return tierList.getTierListName();
+    return tierList.getName();
   }
 
   @Override

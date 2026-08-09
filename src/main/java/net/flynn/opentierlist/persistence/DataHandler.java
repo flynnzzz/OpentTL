@@ -18,7 +18,7 @@ public class DataHandler {
     try {
       TierListWriter.write(file, tierList);
     } catch (IOException e) {
-      System.err.println("[ERROR] --- Could not save tier list '" + tierList.getTierListName() + "', aborting ---");
+      System.err.println("[ERROR] --- Could not save tier list '" + tierList.getName() + "', aborting ---");
     }
   }
 

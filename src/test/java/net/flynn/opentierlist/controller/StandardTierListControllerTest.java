@@ -354,7 +354,7 @@ public class StandardTierListControllerTest {
         final var newTl = new TierList();
         controller.setTierList(newTl);
 
-        assertEquals(newTl.getTierListName(), controller.getTierListName());
+        assertEquals(newTl.getName(), controller.getTierListName());
         assertEquals(newTl.getTiers(), controller.getTiers());
         assertEquals(newTl.getUnTiered(), controller.getUnTiered());
     }
