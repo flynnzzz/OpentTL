@@ -1,0 +1,225 @@
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4057358): Gdk-WARNING **: 12:37:12.200: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+nohup: appending output to 'nohup.out'
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4058028): Gdk-WARNING **: 12:38:04.081: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+nohup: appending output to 'nohup.out'
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4058833): Gdk-WARNING **: 12:39:02.253: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4062102): Gdk-WARNING **: 12:42:51.417: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4062382): Gdk-WARNING **: 12:43:08.741: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+[[1;34mINFO[m] Error stacktraces are turned on.
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------------------< [0;36mnet.flynn:opentierlist[0;1m >-----------------------[m
+[[1;34mINFO[m] [1mBuilding opentierlist 0.0.1-SNAPSHOT[m
+[[1;34mINFO[m]   from pom.xml
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:20 during dependency collection step for project (use -X to see details)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mclean:3.2.0:clean[m [1m(default-clean)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/flynn/dev/javadev/personal-workspace/opentierlist/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mjavafx:0.0.8:run[m [1m(default-cli)[0;1m > [0;1mprocess-classes[m @ [36mopentierlist[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:resources[m [1m(default-resources)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Copying 9 resources from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mcompiler:3.11.0:compile[m [1m(default-compile)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module! :source
+[[1;34mINFO[m] Compiling 25 source files with javac [debug release 25] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mjavafx:0.0.8:run[m [1m(default-cli)[0;1m < [0;1mprocess-classes[m @ [36mopentierlist[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjavafx:0.0.8:run[m [1m(default-cli)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  16.318 s
+[[1;34mINFO[m] Finished at: 2026-08-07T12:45:10+02:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Error stacktraces are turned on.
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------------------< [0;36mnet.flynn:opentierlist[0;1m >-----------------------[m
+[[1;34mINFO[m] [1mBuilding opentierlist 0.0.1-SNAPSHOT[m
+[[1;34mINFO[m]   from pom.xml
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:20 during dependency collection step for project (use -X to see details)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mclean:3.2.0:clean[m [1m(default-clean)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/flynn/dev/javadev/personal-workspace/opentierlist/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mjavafx:0.0.8:run[m [1m(default-cli)[0;1m > [0;1mprocess-classes[m @ [36mopentierlist[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:resources[m [1m(default-resources)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Copying 9 resources from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mcompiler:3.11.0:compile[m [1m(default-compile)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module! :source
+[[1;34mINFO[m] Compiling 25 source files with javac [debug release 25] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mjavafx:0.0.8:run[m [1m(default-cli)[0;1m < [0;1mprocess-classes[m @ [36mopentierlist[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjavafx:0.0.8:run[m [1m(default-cli)[m @ [36mopentierlist[0;1m ---[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  9.780 s
+[[1;34mINFO[m] Finished at: 2026-08-07T12:45:33+02:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4064831): Gdk-WARNING **: 12:46:07.482: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+nohup: ignoring input
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4066997): Gdk-WARNING **: 12:49:30.684: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+nohup: ignoring input
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4067130): Gdk-WARNING **: 12:49:37.159: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4068413): Gdk-WARNING **: 12:51:18.884: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+Error: Unable to access jarfile ./target/opentierlist.jar
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4098267): Gdk-WARNING **: 13:39:14.977: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4169865): Gdk-WARNING **: 16:04:43.113: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+[INFO] --- No file selected ---
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:4180772): Gdk-WARNING **: 16:22:27.233: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:23356): Gdk-WARNING **: 17:24:11.661: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:171351): Gdk-WARNING **: 22:31:38.518: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:171649): Gdk-WARNING **: 22:31:59.774: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:244580): Gdk-WARNING **: 00:23:41.886: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:246244): Gdk-WARNING **: 00:25:26.634: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:246874): Gdk-WARNING **: 00:26:28.427: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
+Error: Unable to access jarfile ./target/opentierlist.jar
+Error occurred during initialization of boot layer
+java.lang.module.FindException: Module javafx.controls not found
+Error occurred during initialization of boot layer
+java.lang.module.FindException: Module javafx.controls not found
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/home/flynn/dev/javadev/personal-workspace/opentierlist/./lib/linux/javafx.graphics.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[INFO] --- Instantiating new image cache ---
+
+(java:1011274): Gdk-WARNING **: 00:42:56.237: XSetErrorHandler() called with a GDK error trap pushed. Don't do that.
