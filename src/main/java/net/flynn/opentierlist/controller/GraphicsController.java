@@ -16,6 +16,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.model.enums.TieredStatus;
+import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.ui.manual.*;
@@ -25,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GraphicsController {
 
@@ -34,9 +36,7 @@ public class GraphicsController {
   private MainPane mainPane;
   private TieredPane tieredPane;
   private UnTieredPane unTieredPane;
-
   private final FileChooser tierListFileChooser;
-
   private final Map<Integer, Image> imageCache;
 
   public GraphicsController(TierListController tierListController) {
@@ -65,7 +65,7 @@ public class GraphicsController {
     return FXCollections.observableArrayList(
         tierListController
             .getTiers().stream()
-            .map(t -> new TierBox(tierListController, this, t))
+            .map(t -> new TierBox(t.hashCode(), tierListController, this))
             .toList());
   }
 
@@ -99,7 +99,8 @@ public class GraphicsController {
 
   public void updateImages(ItemsPane pane) {
 
-    List<TierItem> items = pane.status() == TieredStatus.TIERED ? pane.getTier().getTiered()
+    final List<TierItem> items = !pane.isUnTiered()
+        ? tierListController.getTierByHash(pane.getTierHash()).getTiered()
         : tierListController.getUnTiered();
 
     imageCache.keySet()
@@ -227,9 +228,7 @@ public class GraphicsController {
 
     if (parsedTier.isPresent()) {
       tierListController.setTierList(parsedTier.get());
-
       mainStage.requestFocus();
-
       reloadImageCache();
       updateTierList();
     }
@@ -362,7 +361,7 @@ public class GraphicsController {
     mainStage.setTitle(string);
   }
 
-  public void setScrollPaneWidth(TieredStatus status, double width) {
+  public void setScrollPaneWidth(boolean isUnTiered, double width) {
 
     if (tieredPane == null || unTieredPane == null) {
       System.err.println(
@@ -370,10 +369,10 @@ public class GraphicsController {
       return;
     }
 
-    switch (status) {
-      case TIERED -> tieredPane.setPrefWidth(width);
-      case UNTIERED -> unTieredPane.setPrefWidth(width);
-    }
+    if (isUnTiered)
+      unTieredPane.setPrefWidth(width);
+    else
+      tieredPane.setPrefWidth(width);
   }
 
   public void setBorder(ScrollPane pane, String color) {

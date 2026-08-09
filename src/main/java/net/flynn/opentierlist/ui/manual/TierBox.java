@@ -36,6 +36,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.flynn.opentierlist.controller.TierListController;
+import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import net.flynn.opentierlist.ui.ConfigHolder;
@@ -50,32 +51,29 @@ public class TierBox extends HBox {
 
   private final TextField tierNameLabel;
   private final ItemsPane tieredPane;
-
   private final Button editTierButton;
+  private Stage colorStage;
+  private ColorPicker colorPicker;
+  private Button confirmColor;
+  private final TierListController tierListController;
+  private final GraphicsController graphicsController;
+  private final int tierHash;
+  private String oldTextValue;
 
   private ContextMenu contextMenu;
   private MenuItem delete;
   private MenuItem duplicate;
   private MenuItem color;
 
-  private Stage colorStage;
-  private ColorPicker colorPicker;
-  private Button confirmColor;
-
-  private final TierListController tierListController;
-  private final GraphicsController graphicsController;
-  private final Tier tier;
-  private String oldTextValue;
-
-  public TierBox(TierListController tierListController, GraphicsController graphicsController, Tier tier) {
+  public TierBox(int tierHash, TierListController tierListController, GraphicsController graphicsController) {;
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
-    this.tier = tier;
+    this.tierHash = tierHash;
     this.oldTextValue = "";
 
-    this.tierNameLabel = new TextField(tier.getName());
+    this.tierNameLabel = new TextField(tierListController.getTierByHash(tierHash).getName());
     this.editTierButton = new Button();
-    this.tieredPane = new ItemsPane(tierListController, graphicsController, tier);
+    this.tieredPane = new ItemsPane(tierHash, tierListController, graphicsController);
     setupPane();
   }
 
@@ -119,6 +117,9 @@ public class TierBox extends HBox {
   private void setupEventHandlers() {
 
     // TODO: move to GraphicsController
+
+    final var tier = tierListController.getTierByHash(tierHash);
+
     tierNameLabel.focusedProperty().addListener((_, _, changed) -> {
       if (changed)
         this.oldTextValue = tierNameLabel.getText();
@@ -270,20 +271,18 @@ public class TierBox extends HBox {
 
     final var content = new ClipboardContent();
 
-    content.putString(String.valueOf(tier.hashCode()));
+    content.putString(String.valueOf(tierHash));
     dragBoard.setContent(content);
     event.consume();
   }
 
   private void handleDragDropped(DragEvent event) {
-    Dragboard db = event.getDragboard();
+    final Dragboard db = event.getDragboard();
+    boolean success = false;
 
     if (db.hasString() && !event.getDragboard().hasImage()) {
 
-      Optional<Tier> source = tierListController.getTierByHash(db.getString());
-
-      if (source.isEmpty())
-        return;
+      final var source = tierListController.getTierByHash(Integer.parseInt(db.getString()));
 
       Node potentialTarget = (Node) event.getTarget();
 
@@ -291,16 +290,18 @@ public class TierBox extends HBox {
         potentialTarget = potentialTarget.getParent();
       }
       if (potentialTarget != null) {
-        final Tier target = ((TierBox) potentialTarget).getTier();
-        tierListController.moveTier(source.get(), target);
+        final var target =
+                tierListController.getTierByHash(((TierBox) potentialTarget).getTierHash());
+        tierListController.moveTier(source, target);
+        success = true;
       }
     }
-    event.setDropCompleted(true);
+    event.setDropCompleted(success);
     event.consume();
   }
 
   private void setTierNameLabelBorder(String color) {
-    var tierNameLabelBorder = new Border(
+    final var tierNameLabelBorder = new Border(
         new BorderStroke(
             Paint.valueOf(color),
             BorderStrokeStyle.SOLID,
@@ -310,13 +311,13 @@ public class TierBox extends HBox {
   }
 
   private void setTierNameLabelBackground() {
-    var backgroundColor = Paint.valueOf(tier.getColor());
-    var nameLabelBackground = Background.fill(backgroundColor);
+    final var backgroundColor = Paint.valueOf(tierListController.getTierByHash(tierHash).getColor());
+    final var nameLabelBackground = Background.fill(backgroundColor);
     tierNameLabel.setBackground(nameLabelBackground);
   }
 
-  private Tier getTier() {
-    return this.tier;
+  public int getTierHash() {
+    return this.tierHash;
   }
 
   public void hideEditButton() {
@@ -324,7 +325,7 @@ public class TierBox extends HBox {
   }
 
   public void showEditButton() {
-
+    getChildren().add(editTierButton);
   }
 
   public void setButtonTheme(ConfigHolder.Theme theme) {

@@ -1,7 +1,6 @@
 package net.flynn.opentierlist.ui.manual;
 
 import java.util.List;
-import java.util.Optional;
 
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
@@ -10,11 +9,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import net.flynn.opentierlist.controller.TierListController;
-import net.flynn.opentierlist.model.enums.TieredStatus;
-import net.flynn.opentierlist.model.models.Tier;
-import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
+import net.flynn.opentierlist.model.models.Tier;
+import net.flynn.opentierlist.ui.ConfigHolder;
 
 /**
  *
@@ -25,24 +22,24 @@ public class ItemsPane extends FlowPane {
 
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
+  private final boolean isUnTiered;
+  private final int tierHash;
 
-  private final TieredStatus status;
-  private final Tier tier;
-
-  public ItemsPane(TierListController tierListController, GraphicsController graphicsController, Tier tier) {
+  public ItemsPane(int tierHash, TierListController tierListController, GraphicsController graphicsController) {
 
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
-    this.tier = tier;
-    this.status = tier.equalsTier(Tier.UNTIERED) ? TieredStatus.UNTIERED : TieredStatus.TIERED;
+    this.tierHash = tierHash;
 
-    final List<TierItem> items = tier.equalsTier(Tier.UNTIERED) ? tierListController.getUnTiered()
-        : tier.getTiered();
+    final var tier = tierListController.getTierByHash(tierHash);
+
+    final var items = tier.getTiered();
+    this.isUnTiered = tier.equalsTier(Tier.UNTIERED);
     setupPane(graphicsController.loadImages(this, items));
   }
 
   public ItemsPane(TierListController tierListController, GraphicsController graphicsController) {
-    this(tierListController, graphicsController, Tier.UNTIERED);
+    this(Tier.UNTIERED.hashCode(), tierListController, graphicsController);
   }
 
   private void setupPane(List<ItemView> images) {
@@ -93,34 +90,29 @@ public class ItemsPane extends FlowPane {
   private void handleDragDropped(DragEvent event) {
     boolean success = false;
 
-    Dragboard dragBoard = event.getDragboard();
+    final Dragboard dragBoard = event.getDragboard();
     if (dragBoard.hasImage() && dragBoard.hasString()
         && event.getTarget() instanceof ItemsPane) {
 
-      String elementHash = dragBoard.getString();
-      Optional<TierItem> potentialSource = tierListController.getItemByHash(elementHash);
-      if (potentialSource.isEmpty()) {
-        System.err.println("[ERROR] --- Element to be dropped was not found ---");
-        return;
-      }
+      Integer elementHash = Integer.parseInt(dragBoard.getString());
 
-      var source = potentialSource.get();
-
-      tierListController.moveItem(source, this.tier);
-
-      graphicsController.updateImages(this);
-
+      final var source = tierListController.getItemByHash(elementHash);
+      tierListController.moveItem(source, tierListController.getTierByHash(tierHash));
       success = true;
     }
+
+    if (success)
+      graphicsController.updateImages(this);
+
     event.setDropCompleted(success);
     event.consume();
   }
 
-  public TieredStatus status() {
-    return this.status;
+  public boolean isUnTiered() {
+    return isUnTiered;
   }
 
-  public Tier getTier() {
-    return tier.copy();
+  public int getTierHash() {
+    return tierHash;
   }
 }

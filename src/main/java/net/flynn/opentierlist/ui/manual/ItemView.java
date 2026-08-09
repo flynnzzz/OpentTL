@@ -45,11 +45,12 @@ public class ItemView extends ImageView {
 
         final var deleteImageMenu = new MenuItem("Delete");
         deleteImageMenu.setOnAction(_ -> {
-
           if (this.getUserData() instanceof TierItem element) {
+
             tierListController.removeItem(element);
             parent.getChildren().remove(this);
             graphicsController.updateImages(parent);
+
           }
         });
 
@@ -82,7 +83,7 @@ public class ItemView extends ImageView {
 
         this.setFitHeight(ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
         graphicsController.setScrollPaneWidth(
-            parent.status(), ConfigHolder.DEFAULT_BAR_WIDTH + 16);
+            parent.isUnTiered(), ConfigHolder.DEFAULT_BAR_WIDTH + 16);
 
         parent.setPadding(
             new Insets(
@@ -97,7 +98,7 @@ public class ItemView extends ImageView {
 
         this.setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
         graphicsController.setScrollPaneWidth(
-            parent.status(), ConfigHolder.DEFAULT_BAR_WIDTH);
+            parent.isUnTiered(), ConfigHolder.DEFAULT_BAR_WIDTH);
 
         parent.setPadding(Insets.EMPTY);
 
@@ -119,8 +120,8 @@ public class ItemView extends ImageView {
     if (!(event.getSource() instanceof ImageView sourceImage))
       return;
 
-    Dragboard dragBoard = sourceImage.startDragAndDrop(TransferMode.MOVE);
-    var content = new ClipboardContent();
+    final Dragboard dragBoard = sourceImage.startDragAndDrop(TransferMode.MOVE);
+    final var content = new ClipboardContent();
 
     if (sourceImage.getUserData() instanceof TierItem sourceElement) {
 
@@ -139,31 +140,24 @@ public class ItemView extends ImageView {
     Dragboard dragBoard = event.getDragboard();
     String elementHash = dragBoard.getString();
 
-    Optional<TierItem> potentialSource = tierListController.getItemByHash(elementHash);
-    if (potentialSource.isEmpty()) {
-      System.err.println("[ERROR] --- Element to be dropped was not found ---");
-      return;
-    }
+    final var sourceElement =
+            tierListController.getItemByHash(Integer.parseInt(elementHash));
 
     EventTarget eventTarget = event.getTarget();
     if (dragBoard.hasImage() && dragBoard.hasString()
         && eventTarget instanceof ImageView targetImage
-        && targetImage.getUserData() instanceof TierItem targetElement) {
+        && targetImage.getUserData() instanceof TierItem targetElement
+        && !sourceElement.equals(targetElement)) {
 
-      TierItem sourceElement = potentialSource.get();
+      Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetElement);
 
-      if (!sourceElement.equals(targetElement)) {
-
-        Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetElement);
-
-        potentialTargetTier.ifPresent(
-            targetTier -> tierListController.insertItem(sourceElement, targetTier, targetElement));
-      }
-
-      graphicsController.updateImages(parent);
+      potentialTargetTier.ifPresent(
+          targetTier -> tierListController.insertItem(sourceElement, targetTier, targetElement));
 
       success = true;
     }
+    if (success)
+      graphicsController.updateImages(parent);
 
     event.setDropCompleted(success);
     event.consume();

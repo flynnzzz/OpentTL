@@ -27,7 +27,6 @@ public class TierList {
   private String tierListName;
   private final List<Tier> tiers;
   private final Tier unTiered;
-
   public static final String DEFAULT_TIER_LIST_NAME = "New Tier List";
 
   /**
@@ -42,9 +41,7 @@ public class TierList {
    */
   public TierList(String tierListName, List<TierItem> unTiered, List<Tier> tiers) throws IllegalArgumentException {
     this.tierListName = Objects.requireNonNull(tierListName);
-    this.unTiered = new Tier(
-            "__UNTIERED__", "#ffffff", Objects.requireNonNull(unTiered)
-    );
+    this.unTiered = Tier.UNTIERED;
     this.tiers = Objects.requireNonNull(tiers);
     if (tierListName.isBlank())
       throw new IllegalArgumentException("[ERROR] --- TierList name cannot be blank ---");

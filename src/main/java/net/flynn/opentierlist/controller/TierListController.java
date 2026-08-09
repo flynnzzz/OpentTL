@@ -173,9 +173,9 @@ public interface TierListController {
 
   Optional<Tier> getTierByItem(TierItem item);
 
-  Optional<TierItem> getItemByHash(String hashCode);
+  TierItem getItemByHash(Integer hashCode);
 
-  Optional<Tier> getTierByHash(String hashCode);
+  Tier getTierByHash(Integer hashCode);
 
   List<TierItem> getUnTiered();
 

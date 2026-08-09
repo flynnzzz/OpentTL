@@ -16,7 +16,6 @@ import net.flynn.opentierlist.controller.GraphicsController;
  */
 public class TieredPane extends ScrollPane {
   private final VBox tiersVBox;
-
   private final GraphicsController graphicsController;
   private ObservableList<TierBox> tierBoxList;
 
@@ -49,7 +48,6 @@ public class TieredPane extends ScrollPane {
     tierBoxList.clear();
 
     tierBoxList = graphicsController.loadTiers();
-
     tiersVBox.getChildren().addAll(tierBoxList);
   }
 

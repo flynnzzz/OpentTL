@@ -26,7 +26,6 @@ public class MainPane extends BorderPane {
   private final Button addTierButton, addItemButton;
   private final MenuBar menuBar;
   private final Menu fileMenu, viewMenu;
-
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
 

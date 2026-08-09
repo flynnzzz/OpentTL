@@ -27,7 +27,6 @@ import net.flynn.opentierlist.ui.manual.TieredPane;
 public class StandardTierListController implements TierListController {
 
   private TierList tierList;
-
   private final DataHandler dataHandler;
 
   /**
@@ -347,7 +346,7 @@ public class StandardTierListController implements TierListController {
   }
 
   @Override
-  public Optional<TierItem> getItemByHash(String hashCode) {
+  public TierItem getItemByHash(Integer hashCode) {
     Optional<TierItem> element = Optional.empty();
 
     try {
@@ -357,35 +356,37 @@ public class StandardTierListController implements TierListController {
               tierList.getTiers().stream()
                   .flatMap(t -> t.getTiered().stream()),
               tierList.getUnTiered().stream())
-          .filter(e -> String.valueOf(e.hashCode()).equals(hashCode))
+          .filter(e -> e.hashCode() == hashCode)
           .findFirst();
 
       if (element.isEmpty())
         throw new TierItemNotFoundException();
+      return element.get();
     } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println("[ERROR] --- " + ex.getClass() + ": in 'getElementByHash' method ---");
+      return null;
     }
-
-    return element;
   }
 
   @Override
-  public Optional<Tier> getTierByHash(String hashCode) {
-    Optional<Tier> tier = Optional.empty();
+  public Tier getTierByHash(Integer hashCode) {
+    if (hashCode == Tier.UNTIERED.hashCode())
+      return Tier.UNTIERED;
 
+    Optional<Tier> tier = Optional.empty();
     try {
 
       tier = tierList.getTiers().stream()
-          .filter(t -> String.valueOf(t.hashCode()).contains(hashCode))
+          .filter(t -> hashCode.equals(t.hashCode()))
           .findFirst();
 
       if (tier.isEmpty())
-        throw new TierNotFoundException();
-    } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException ex) {
+        throw new TierNotFoundException("[ERROR] --- No Tier with hashcode " + hashCode + " found ---");
+      return tier.get();
+    } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println("[ERROR] --- " + ex.getClass() + ": in 'getTierByHash' method ---");
+      return null;
     }
-
-    return tier;
   }
 
   @Override

@@ -235,7 +235,7 @@ public class Tier {
 
   @Override
   public int hashCode() {
-    return Objects.hash(tiered, header, id);
+    return Objects.hash(header, id);
   }
 
   @Override
@@ -246,8 +246,7 @@ public class Tier {
     if (!(obj instanceof Tier other)) {
       return false;
     }
-    return Objects.equals(tiered, other.tiered)
-        && Objects.equals(header, other.header)
+    return Objects.equals(header, other.header)
         && Objects.equals(id, other.id);
   }
 
