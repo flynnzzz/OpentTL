@@ -6,4 +6,5 @@ bin/
 .classpath
 .settings
 *.log
+TODO.md
 /target
