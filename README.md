@@ -8,7 +8,6 @@
 <h3 align="center">
   A simple and straightforward Java-developed Tier List Maker
 </h3>
-
 <br/>
 
 <div align="center">
@@ -25,13 +24,14 @@
 
 - **Visual tier list creation** — Drag and drop items into tier categories
 - **Customizable tiers** — Add, remove, and rename tiers as needed
-- **Mouse-based interaction** — Intuitive point-and-click controls (keyboard support coming soon ?)
+- **Mouse-based interaction** — Intuitive point-and-click controls
+- **Exporting tier list as PNG** — Save your tier lists on disk with the export feature 
 
 ---
 
 ## Requirements
 
-- **Java 25** or later
+- **Java 25+**
 
 ---
 
@@ -39,35 +39,41 @@
 
 ### Quick Start
 
-#### Linux
-
-**Download the latest release** from the [releases](https://github.com/flynnzzz/OpenTierList/releases) page. The release includes:
+**Download the latest release for your platform** from the [releases](https://github.com/flynnzzz/OpenTierList/releases) page. The release includes:
 
 - The application JAR file
 - Required JavaFX runtime JARs and binaries
-- The `otl.sh` bash script for easy execution
+- The `otl.sh` or `otl.bat` script for easy execution depending on your system
 
-Once downloaded, run the application using the provided bash script:
+Once downloaded, run the application using the provided run script in the terminal:
 
 ```bash
 ./otl.sh
 ```
+*On Linux systems*
+
+or 
+
+```batch
+./otl.bat
+```
+*On Windows systems*
 
 ### Running the Downloaded JAR Directly
 
 If you prefer to run the JAR without the script:
 
 ```bash
-java --module-path lib --add-modules javafx.controls -jar target/opentierlist.jar
+java --enable-native-access=javafx.graphics --module-path lib --add-modules javafx.controls -jar target/opentierlist.jar
 ```
 
 ---
 
-## Building from Source
+## Building with Maven
 
 ### Prerequisites
 
-- **Java 25** or later
+- **Java 25+**
 - **Maven 3.6+**
 
 ### Clone and Build
@@ -75,8 +81,8 @@ java --module-path lib --add-modules javafx.controls -jar target/opentierlist.ja
 1. **Clone the repository:**
 
   ```bash
-  git clone https://github.com/flynnzzz/OpenTierList.git
-  cd OpenTierList
+  git clone https://github.com/flynnzzz/OpenTL.git
+  cd OpenTL
   ```
 
 1. **Compile the project:**
@@ -99,26 +105,17 @@ mvn javafx:run
 
 ```bash
 mvn package
-./otl.sh
+
+# ... run options
 ```
 
 The compiled JAR will be available in the `./target` directory.
 
 ---
 
-## Usage
-
-1. **Launch the application** using the bash script or Java command
-2. **Add items** to your tier list as images
-3. **Drag items** into tier categories to organize them
-4. **Customize tiers** by renaming or adding new ones
-5. **Save or export** your tier list
-
----
-
 ## Supported formats
 
-The following **image formats** are supported for imported Tier List entries:
+The following **image formats** are supported for imported tier list entries:
 
 - *.png*
 - *.jpg*
@@ -140,7 +137,7 @@ This project was created as a **learning exercise** to explore:
 
 ---
 
-## Future TODOs and improvements
+## TODOs and possible improvements
 
 - Keyboard navigation and shortcuts
 - Undo/redo functionality
