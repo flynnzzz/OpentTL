@@ -94,20 +94,19 @@ public class Tier {
   }
 
   /**
-   * Adds an element to the tier instance
+   * Adds an item to the tier instance
    *
-   * @param element element to add
+   * @param item item to add
    * @return true if successful
    */
-  public boolean add(TierItem element) {
-    return tiered.add(element);
+  public boolean add(TierItem item) {
+    return tiered.add(item);
   }
 
-  public boolean remove(TierItem element) throws TierItemNotFoundException {
-    if (!tiered.remove(element))
+  public boolean remove(TierItem item) throws TierItemNotFoundException {
+    if (!tiered.remove(item))
       throw new TierItemNotFoundException(
-              "[ERROR] --- Removal of element: " + element + " was not successful ---"
-      );
+          "[ERROR] --- Removal of item: " + item + " was not successful ---");
     else
       return true;
   }
@@ -117,8 +116,7 @@ public class Tier {
       return tiered.remove(i);
     } catch (IndexOutOfBoundsException _) {
       throw new TierItemNotFoundException(
-              "[ERROR] --- Removal of element at index: " + i + " was not successful ---"
-      );
+          "[ERROR] --- Removal of item at index: " + i + " was not successful ---");
     }
   }
 
@@ -126,7 +124,7 @@ public class Tier {
     try {
       swap(tiered.indexOf(src), tiered.indexOf(dest));
     } catch (IndexOutOfBoundsException _) {
-      throw new TierItemNotFoundException("[ERROR] --- Cannot swap elements: " + src + ", " + dest + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Cannot swap items: " + src + ", " + dest + " ---");
     }
 
   }
@@ -136,13 +134,12 @@ public class Tier {
       Collections.swap(tiered, src, dest);
     } catch (IndexOutOfBoundsException _) {
       throw new TierItemNotFoundException(
-              "[ERROR] ---  Cannot swap elements: " + src + ", " + dest + " ---"
-      );
+          "[ERROR] ---  Cannot swap items: " + src + ", " + dest + " ---");
     }
   }
 
-  public boolean contains(TierItem element) {
-    return tiered.contains(element);
+  public boolean contains(TierItem item) {
+    return tiered.contains(item);
   }
 
   public int itemCount() {
@@ -150,38 +147,38 @@ public class Tier {
   }
 
   /**
-   * Moves an element to a certain position, automatically shifting all the others
+   * Moves an item to a certain position, automatically shifting all the others
    * 
-   * @param src  element to move
+   * @param src  item to move
    * @param dest destination
-   * @throws TierItemNotFoundException if element is not found
+   * @throws TierItemNotFoundException if item is not found
    */
   public void move(TierItem src, TierItem dest) throws TierItemNotFoundException {
     if (!tiered.contains(src))
-      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + src + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Item to move not found: " + src + " ---");
     if (!tiered.contains(dest))
-      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + src + " ---");
+      throw new TierItemNotFoundException("[ERROR] --- Item to move not found: " + src + " ---");
     final var destIndex = indexOf(dest);
     tiered.remove(src);
     tiered.add(destIndex, src);
   }
 
   /**
-   * Moves an element to a certain index, automatically shifting all the others
+   * Moves an item to a certain index, automatically shifting all the others
    * 
-   * @param element element to move
+   * @param item    item to move
    * @param toIndex destination index
-   * @throws TierItemNotFoundException if element is not found
+   * @throws TierItemNotFoundException if item is not found
    */
-  public void move(TierItem element, int toIndex) throws TierItemNotFoundException {
-    if (!this.contains(element))
-      throw new TierItemNotFoundException("[ERROR] --- Element to move not found: " + element + " ---");
+  public void move(TierItem item, int toIndex) throws TierItemNotFoundException {
+    if (!this.contains(item))
+      throw new TierItemNotFoundException("[ERROR] --- Item to move not found: " + item + " ---");
 
     if (toIndex > tiered.size())
       throw new TierItemNotFoundException("[ERROR] --- Index to move to is out of bounds: " + toIndex + " ---");
 
-    tiered.remove(element);
-    tiered.add(toIndex, element);
+    tiered.remove(item);
+    tiered.add(toIndex, item);
   }
 
   public Tier copy() {
@@ -192,8 +189,8 @@ public class Tier {
     return new Tier(header.name(), header.color());
   }
 
-  public int indexOf(TierItem element) {
-    return tiered.indexOf(element);
+  public int indexOf(TierItem item) {
+    return tiered.indexOf(item);
   }
 
   public void setName(String name) throws IllegalArgumentException {
@@ -229,13 +226,15 @@ public class Tier {
   /**
    * *Read only*
    * 
-   * @return this tier instance's elements
+   * @return this tier instance's items
    */
   public List<TierItem> getTiered() {
     return List.copyOf(tiered);
   }
 
-  public TierItem get(int i) { return tiered.get(i); }
+  public TierItem get(int i) {
+    return tiered.get(i);
+  }
 
   @Override
   public int hashCode() {
@@ -296,8 +295,8 @@ public class Tier {
    * Format {@link TierStringFormat#EXTENDED}:
    * "header name:
    * \[
-   * element1,
-   * element2,
+   * item1,
+   * item2,
    * ...
    * \]
    * "

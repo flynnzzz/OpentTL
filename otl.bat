@@ -4,7 +4,7 @@ setlocal
 set "MODULE_PATH=.\lib\windows"
 set "BINARIES=.\lib\windows\dll"
 set "ADD_MODULES=javafx.controls"
-set "JAR_FILE=./target\opentierlist.jar"
+set "JAR_FILE=.\target\opentierlist.jar"
 set "LOG_FILE=.log\otl.log"
 
 if not exist "%MODULE_PATH%\" (

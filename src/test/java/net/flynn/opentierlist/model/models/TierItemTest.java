@@ -22,9 +22,9 @@ public class TierItemTest {
     final String resource = Objects.requireNonNull(getClass().getResource("/greyyakuza.jpg")).toURI().toString();
 
     defaultTierItem = new TierItem();
-    el1 = new TierItem("elementName1");
-    el2 = new TierItem("elementName2", resource);
-    el3 = new TierItem(TieredStatus.TIERED, "elementName3", resource);
+    el1 = new TierItem("itemName1");
+    el2 = new TierItem("itemName2", resource);
+    el3 = new TierItem(TieredStatus.TIERED, "itemName3", resource);
 
   }
 
@@ -78,32 +78,32 @@ public class TierItemTest {
   @Test
   public void getItemName() {
     assertEquals("New Item", defaultTierItem.getItemName());
-    assertEquals("elementName1", el1.getItemName());
-    assertEquals("elementName2", el2.getItemName());
-    assertEquals("elementName3", el3.getItemName());
+    assertEquals("itemName1", el1.getItemName());
+    assertEquals("itemName2", el2.getItemName());
+    assertEquals("itemName3", el3.getItemName());
   }
 
   @Test
   public void setItemName() {
-    el1.setItemName("newElementName1");
-    assertEquals("newElementName1", el1.getItemName());
-    el1.setItemName("elementName1");
-    assertEquals("elementName1", el1.getItemName());
+    el1.setItemName("newitemName1");
+    assertEquals("newitemName1", el1.getItemName());
+    el1.setItemName("itemName1");
+    assertEquals("itemName1", el1.getItemName());
 
-    el2.setItemName("newElementName2");
-    assertEquals("newElementName2", el2.getItemName());
+    el2.setItemName("newitemName2");
+    assertEquals("newitemName2", el2.getItemName());
 
-    el2.setItemName("newNewElementName2");
-    assertEquals("newNewElementName2", el2.getItemName());
+    el2.setItemName("newNewitemName2");
+    assertEquals("newNewitemName2", el2.getItemName());
 
-    el2.setItemName("elementName2");
-    assertEquals("elementName2", el2.getItemName());
+    el2.setItemName("itemName2");
+    assertEquals("itemName2", el2.getItemName());
 
     assertThrows(IllegalArgumentException.class, () -> el1.setItemName(""));
     assertThrows(IllegalArgumentException.class, () -> el1.setItemName(" "));
     assertThrows(IllegalArgumentException.class, () -> el1.setItemName(System.lineSeparator()));
 
-    el1.setItemName("elementName1");
+    el1.setItemName("itemName1");
   }
 
   @Test
@@ -122,7 +122,7 @@ public class TierItemTest {
   @Test
   public void updateImagePath() throws URISyntaxException {
 
-    var el4 = new TierItem("elementName4", "nonExistentUrl");
+    var el4 = new TierItem("itemName4", "nonExistentUrl");
 
     assertEquals(
             (Objects.requireNonNull(getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE))).toURI().toString(),

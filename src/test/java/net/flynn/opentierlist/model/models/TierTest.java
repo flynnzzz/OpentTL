@@ -22,10 +22,10 @@ public class TierTest {
 
         elm1 = new TierItem();
         el0 = new TierItem();
-        el1 = new TierItem("elementName1");
-        el2 = new TierItem("elementName2");
-        el3 = new TierItem("elementName3");
-        el4 = new TierItem("elementName4");
+        el1 = new TierItem("itemName1");
+        el2 = new TierItem("itemName2");
+        el3 = new TierItem("itemName3");
+        el4 = new TierItem("itemName4");
 
         defaultTier = new Tier();
         a = new Tier("a");
@@ -79,7 +79,7 @@ public class TierTest {
         assertTrue(a.remove(elm1));
         assertEquals(6, a.itemCount());
 
-        for (var element : a.getTiered()) assertTrue(a.remove(element));
+        for (var item : a.getTiered()) assertTrue(a.remove(item));
 
         assertEquals(0, a.itemCount());
 

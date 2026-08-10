@@ -94,9 +94,9 @@ public class ItemsPane extends FlowPane {
     if (dragBoard.hasImage() && dragBoard.hasString()
         && event.getTarget() instanceof ItemsPane) {
 
-      Integer elementHash = Integer.parseInt(dragBoard.getString());
+      Integer itemHash = Integer.parseInt(dragBoard.getString());
 
-      final var source = tierListController.getItemByHash(elementHash);
+      final var source = tierListController.getItemByHash(itemHash);
       tierListController.moveItem(source, tierListController.getTierByHash(tierHash));
       success = true;
     }

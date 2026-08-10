@@ -31,7 +31,7 @@ public record ImagePath(URI uri) {
     try {
       return ImagePath.of(new URI(uri));
     } catch (URISyntaxException _) {
-      System.err.println("[ERROR] --- Invalid url: " + uri + " ---");
+      System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
       return defaultResource();
     }
   }
@@ -41,7 +41,7 @@ public record ImagePath(URI uri) {
     try {
       return ImagePath.of(new File(uri));
     } catch (IllegalArgumentException _) {
-      System.err.println("[ERROR] --- Invalid url: " + uri + " ---");
+      System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
       return ImagePath.defaultResource();
     }
 

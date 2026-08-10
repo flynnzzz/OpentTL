@@ -44,14 +44,14 @@ public class TierItem {
   /**
    * Constructs a {@link TierList} entry given the following parameters.
    * 
-   * @param status      enum representing state
+   * @param status   enum representing state
    * @param itemName the entry's name
-   * @param uri         path to the entry image
+   * @param uri      path to the entry image
    * 
    * @throws IllegalArgumentException if either name or image path are blank
    */
   public TierItem(TieredStatus status, String itemName, String uri)
-      throws IllegalArgumentException  {
+      throws IllegalArgumentException {
     if (uri.isBlank())
       throw new IllegalArgumentException();
     this(status, itemName, ImagePath.of(uri));
@@ -61,11 +61,11 @@ public class TierItem {
    * Constructs a {@link TierList} entry given the following parameters.
    * 
    * @param itemName the entry's name
-   * @param uri         the entry's image path
+   * @param uri      the entry's image path
    * 
    * @throws IllegalArgumentException if either name or path are blank
    */
-  public TierItem(String itemName, String uri) throws IllegalArgumentException  {
+  public TierItem(String itemName, String uri) throws IllegalArgumentException {
     this(TieredStatus.UNTIERED, itemName, uri);
   }
 
@@ -163,7 +163,7 @@ public class TierItem {
   /**
    * Equals but ignoring instance difference
    *
-   * @param tierItem tier element to compare to
+   * @param tierItem tier item to compare to
    * @return true if names, resource paths and statuses match
    */
   public boolean equalsItem(TierItem tierItem) {
@@ -182,7 +182,7 @@ public class TierItem {
    * Returns the {@link TierItem} as a {@link String}
    * 
    * Format:
-   * "TierElementName".
+   * "TierItemName".
    * 
    * @return {@link String}
    */

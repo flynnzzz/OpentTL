@@ -45,22 +45,22 @@ public class ItemView extends ImageView {
 
         final var deleteImageMenu = new MenuItem("Delete");
         deleteImageMenu.setOnAction(_ -> {
-          if (this.getUserData() instanceof TierItem element) {
+          if (this.getUserData() instanceof TierItem item) {
 
-            tierListController.removeItem(element);
+            tierListController.removeItem(item);
             parent.getChildren().remove(this);
             graphicsController.updateImages(parent);
 
           }
         });
 
-        if (this.getUserData() instanceof TierItem element && element.isTiered()) {
+        if (this.getUserData() instanceof TierItem item && item.isTiered()) {
 
           final var unTierImageMenu = new MenuItem("UnTier");
           imageContextMenu.getItems().add(unTierImageMenu);
           unTierImageMenu.setOnAction(_ -> {
 
-            tierListController.unTier(element);
+            tierListController.unTier(item);
             graphicsController.updateTierList();
           });
         }
@@ -123,10 +123,10 @@ public class ItemView extends ImageView {
     final Dragboard dragBoard = sourceImage.startDragAndDrop(TransferMode.MOVE);
     final var content = new ClipboardContent();
 
-    if (sourceImage.getUserData() instanceof TierItem sourceElement) {
+    if (sourceImage.getUserData() instanceof TierItem sourceItem) {
 
       content.putImage(sourceImage.getImage());
-      content.putString(String.valueOf(sourceElement.hashCode()));
+      content.putString(String.valueOf(sourceItem.hashCode()));
 
       dragBoard.setContent(content);
     }
@@ -138,21 +138,20 @@ public class ItemView extends ImageView {
     boolean success = false;
 
     Dragboard dragBoard = event.getDragboard();
-    String elementHash = dragBoard.getString();
+    String itemHash = dragBoard.getString();
 
-    final var sourceElement =
-            tierListController.getItemByHash(Integer.parseInt(elementHash));
+    final var sourceItem = tierListController.getItemByHash(Integer.parseInt(itemHash));
 
     EventTarget eventTarget = event.getTarget();
     if (dragBoard.hasImage() && dragBoard.hasString()
         && eventTarget instanceof ImageView targetImage
-        && targetImage.getUserData() instanceof TierItem targetElement
-        && !sourceElement.equals(targetElement)) {
+        && targetImage.getUserData() instanceof TierItem targetitem
+        && !sourceItem.equals(targetitem)) {
 
-      Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetElement);
+      Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetitem);
 
       potentialTargetTier.ifPresent(
-          targetTier -> tierListController.insertItem(sourceElement, targetTier, targetElement));
+          targetTier -> tierListController.insertItem(sourceItem, targetTier, targetitem));
 
       success = true;
     }

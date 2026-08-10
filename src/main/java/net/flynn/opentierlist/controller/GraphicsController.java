@@ -70,23 +70,23 @@ public class GraphicsController {
 
     final ObservableList<ItemView> images = FXCollections.observableArrayList();
 
-    items.forEach(element -> {
+    items.forEach(item -> {
 
-      element.updateImagePath();
-      Image img = imageCache.get(element.hashCode());
+      item.updateImagePath();
+      Image img = imageCache.get(item.hashCode());
 
       if (img == null) {
-        img = new Image(element.getImageUri(),
+        img = new Image(item.getImageUri(),
             ConfigHolder.DEFAULT_CELL_SIZE,
             ConfigHolder.DEFAULT_CELL_SIZE,
             false,
             false);
-        imageCache.put(element.hashCode(), img);
+        imageCache.put(item.hashCode(), img);
       }
 
       var imageViewer = new ItemView(
           img, tierListController, this, parent);
-      imageViewer.setUserData(element);
+      imageViewer.setUserData(item);
       images.add(imageViewer);
 
     });
@@ -167,7 +167,7 @@ public class GraphicsController {
 
     if (mainStage == null) {
       System.err.println(
-          "[ERROR] --- Cannot add element: Controller is missing a Stage instance ---");
+          "[ERROR] --- Cannot add item: Controller is missing a Stage instance ---");
       return;
     }
 
