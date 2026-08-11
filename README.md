@@ -50,14 +50,19 @@ Once downloaded, run the application using the provided run script in the termin
 ```bash
 ./otl.sh
 ```
-*On Linux systems*
+*On **Linux** systems*
 
-or 
+`note: You may have to give the script execution permission by running:`
+
+```bash
+chmod x+u otl.sh
+```
+
+or on **Windows**:
 
 ```batch
 ./otl.bat
 ```
-*On Windows systems*
 
 ### Running the Downloaded JAR Directly
 
@@ -142,5 +147,6 @@ This project was created as a **learning exercise** to explore:
 - Keyboard navigation and shortcuts
 - Undo/redo functionality
 - Better UI / model separation
+- Better logging
 
 ---
