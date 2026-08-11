@@ -42,6 +42,8 @@ public class ConfigHolder {
     return currentTheme;
   }
 
+  public final static double SCREENSHOT_WIDTH = DEFAULT_TIERED_BAR_WIDTH + 128 + DEFAULT_CELL_SIZE;
+
   public static final String DEFAULT_ACCENT_COLOR_LIGHT = "#dadfe7";
   public static final String DEFAULT_ACCENT_COLOR_DARK = "#3b4252";
 
