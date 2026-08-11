@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.controller.TierListController;
@@ -134,7 +135,6 @@ public class MainPane extends BorderPane {
 
       HBox unrankedBox = new HBox(unTieredPane);
       unrankedBox.setAlignment(Pos.CENTER);
-
       unrankedBox.setPadding(
           new Insets(
               ConfigHolder.DEFAULT_UNRANKED_PADDING_TOP,

@@ -1,5 +1,6 @@
 package net.flynn.opentierlist.ui;
 
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
 public class ConfigHolder {
@@ -7,7 +8,7 @@ public class ConfigHolder {
   public final static int DEFAULT_CELL_SIZE = 64 + 32;
 
   public final static int DEFAULT_BAR_WIDTH = (8 + 1) * DEFAULT_CELL_SIZE + (8 + 4);
-  public final static int DEFAULT_BAR_MAX_HEIGHT = 10 * DEFAULT_CELL_SIZE;
+  public final static double DEFAULT_BAR_MAX_HEIGHT = Region.USE_COMPUTED_SIZE;
   public final static int DEFAULT_BAR_MIN_HEIGHT = DEFAULT_CELL_SIZE;
 
   public final static int DEFAULT_DRAG_ENTERED_PADDING = 8;
@@ -55,8 +56,7 @@ public class ConfigHolder {
   @Deprecated
   public final static String IMAGE_TARGET_EFFECT = "-fx-effect: dropshadow(gaussian, rgba(0,191,255,0.95), 6, 0.7, 0, 0);";
 
-  public final static double DEFAULT_UNRANKED_PANE_MIN_HEIGHT = DEFAULT_CELL_SIZE * 1.6;
-  public final static double DEFAULT_UNRANKED_PANE_MAX_HEIGHT = DEFAULT_UNRANKED_PANE_MIN_HEIGHT * 2;
+  public final static double DEFAULT_UNRANKED_PANE_HEIGHT = DEFAULT_CELL_SIZE * 1.6;
 
   public final static int DEFAULT_UNRANKED_PADDING_TOP = 16;
   public final static int DEFAULT_UNRANKED_PADDING_RIGHT = 16;

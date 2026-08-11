@@ -2,6 +2,7 @@ package net.flynn.opentierlist.ui.manual;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Region;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
@@ -27,17 +28,17 @@ public class UnTieredPane extends ScrollPane {
     this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
     this.setFitToWidth(true);
-    this.setFitToHeight(true);
-    this.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
+    this.setFitToHeight(false);
 
-    this.setPrefHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_MIN_HEIGHT);
+    this.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
+    this.setPrefHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_HEIGHT);
 
     graphicsController.setBorder(this);
 
     unTieredPane.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
 
-    unTieredPane.setMaxHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_MAX_HEIGHT);
-    unTieredPane.setMinHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_MIN_HEIGHT);
+    unTieredPane.setMinHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_HEIGHT - 2);
+    unTieredPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
     unTieredPane.setAlignment(Pos.TOP_LEFT);
 
     this.setContent(unTieredPane);
