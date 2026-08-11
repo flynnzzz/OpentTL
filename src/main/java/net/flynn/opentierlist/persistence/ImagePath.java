@@ -1,4 +1,4 @@
-package net.flynn.opentierlist.model.models;
+package net.flynn.opentierlist.persistence;
 
 import java.io.File;
 import java.net.URI;
@@ -6,8 +6,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import net.flynn.opentierlist.persistence.ResourceHolder;
 
 /**
  * Custom class to handle image resources

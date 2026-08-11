@@ -27,6 +27,7 @@ public class UnTieredPane extends ScrollPane {
     this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
     this.setFitToWidth(true);
+    this.setFitToHeight(true);
     this.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
 
     this.setPrefHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_MIN_HEIGHT);

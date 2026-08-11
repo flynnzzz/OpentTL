@@ -31,6 +31,14 @@ public class Tier {
   private static long NEXT_ID = 1;
   private final long id;
 
+  private void setHeader(TierHeader header) {
+    this.header = Objects.requireNonNull(header);
+  }
+
+  private TierHeader getHeader() {
+    return new TierHeader(header.name(), header.color());
+  }
+
   private Tier(TierHeader header, List<TierItem> tiered) {
 
     Objects.requireNonNull(header);
@@ -91,6 +99,11 @@ public class Tier {
     setHeader(new TierHeader(name, color));
     this.id = id;
     this.tiered = tiered;
+  }
+
+
+  public void clear() {
+    tiered.clear();
   }
 
   /**
@@ -207,14 +220,6 @@ public class Tier {
     setHeader(new TierHeader(getName(), color));
   }
 
-  private void setHeader(TierHeader header) {
-    this.header = Objects.requireNonNull(header);
-  }
-
-  private TierHeader getHeader() {
-    return new TierHeader(header.name(), header.color());
-  }
-
   public String getName() {
     return getHeader().name();
   }
@@ -269,20 +274,6 @@ public class Tier {
     return Objects.equals(header, other.header);
   }
 
-  private String toStringItems(List<TierItem> items) {
-    var sb = new StringBuilder();
-    sb.append("[ ");
-    for (TierItem e : items) {
-      sb.append(e);
-      if (!items.getLast().equals(e))
-        sb.append(", ");
-      else
-        sb.append(".");
-    }
-    sb.append(" ]");
-    return sb.toString();
-  }
-
   @Override
   public String toString() {
     return toStringCompact();
@@ -310,6 +301,20 @@ public class Tier {
 
   private String toStringCompact() {
     return getHeader().name() + ": " + toStringItems(getTiered());
+  }
+
+  private String toStringItems(List<TierItem> items) {
+    var sb = new StringBuilder();
+    sb.append("[ ");
+    for (TierItem e : items) {
+      sb.append(e);
+      if (!items.getLast().equals(e))
+        sb.append(", ");
+      else
+        sb.append(".");
+    }
+    sb.append(" ]");
+    return sb.toString();
   }
 
   private String toStringExtended() {

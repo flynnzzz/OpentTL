@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.enums.TieredStatus;
+import net.flynn.opentierlist.persistence.ImagePath;
 
 /**
  * Class representing a single {@link Tier} entry.

@@ -7,7 +7,7 @@ public class ConfigHolder {
   public final static int DEFAULT_CELL_SIZE = 64 + 32;
 
   public final static int DEFAULT_BAR_WIDTH = (8 + 1) * DEFAULT_CELL_SIZE + (8 + 4);
-  public final static int DEFAULT_BAR_MAX_HEIGHT = 4 * DEFAULT_CELL_SIZE;
+  public final static int DEFAULT_BAR_MAX_HEIGHT = 10 * DEFAULT_CELL_SIZE;
   public final static int DEFAULT_BAR_MIN_HEIGHT = DEFAULT_CELL_SIZE;
 
   public final static int DEFAULT_DRAG_ENTERED_PADDING = 8;

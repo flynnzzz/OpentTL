@@ -25,7 +25,7 @@ import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
 public class TierList {
 
   private String name;
-  private final List<Tier> tiered;
+  private List<Tier> tiered;
   private final Tier unTiered;
   public static final String DEFAULT_TIER_LIST_NAME = "New Tier List";
 
@@ -107,8 +107,12 @@ public class TierList {
 
   public static TierList ofDefaultTiers() {
     var tierList = new TierList();
-    for (var tier : DefaultTier.values())
-      tierList.addTier(tier.value());
+    for (var defaultTier : DefaultTier.values()) {
+
+      defaultTier.value().clear();
+      tierList.addTier(defaultTier.value());
+
+    }
     return tierList;
   }
 

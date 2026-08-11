@@ -47,17 +47,17 @@ import net.flynn.opentierlist.controller.GraphicsController;
  */
 public class TierBox extends HBox {
 
-  private final TextField tierNameLabel;
+  private final TextField tierNameText;
   private final ItemsPane tieredPane;
   private final Button editTierButton;
-  private Stage colorStage;
-  private ColorPicker colorPicker;
-  private Button confirmColor;
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
   private final int tierHash;
   private String oldTextValue;
 
+  private Stage colorStage;
+  private ColorPicker colorPicker;
+  private Button confirmColor;
   private ContextMenu colorPickerMenu;
   private MenuItem deleteOption;
   private MenuItem duplicateOption;
@@ -69,20 +69,20 @@ public class TierBox extends HBox {
     this.tierHash = tierHash;
     this.oldTextValue = "";
 
-    this.tierNameLabel = new TextField(tierListController.getTierByHash(tierHash).getName());
+    this.tierNameText = new TextField(tierListController.getTierByHash(tierHash).getName());
     this.editTierButton = new Button();
     this.tieredPane = new ItemsPane(tierHash, tierListController, graphicsController);
     setupPane();
   }
 
   private void setupPane() {
-    this.getChildren().addAll(tierNameLabel, tieredPane, editTierButton);
+    this.getChildren().addAll(tierNameText, tieredPane, editTierButton);
 
     {
-      tierNameLabel.setEditable(true);
-      tierNameLabel.setFocusTraversable(false);
-      tierNameLabel.setAlignment(Pos.CENTER);
-      tierNameLabel.setPrefSize(ConfigHolder.DEFAULT_CELL_SIZE, ConfigHolder.DEFAULT_CELL_SIZE);
+      tierNameText.setEditable(true);
+      tierNameText.setFocusTraversable(false);
+      tierNameText.setAlignment(Pos.CENTER);
+      tierNameText.setPrefSize(ConfigHolder.DEFAULT_CELL_SIZE, ConfigHolder.DEFAULT_CELL_SIZE);
 
       editTierButton.setAlignment(Pos.CENTER);
       editTierButton.setFocusTraversable(false);
@@ -118,26 +118,26 @@ public class TierBox extends HBox {
 
     final var tier = tierListController.getTierByHash(tierHash);
 
-    tierNameLabel.focusedProperty().addListener((_, _, changed) -> {
+    tierNameText.focusedProperty().addListener((_, _, changed) -> {
       if (changed)
-        this.oldTextValue = tierNameLabel.getText();
+        this.oldTextValue = tierNameText.getText();
       else
-        tierNameLabel.setText(oldTextValue);
+        tierNameText.setText(oldTextValue);
     });
 
-    tierNameLabel.setOnAction(_ -> {
+    tierNameText.setOnAction(_ -> {
 
-      if (!tierNameLabel.getText().isBlank()) {
-        tierListController.setTierName(tier, tierNameLabel.getText());
-        this.oldTextValue = tierNameLabel.getText();
+      if (!tierNameText.getText().isBlank()) {
+        tierListController.setTierName(tier, tierNameText.getText());
+        this.oldTextValue = tierNameText.getText();
       }
 
-      tierNameLabel.getScene().getRoot().requestFocus();
+      tierNameText.getScene().getRoot().requestFocus();
 
     });
 
     final Tooltip tooltip = new Tooltip("Click to drag and move");
-    tierNameLabel.setTooltip(tooltip);
+    tierNameText.setTooltip(tooltip);
 
     editTierButton.setOnAction(_ -> colorPickerMenu.show(editTierButton, Side.BOTTOM, 0, 0));
 
@@ -230,34 +230,34 @@ public class TierBox extends HBox {
   }
 
   private void setupDragAndDrop() {
-    tierNameLabel.setOnDragDetected(this::handleDragDetected);
-    tierNameLabel.setOnDragOver(event -> {
+    tierNameText.setOnDragDetected(this::handleDragDetected);
+    tierNameText.setOnDragOver(event -> {
       if (event.getDragboard().hasString() && !event.getDragboard().hasImage())
         event.acceptTransferModes(TransferMode.MOVE);
       event.consume();
     });
 
-    tierNameLabel.setOnDragEntered(event -> {
+    tierNameText.setOnDragEntered(event -> {
       if (event.getTarget() instanceof TextField target && event.getGestureSource() != target
           && event.getDragboard().hasString() && !event.getDragboard().hasImage())
         this.setTierNameLabelBorder(ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
       event.consume();
     });
 
-    tierNameLabel.setOnDragExited(event -> {
+    tierNameText.setOnDragExited(event -> {
       if (event.getTarget() instanceof TextField target && event.getGestureSource() != target
           && event.getDragboard().hasString() && !event.getDragboard().hasImage())
         this.setTierNameLabelBorder(ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
       event.consume();
     });
 
-    tierNameLabel.setOnDragDone(event -> {
+    tierNameText.setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
         graphicsController.updateTierList();
       event.consume();
     });
 
-    tierNameLabel.setOnDragDropped(this::handleDragDropped);
+    tierNameText.setOnDragDropped(this::handleDragDropped);
   }
 
   private void handleDragDetected(MouseEvent event) {
@@ -305,13 +305,13 @@ public class TierBox extends HBox {
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
             BorderWidths.DEFAULT));
-    tierNameLabel.setBorder(tierNameLabelBorder);
+    tierNameText.setBorder(tierNameLabelBorder);
   }
 
   private void setTierNameLabelBackground() {
     final var backgroundColor = Paint.valueOf(tierListController.getTierByHash(tierHash).getColor());
     final var nameLabelBackground = Background.fill(backgroundColor);
-    tierNameLabel.setBackground(nameLabelBackground);
+    tierNameText.setBackground(nameLabelBackground);
   }
 
   public int getTierHash() {

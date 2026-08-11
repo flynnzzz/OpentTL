@@ -348,7 +348,8 @@ public class StandardTierListController implements TierListController {
       item = Stream
           .concat(
               tierList.getTiered().stream()
-                  .flatMap(t -> t.getTiered().stream()),
+                  .map(Tier::getTiered)
+                  .flatMap(List::stream),
               tierList.getUnTiered().stream())
           .filter(e -> e.hashCode() == hashCode)
           .findFirst();
@@ -390,7 +391,8 @@ public class StandardTierListController implements TierListController {
         .concat(
             tierList.getTiered()
                 .stream()
-                .flatMap(t -> t.getTiered().stream()),
+                .map(Tier::getTiered)
+                .flatMap(List::stream),
             tierList.getUnTiered()
                 .stream())
         .anyMatch(e -> Objects.equals(e.hashCode(), hash));

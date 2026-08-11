@@ -1,5 +1,6 @@
 package net.flynn.opentierlist.model.models;
 
+import net.flynn.opentierlist.persistence.ImagePath;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import org.junit.After;
 import org.junit.Before;
