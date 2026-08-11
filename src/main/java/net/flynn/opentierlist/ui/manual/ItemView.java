@@ -1,7 +1,6 @@
 package net.flynn.opentierlist.ui.manual;
 
 import javafx.event.EventTarget;
-import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -79,30 +78,14 @@ public class ItemView extends ImageView {
       event.consume();
     });
     this.setOnDragEntered(event -> {
-      if (event.getDragboard().hasImage()) {
-
+      if (event.getDragboard().hasImage())
         this.setFitHeight(ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
-        graphicsController.setScrollPaneWidth(
-            parent.isUnTiered(), ConfigHolder.DEFAULT_BAR_WIDTH + 16);
-
-        parent.setPadding(
-            new Insets(
-                0, ConfigHolder.DEFAULT_DRAG_ENTERED_PADDING,
-                0, ConfigHolder.DEFAULT_DRAG_ENTERED_PADDING));
-      }
       event.consume();
     });
 
     this.setOnDragExited(event -> {
-      if (event.getTarget() instanceof ImageView && event.getSource() instanceof ImageView) {
-
+      if (event.getTarget() instanceof ImageView && event.getSource() instanceof ImageView)
         this.setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
-        graphicsController.setScrollPaneWidth(
-            parent.isUnTiered(), ConfigHolder.DEFAULT_BAR_WIDTH);
-
-        parent.setPadding(Insets.EMPTY);
-
-      }
       event.consume();
     });
 

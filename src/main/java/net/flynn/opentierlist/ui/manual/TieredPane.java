@@ -36,7 +36,7 @@ public class TieredPane extends ScrollPane {
     this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
     this.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
-    graphicsController.setBorder(this);
+    graphicsController.updateBorders(this);
 
     tiersVBox.setAlignment(Pos.CENTER);
     tiersVBox.setPadding(new Insets(ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));

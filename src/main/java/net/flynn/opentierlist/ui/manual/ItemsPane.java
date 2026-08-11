@@ -2,7 +2,6 @@ package net.flynn.opentierlist.ui.manual;
 
 import java.util.List;
 
-import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -46,7 +45,7 @@ public class ItemsPane extends FlowPane {
     this.getChildren().addAll(images);
 
     graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
-    this.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
+    this.setPrefWidth(ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
     this.setMaxHeight(ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
     this.setMinHeight(ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
 
@@ -64,7 +63,6 @@ public class ItemsPane extends FlowPane {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
         graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
-        this.setPadding(new Insets(ConfigHolder.DEFAULT_DRAG_ENTERED_PADDING));
       }
       event.consume();
     });
@@ -73,7 +71,6 @@ public class ItemsPane extends FlowPane {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
         graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
-        this.setPadding(Insets.EMPTY);
       }
       event.consume();
     });

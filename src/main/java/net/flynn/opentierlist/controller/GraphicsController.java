@@ -160,7 +160,6 @@ public class GraphicsController {
     }
 
     setBorder(tieredPane, color);
-    setBorder(unTieredPane, color);
   }
 
   public void addItem(ActionEvent ignoredEvent) {
@@ -361,20 +360,6 @@ public class GraphicsController {
     mainStage.setTitle(string);
   }
 
-  public void setScrollPaneWidth(boolean isUnTiered, double width) {
-
-    if (tieredPane == null || unTieredPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot set width: Controller is missing the necessary instance ---");
-      return;
-    }
-
-    if (isUnTiered)
-      unTieredPane.setPrefWidth(width);
-    else
-      tieredPane.setPrefWidth(width);
-  }
-
   public void setBorder(ScrollPane pane, String color) {
 
     final var border = new Border(
@@ -387,7 +372,7 @@ public class GraphicsController {
 
   }
 
-  public void setBorder(ScrollPane pane) {
+  public void updateBorders(ScrollPane pane) {
 
     final var color = ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.LIGHT
         ? ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT

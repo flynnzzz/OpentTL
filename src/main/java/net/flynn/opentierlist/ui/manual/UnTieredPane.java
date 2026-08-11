@@ -30,12 +30,10 @@ public class UnTieredPane extends ScrollPane {
     this.setFitToWidth(true);
     this.setFitToHeight(false);
 
-    this.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
+    this.setPrefWidth(ConfigHolder.DEFAULT_UNTIERED_BAR_WIDTH);
     this.setPrefHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_HEIGHT);
 
-    graphicsController.setBorder(this);
-
-    unTieredPane.setPrefWidth(ConfigHolder.DEFAULT_BAR_WIDTH);
+    unTieredPane.setPrefWidth(ConfigHolder.DEFAULT_UNTIERED_BAR_WIDTH);
 
     unTieredPane.setMinHeight(ConfigHolder.DEFAULT_UNRANKED_PANE_HEIGHT - 2);
     unTieredPane.setPrefHeight(Region.USE_COMPUTED_SIZE);

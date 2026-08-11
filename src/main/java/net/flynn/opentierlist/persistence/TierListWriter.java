@@ -20,7 +20,7 @@ import net.flynn.opentierlist.ui.manual.TieredPane;
 import javax.imageio.ImageIO;
 
 public class TierListWriter {
-  public static void write(File file, TierList tierList) throws IOException, StreamReadException, DatabindException {
+  public static void write(File file, TierList tierList) throws IOException {
     final var tierMapper = new ObjectMapper();
     tierMapper.writeValue(file, tierList);
   }
