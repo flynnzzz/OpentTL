@@ -18,6 +18,7 @@ if not exist "%JAR_FILE%" (
 )
 
 start "" /B java ^
+	--enable-native-access javafx.graphics ^
 	"-Djava.library.path="%BINARIES% ^
 	--module-path %MODULE_PATH% ^
 	--add-modules %ADD_MODULES% ^
