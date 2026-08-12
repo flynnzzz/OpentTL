@@ -97,7 +97,7 @@ public class GraphicsController {
   public void updateImages(ItemsPane pane) {
 
     final List<TierItem> items = !pane.isUnTiered()
-        ? tierListController.getTierByHash(pane.getTierHash()).getTiered()
+        ? tierListController.getTierByHash(pane.getTierHash()).getItems()
         : tierListController.getUnTiered();
 
     imageCache.keySet()
@@ -240,9 +240,8 @@ public class GraphicsController {
     saveChooser.setInitialDirectory(initialDir);
 
     saveChooser.setInitialFileName(
-            tierListController.getTierListName() +
-                    filter.getExtensions().getFirst().replace("*", "")
-    );
+        tierListController.getTierListName() +
+            filter.getExtensions().getFirst().replace("*", ""));
 
     return saveChooser;
   }

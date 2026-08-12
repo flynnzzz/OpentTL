@@ -9,14 +9,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.controller.GraphicsController;
-import net.flynn.opentierlist.model.models.Tier;
+import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.ui.ConfigHolder;
 
-/**
- *
- * @version 3.80
- * @since v1.2.5
- */
 public class ItemsPane extends FlowPane {
 
   private final TierListController tierListController;
@@ -32,13 +27,13 @@ public class ItemsPane extends FlowPane {
 
     final var tier = tierListController.getTierByHash(tierHash);
 
-    final var items = tier.getTiered();
-    this.isUnTiered = tier.equalsTier(Tier.UNTIERED);
+    final var items = tier.getItems();
+    this.isUnTiered = tier.equalsTier(DefaultTier.__UNTIERED__.value());
     setupPane(graphicsController.loadImages(this, items));
   }
 
   public ItemsPane(TierListController tierListController, GraphicsController graphicsController) {
-    this(Tier.UNTIERED.hashCode(), tierListController, graphicsController);
+    this(DefaultTier.__UNTIERED__.value().hashCode(), tierListController, graphicsController);
   }
 
   private void setupPane(List<ItemView> images) {

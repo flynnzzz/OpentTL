@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
@@ -17,25 +18,11 @@ import net.flynn.opentierlist.model.models.TierList;
 import net.flynn.opentierlist.persistence.DataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
-/**
- * Main implementation of {@link TierListController}.
- * 
- * @author flynnz
- * @version 2.0.0
- * @since v0.0.0
- */
 public class StandardTierListController implements TierListController {
 
   private TierList tierList;
   private final DataHandler dataHandler;
 
-  /**
-   * Constructor that creates a controller for {@link TierList}.
-   * <p>
-   * Instantiates an {@link TierList} with the given parameter
-   *
-   * @param tierList parameter to pass
-   */
   public StandardTierListController(TierList tierList) {
     this.tierList = tierList;
     this.dataHandler = new DataHandler();
@@ -143,7 +130,7 @@ public class StandardTierListController implements TierListController {
   @Override
   public void addUnTiered(TierItem item) {
     try {
-      tierList.addItem(item, Tier.UNTIERED);
+      tierList.addItem(item, DefaultTier.__UNTIERED__.value());
     } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println(ex.getMessage());
     }
@@ -330,7 +317,7 @@ public class StandardTierListController implements TierListController {
           .findFirst();
 
       if (potentialItem.isEmpty() && getUnTiered().contains(item))
-        potentialItem = Optional.of(Tier.UNTIERED);
+        potentialItem = Optional.of(DefaultTier.__UNTIERED__.value());
 
     } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println(ex.getMessage());
@@ -348,7 +335,7 @@ public class StandardTierListController implements TierListController {
       item = Stream
           .concat(
               tierList.getTiered().stream()
-                  .map(Tier::getTiered)
+                  .map(Tier::getItems)
                   .flatMap(List::stream),
               tierList.getUnTiered().stream())
           .filter(e -> e.hashCode() == hashCode)
@@ -365,8 +352,8 @@ public class StandardTierListController implements TierListController {
 
   @Override
   public Tier getTierByHash(Integer hashCode) {
-    if (hashCode == Tier.UNTIERED.hashCode())
-      return Tier.UNTIERED;
+    if (hashCode == DefaultTier.__UNTIERED__.value().hashCode())
+      return DefaultTier.__UNTIERED__.value();
 
     Optional<Tier> tier;
     try {
@@ -391,7 +378,7 @@ public class StandardTierListController implements TierListController {
         .concat(
             tierList.getTiered()
                 .stream()
-                .map(Tier::getTiered)
+                .map(Tier::getItems)
                 .flatMap(List::stream),
             tierList.getUnTiered()
                 .stream())

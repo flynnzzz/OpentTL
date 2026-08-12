@@ -1,5 +1,6 @@
 package net.flynn.opentierlist.controller;
 
+import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.model.enums.TieredStatus;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
@@ -19,6 +20,7 @@ public class StandardTierListControllerTest {
   private TierList tl;
   private TierItem el1, el2, el3, el4;
   private TierListController controller;
+  private Tier untiered = DefaultTier.__UNTIERED__.value();
 
   @Before
   public void setUp() {
@@ -52,6 +54,8 @@ public class StandardTierListControllerTest {
     t3 = null;
     t4 = null;
     tl = null;
+    untiered.clear();
+    untiered = null;
     controller = null;
   }
 
@@ -61,22 +65,22 @@ public class StandardTierListControllerTest {
     assertFalse(el1.isTiered());
     controller.tier(el1, t1);
     assertTrue(el1.isTiered());
-    assertEquals(List.of(el1), t1.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
     assertEquals(List.of(el2, el3, el4), controller.getUnTiered());
 
     assertFalse(el2.isTiered());
     controller.tier(el2, t1);
     assertTrue(el2.isTiered());
-    assertEquals(List.of(el1, el2), t1.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
 
     assertFalse(el3.isTiered());
     controller.tier(el3, t3);
     assertTrue(el3.isTiered());
-    assertEquals(List.of(el3), t3.getTiered());
+    assertEquals(List.of(el3), t3.getItems());
     assertEquals(List.of(el4), controller.getUnTiered());
 
-    controller.tier(el4, Tier.UNTIERED);
+    controller.tier(el4, untiered);
     assertEquals(TieredStatus.UNTIERED, el4.getStatus());
 
     // exceptions are caught
@@ -105,27 +109,27 @@ public class StandardTierListControllerTest {
     el2.changeTo(TieredStatus.TIERED);
 
     // t1: el1, el2
-    assertEquals(List.of(el1, el2), t1.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
 
     controller.tier(el3, t1, el1);
     // t1: el3, el1, el2
-    assertEquals(List.of(el3, el1, el2), t1.getTiered());
+    assertEquals(List.of(el3, el1, el2), t1.getItems());
     assertEquals(List.of(el4), controller.getUnTiered());
 
     controller.tier(el4, new Tier(), el1);
 
     controller.tier(el4, t1, el1);
     // t1: el3, el4, el1, el2
-    assertEquals(List.of(el3, el4, el1, el2), t1.getTiered());
+    assertEquals(List.of(el3, el4, el1, el2), t1.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     final var el5 = new TierItem("el5");
 
-    tl.addItem(el5, Tier.UNTIERED);
+    tl.addItem(el5, untiered);
     controller.tier(el5, t1, el2);
     // t1: el3, el4, el1, el5, el2
-    assertEquals(List.of(el3, el4, el1, el5, el2), t1.getTiered());
+    assertEquals(List.of(el3, el4, el1, el5, el2), t1.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     controller.tier(el1, t1, 0);
@@ -152,25 +156,25 @@ public class StandardTierListControllerTest {
     el2.changeTo(TieredStatus.TIERED);
 
     // t1: el1, el2
-    assertEquals(List.of(el1, el2), t1.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
 
     controller.tier(el3, t1, 1);
     // t1: el1, el3, el2
-    assertEquals(List.of(el1, el3, el2), t1.getTiered());
+    assertEquals(List.of(el1, el3, el2), t1.getItems());
     assertEquals(List.of(el4), controller.getUnTiered());
 
     controller.tier(el4, t1, 0);
     controller.tier(el4, new Tier(), -1);
 
     // t1: el4, el1, el3, el2
-    assertEquals(List.of(el4, el1, el3, el2), t1.getTiered());
+    assertEquals(List.of(el4, el1, el3, el2), t1.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
@@ -198,37 +202,37 @@ public class StandardTierListControllerTest {
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
                 e -> e.equals(TieredStatus.TIERED)));
 
-    assertEquals(List.of(el1, el2), t1.getTiered());
-    assertEquals(List.of(el3), t2.getTiered());
-    assertEquals(List.of(el4), t3.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
+    assertEquals(List.of(el3), t2.getItems());
+    assertEquals(List.of(el4), t3.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     controller.unTier(el1);
-    assertEquals(List.of(el2), t1.getTiered());
+    assertEquals(List.of(el2), t1.getItems());
     assertEquals(List.of(el1), controller.getUnTiered());
 
     controller.unTier(el2);
-    assertEquals(List.of(), t1.getTiered());
+    assertEquals(List.of(), t1.getItems());
     assertEquals(List.of(el1, el2), controller.getUnTiered());
 
     controller.unTier(el3);
-    assertEquals(List.of(), t2.getTiered());
+    assertEquals(List.of(), t2.getItems());
     assertEquals(List.of(el1, el2, el3), controller.getUnTiered());
 
     controller.unTier(el4);
-    assertEquals(List.of(), t3.getTiered());
+    assertEquals(List.of(), t3.getItems());
     assertEquals(List.of(el1, el2, el3, el4), controller.getUnTiered());
 
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
@@ -254,37 +258,37 @@ public class StandardTierListControllerTest {
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
                 e -> e.equals(TieredStatus.TIERED)));
 
-    assertEquals(List.of(el1, el2), t1.getTiered());
-    assertEquals(List.of(el3), t2.getTiered());
-    assertEquals(List.of(el4), t3.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
+    assertEquals(List.of(el3), t2.getItems());
+    assertEquals(List.of(el4), t3.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     controller.unTier(el1);
-    assertEquals(List.of(el2), t1.getTiered());
+    assertEquals(List.of(el2), t1.getItems());
     assertEquals(List.of(el1), controller.getUnTiered());
 
     controller.unTier(el2, el1);
-    assertEquals(List.of(), t1.getTiered());
+    assertEquals(List.of(), t1.getItems());
     assertEquals(List.of(el2, el1), controller.getUnTiered());
 
     controller.unTier(el3, el1);
-    assertEquals(List.of(), t2.getTiered());
+    assertEquals(List.of(), t2.getItems());
     assertEquals(List.of(el2, el3, el1), controller.getUnTiered());
 
     controller.unTier(el4, el2);
-    assertEquals(List.of(), t3.getTiered());
+    assertEquals(List.of(), t3.getItems());
     assertEquals(List.of(el4, el2, el3, el1), controller.getUnTiered());
 
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
@@ -311,37 +315,37 @@ public class StandardTierListControllerTest {
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
                 e -> e.equals(TieredStatus.TIERED)));
 
-    assertEquals(List.of(el1, el2), t1.getTiered());
-    assertEquals(List.of(el3), t2.getTiered());
-    assertEquals(List.of(el4), t3.getTiered());
+    assertEquals(List.of(el1, el2), t1.getItems());
+    assertEquals(List.of(el3), t2.getItems());
+    assertEquals(List.of(el4), t3.getItems());
     assertEquals(List.of(), controller.getUnTiered());
 
     controller.unTier(el1);
-    assertEquals(List.of(el2), t1.getTiered());
+    assertEquals(List.of(el2), t1.getItems());
     assertEquals(List.of(el1), controller.getUnTiered());
 
     controller.unTier(el2, 0);
-    assertEquals(List.of(), t1.getTiered());
+    assertEquals(List.of(), t1.getItems());
     assertEquals(List.of(el2, el1), controller.getUnTiered());
 
     controller.unTier(el3, 2);
-    assertEquals(List.of(), t2.getTiered());
+    assertEquals(List.of(), t2.getItems());
     assertEquals(List.of(el2, el1, el3), controller.getUnTiered());
 
     controller.unTier(el4, 1);
-    assertEquals(List.of(), t3.getTiered());
+    assertEquals(List.of(), t3.getItems());
     assertEquals(List.of(el2, el4, el1, el3), controller.getUnTiered());
 
     assertTrue(
         controller.getTiers()
             .stream()
-            .map(Tier::getTiered)
+            .map(Tier::getItems)
             .flatMap(List::stream)
             .map(TierItem::getStatus)
             .allMatch(
@@ -459,21 +463,21 @@ public class StandardTierListControllerTest {
     controller.tier(el1, t1);
     controller.tier(el2, t2);
     controller.tier(el3, t2, 0);
-    assertEquals(List.of(el1), t1.getTiered());
-    assertEquals(List.of(el3, el2), t2.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
+    assertEquals(List.of(el3, el2), t2.getItems());
     assertEquals(List.of(el4), controller.getUnTiered());
 
     controller.removeItem(el4);
     assertEquals(List.of(), controller.getUnTiered());
 
     controller.removeItem(el1);
-    assertEquals(List.of(), t1.getTiered());
+    assertEquals(List.of(), t1.getItems());
 
     controller.removeItem(el3);
-    assertEquals(List.of(el2), t2.getTiered());
+    assertEquals(List.of(el2), t2.getItems());
 
     controller.removeItem(el2);
-    assertEquals(List.of(), t2.getTiered());
+    assertEquals(List.of(), t2.getItems());
 
     controller.removeItem(el1);
     controller.removeItem(el2);
@@ -490,27 +494,27 @@ public class StandardTierListControllerTest {
     controller.moveItem(el1, t1);
     assertEquals(TieredStatus.TIERED, el1.getStatus());
     assertEquals(List.of(el2, el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el1), t1.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
 
     controller.moveItem(el2, t2);
     assertEquals(TieredStatus.TIERED, el2.getStatus());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el1), t1.getTiered());
-    assertEquals(List.of(el2), t2.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
+    assertEquals(List.of(el2), t2.getItems());
 
     controller.moveItem(el3, t3);
     assertEquals(TieredStatus.TIERED, el3.getStatus());
     assertEquals(List.of(el4), controller.getUnTiered());
-    assertEquals(List.of(el1), t1.getTiered());
-    assertEquals(List.of(el2), t2.getTiered());
-    assertEquals(List.of(el3), t3.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
+    assertEquals(List.of(el2), t2.getItems());
+    assertEquals(List.of(el3), t3.getItems());
 
-    controller.moveItem(el1, Tier.UNTIERED);
+    controller.moveItem(el1, untiered);
     assertEquals(TieredStatus.UNTIERED, el1.getStatus());
     assertEquals(List.of(el4, el1), controller.getUnTiered());
-    assertEquals(List.of(), t1.getTiered());
-    assertEquals(List.of(el2), t2.getTiered());
-    assertEquals(List.of(el3), t3.getTiered());
+    assertEquals(List.of(), t1.getItems());
+    assertEquals(List.of(el2), t2.getItems());
+    assertEquals(List.of(el3), t3.getItems());
 
   }
 
@@ -525,24 +529,24 @@ public class StandardTierListControllerTest {
     controller.moveItem(el1, t1);
     assertEquals(TieredStatus.TIERED, el1.getStatus());
     assertEquals(List.of(el2, el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el1), t1.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
 
     controller.insertItem(el2, t1, el1);
     assertEquals(TieredStatus.TIERED, el2.getStatus());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el2, el1), t1.getTiered());
+    assertEquals(List.of(el2, el1), t1.getItems());
 
     controller.insertItem(el3, t1, el2);
     assertEquals(TieredStatus.TIERED, el3.getStatus());
     assertEquals(List.of(el4), controller.getUnTiered());
-    assertEquals(List.of(el3, el2, el1), t1.getTiered());
+    assertEquals(List.of(el3, el2, el1), t1.getItems());
 
-    controller.insertItem(el1, Tier.UNTIERED, el4);
+    controller.insertItem(el1, untiered, el4);
     assertEquals(TieredStatus.UNTIERED, el1.getStatus());
     assertEquals(List.of(el1, el4), controller.getUnTiered());
-    assertEquals(List.of(el3, el2), t1.getTiered());
+    assertEquals(List.of(el3, el2), t1.getItems());
 
-    controller.insertItem(el1, Tier.UNTIERED, el4);
+    controller.insertItem(el1, untiered, el4);
     assertEquals(List.of(el4, el1), controller.getUnTiered());
 
   }
@@ -557,29 +561,29 @@ public class StandardTierListControllerTest {
     controller.insertItem(el1, t1, 0);
     assertEquals(TieredStatus.TIERED, el1.getStatus());
     assertEquals(List.of(el2, el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el1), t1.getTiered());
+    assertEquals(List.of(el1), t1.getItems());
 
     controller.insertItem(el2, t1, 0);
     assertEquals(TieredStatus.TIERED, el2.getStatus());
     assertEquals(List.of(el3, el4), controller.getUnTiered());
-    assertEquals(List.of(el2, el1), t1.getTiered());
+    assertEquals(List.of(el2, el1), t1.getItems());
 
     controller.insertItem(el3, t1, 1);
     assertEquals(TieredStatus.TIERED, el3.getStatus());
     assertEquals(List.of(el4), controller.getUnTiered());
-    assertEquals(List.of(el2, el3, el1), t1.getTiered());
+    assertEquals(List.of(el2, el3, el1), t1.getItems());
 
-    controller.insertItem(el1, Tier.UNTIERED, 1);
+    controller.insertItem(el1, untiered, 1);
     assertEquals(TieredStatus.UNTIERED, el1.getStatus());
     assertEquals(List.of(el4, el1), controller.getUnTiered());
-    assertEquals(List.of(el2, el3), t1.getTiered());
+    assertEquals(List.of(el2, el3), t1.getItems());
 
   }
 
   @Test
   public void moveTierPointer() {
 
-    controller.moveTier(Tier.UNTIERED, t1);
+    controller.moveTier(untiered, t1);
 
     assertEquals(List.of(t1, t2, t3, t4), controller.getTiers());
 

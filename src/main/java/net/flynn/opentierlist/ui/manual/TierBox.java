@@ -142,7 +142,7 @@ public class TierBox extends HBox {
     editTierButton.setOnAction(_ -> colorPickerMenu.show(editTierButton, Side.BOTTOM, 0, 0));
 
     deleteOption.setOnAction(_ -> {
-      tier.getTiered().forEach(tierListController::unTier);
+      tier.getItems().forEach(tierListController::unTier);
 
       tierListController.removeTier(tier);
       graphicsController.updateTierList();
@@ -288,8 +288,7 @@ public class TierBox extends HBox {
         potentialTarget = potentialTarget.getParent();
       }
       if (potentialTarget != null) {
-        final var target =
-                tierListController.getTierByHash(((TierBox) potentialTarget).getTierHash());
+        final var target = tierListController.getTierByHash(((TierBox) potentialTarget).getTierHash());
         tierListController.moveTier(source, target);
         success = true;
       }

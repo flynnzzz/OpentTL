@@ -54,6 +54,8 @@ public class ConfigHolder {
   public static final String DEFAULT_D_COLOR = "#88c0d0";
   public static final String DEFAULT_E_COLOR = "#81a1c1";
   public static final String DEFAULT_F_COLOR = "#434c5e";
+  public static final String DEFAULT_UNTIERED_COLOR = "#ffffff";
+  public static final String DEFAULT_NEW_TIER_COLOR = Color.GRAY.toString();
 
   public final static int DEFAULT_UNRANKED_PADDING_TOP = 16;
   public final static int DEFAULT_UNRANKED_PADDING_RIGHT = 16;
