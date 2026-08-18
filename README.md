@@ -16,7 +16,7 @@
 
 <div align="center">
   <p>
-    <i>graphical interface built manually using the JavaFX library<i/>
+    <i>graphical interface built manually using the JavaFX library</i>i>
   </p> 
 </div>
 
@@ -61,7 +61,7 @@ chmod x+u opentl.sh
 or on **Windows**:
 
 ```batch
-./otl.bat
+./opentl.bat
 ```
 
 ### Running the Downloaded JAR Directly
@@ -69,7 +69,7 @@ or on **Windows**:
 If you prefer to run the JAR without the script:
 
 ```bash
-java --enable-native-access=javafx.graphics --module-path lib --add-modules javafx.controls -jar target/opentierlist.jar
+java --enable-native-access=javafx.graphics --module-path lib --add-modules javafx.controls -jar opentierlist.jar
 ```
 
 ---
