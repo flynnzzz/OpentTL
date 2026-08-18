@@ -40,7 +40,7 @@ public class GraphicsController {
 
     if (tieredPane == null || unTieredPane == null) {
       System.err.println(
-              "[ERROR] --- Cannot set borders: Controller is missing the necessary instance ---");
+          "[ERROR] --- Cannot set borders: Controller is missing the necessary instance ---");
       return;
     }
 
@@ -48,7 +48,7 @@ public class GraphicsController {
   }
 
   private FileChooser createSaveChooser(
-          String title, FileChooser.ExtensionFilter filter, File initialDir) {
+      String title, FileChooser.ExtensionFilter filter, File initialDir) {
 
     final var saveChooser = new FileChooser();
 
@@ -57,8 +57,8 @@ public class GraphicsController {
     saveChooser.setInitialDirectory(initialDir);
 
     saveChooser.setInitialFileName(
-            tierListController.getTierListName() +
-                    filter.getExtensions().getFirst().replace("*", ""));
+        tierListController.getTierListName() +
+            filter.getExtensions().getFirst().replace("*", ""));
 
     return saveChooser;
   }
@@ -99,11 +99,12 @@ public class GraphicsController {
 
     items.forEach(item -> {
 
-      item.updateImagePath();
+      final String url = item.getImageUriOrDefault();
+
       Image img = imageCache.get(item.hashCode());
 
       if (img == null) {
-        img = new Image(item.getImageUri(),
+        img = new Image(url,
             DataHandler.ConfigHolder.DEFAULT_CELL_SIZE,
             DataHandler.ConfigHolder.DEFAULT_CELL_SIZE,
             false,
@@ -112,10 +113,10 @@ public class GraphicsController {
       }
 
       final var imageViewer = new ItemView(
-              img,
-              tierListController,
-              this,
-              flowPane);
+          img,
+          tierListController,
+          this,
+          flowPane);
       imageViewer.setUserData(item);
       images.add(imageViewer);
 
@@ -126,9 +127,9 @@ public class GraphicsController {
 
   public void updateItemViews(ItemsPane flowPane) {
 
-   final List<TierItem> items = tierListController
-           .getTierByHash(flowPane.getTierHash())
-           .getItems();
+    final List<TierItem> items = tierListController
+        .getTierByHash(flowPane.getTierHash())
+        .getItems();
 
     imageCache.keySet()
         .removeIf(hash -> !tierListController.itemExists(hash));
@@ -369,9 +370,7 @@ public class GraphicsController {
             Paint.valueOf(color),
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
-            BorderWidths.DEFAULT
-        )
-    ));
+            BorderWidths.DEFAULT)));
   }
 
   public void updateBorders(ScrollPane pane) {
@@ -438,14 +437,12 @@ public class GraphicsController {
   }
 
   public void setFlowPaneBorder(FlowPane flowPane, String color) {
-     flowPane.setBorder(new Border(
+    flowPane.setBorder(new Border(
         new BorderStroke(
             Paint.valueOf(color),
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
-            BorderWidths.DEFAULT
-        )
-     ));
+            BorderWidths.DEFAULT)));
   }
 
   public void setMainStage(Stage mainStage) {

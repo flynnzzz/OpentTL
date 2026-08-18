@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.enums.TieredStatus;
 import net.flynn.opentierlist.persistence.ImagePath;
+import net.flynn.opentierlist.persistence.ResourceHolder;
 
 public class TierItem {
   private TieredStatus status;
@@ -63,8 +64,8 @@ public class TierItem {
     this.status = status;
     this.id = id;
     try {
-      this.imagePath = ImagePath.of(new URI(imageUri));
-    } catch (URISyntaxException e) {
+      this.imagePath = new ImagePath(new URI(imageUri));
+    } catch (URISyntaxException _) {
       this.imagePath = ImagePath.defaultResource();
     }
   }
@@ -93,12 +94,14 @@ public class TierItem {
     return imagePath.getUriAsString();
   }
 
-  public TieredStatus getStatus() {
-    return status;
+  @JsonIgnore
+  public String getImageUriOrDefault() {
+    return imagePath.exists() ? imagePath.getUriAsString()
+        : getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE).toString();
   }
 
-  public void updateImagePath() {
-    this.imagePath = imagePath.exists() ? imagePath : ImagePath.defaultResource();
+  public TieredStatus getStatus() {
+    return status;
   }
 
   @Override

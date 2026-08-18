@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.flynn.opentierlist.model.enums.DefaultTier;
@@ -117,13 +116,12 @@ public class TierList {
 
     if (index < 0 || index > tier.itemCount()) {
       throw new TierItemNotFoundException(
-              "[ERROR] --- Destination index out of bounds: " + index + " ---");
+          "[ERROR] --- Destination index out of bounds: " + index + " ---");
     }
 
     if (index == tier.itemCount()) {
       tier(unTiered, tier);
-    }
-    else {
+    } else {
       tierInsert(unTiered, tier, tier.get(index));
     }
   }
@@ -155,8 +153,7 @@ public class TierList {
 
     if (index == unTiered.itemCount()) {
       unTier(tiered);
-    }
-    else {
+    } else {
       unTierInsert(tiered, unTiered.get(index));
     }
   }

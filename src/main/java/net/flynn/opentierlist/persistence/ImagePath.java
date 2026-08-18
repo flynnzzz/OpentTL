@@ -35,7 +35,6 @@ public record ImagePath(URI uri) {
       System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
       return ImagePath.defaultResource();
     }
-
   }
 
   public static ImagePath defaultResource() {

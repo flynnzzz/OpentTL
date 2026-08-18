@@ -47,7 +47,7 @@ public class TierBox extends HBox {
   private final Button editTierButton;
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
-  private final int tierHash;
+  private int tierHash;
   private String oldTextValue;
 
   private Stage colorStage;
@@ -85,10 +85,10 @@ public class TierBox extends HBox {
 
       setSpacing(DataHandler.ConfigHolder.DEFAULT_TIER_SPACING);
       setPadding(new Insets(
-              DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_TOP,
-              DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_RIGHT,
-              DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_BOTTOM,
-              DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_LEFT));
+          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_TOP,
+          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_RIGHT,
+          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_BOTTOM,
+          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_LEFT));
     }
 
     colorPickerMenu = new ContextMenu();
@@ -107,6 +107,10 @@ public class TierBox extends HBox {
     oldTextValue = newTitle;
   }
 
+  private void setTierHash(int hash) {
+    this.tierHash = hash;
+  }
+
   private void setupEventHandlers() {
 
     final var tier = tierListController.getTierByHash(tierHash);
@@ -122,6 +126,7 @@ public class TierBox extends HBox {
 
       if (!tierNameText.getText().isBlank()) {
         tierListController.setTierName(tier, tierNameText.getText());
+        setTierHash(tier.hashCode());
         updateOldTitle(tierNameText.getText());
       }
 
@@ -179,7 +184,8 @@ public class TierBox extends HBox {
 
     final BorderPane colorPane = new BorderPane();
 
-    final Scene colorMenu = new Scene(colorPane, DataHandler.ConfigHolder.COLOR_MENU_WIDTH, DataHandler.ConfigHolder.COLOR_MENU_HEIGHT);
+    final Scene colorMenu = new Scene(colorPane, DataHandler.ConfigHolder.COLOR_MENU_WIDTH,
+        DataHandler.ConfigHolder.COLOR_MENU_HEIGHT);
     colorPicker = new ColorPicker();
     colorPicker.setPadding(
         new Insets(

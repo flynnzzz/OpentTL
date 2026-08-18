@@ -113,29 +113,9 @@ public class TierItemTest {
 
     assertEquals(
         (Objects.requireNonNull(getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE))).toURI().toString(),
-        defaultTierItem.getImageUri()
-    );
+        defaultTierItem.getImageUri());
 
-    assertEquals(resource, el2.getImageUri() );
-  }
-
-  @Test
-  public void updateImagePath() throws URISyntaxException {
-
-    var el4 = new TierItem("itemName4", "nonExistentUrl");
-
-    assertEquals(
-            (Objects.requireNonNull(getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE))).toURI().toString(),
-            el4.getImageUri()
-    );
-
-    el4.updateImagePath();
-
-    assertEquals(
-            (Objects.requireNonNull(getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE))).toURI().toString(),
-            el4.getImageUri()
-    );
-
+    assertEquals(resource, el2.getImageUri());
   }
 
   @Test

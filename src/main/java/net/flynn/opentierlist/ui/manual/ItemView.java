@@ -132,7 +132,8 @@ public class ItemView extends ImageView {
       potentialTargetTier.ifPresent(
           targetTier -> tierListController.insertItem(sourceItem, targetTier, targetitem));
 
-      success = true;
+      if (potentialTargetTier.isPresent())
+        success = true;
     }
     if (success)
       graphicsController.updateItemViews(parent);
