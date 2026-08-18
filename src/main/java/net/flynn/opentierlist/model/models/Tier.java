@@ -2,7 +2,7 @@ package net.flynn.opentierlist.model.models;
 
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
-import net.flynn.opentierlist.ui.ConfigHolder;
+import net.flynn.opentierlist.persistence.DataHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,15 +13,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Tier {
-
-  public static final String DEFAULT_TIER_NAME = "New Tier";
-  public static final String DEFAULT_TIER_COLOR = ConfigHolder.DEFAULT_NEW_TIER_COLOR;
-
   private TierHeader header;
   protected final List<TierItem> items;
 
   private static long NEXT_ID = 1;
   private final long id;
+
+  public static final String DEFAULT_TIER_NAME = "New Tier";
+  public static final String DEFAULT_TIER_COLOR = DataHandler.ConfigHolder.DEFAULT_NEW_TIER_COLOR;
 
   private void setHeader(TierHeader header) {
     this.header = Objects.requireNonNull(header);
@@ -74,15 +73,14 @@ public class Tier {
   }
 
   public boolean add(TierItem item) {
-    return items.add(item);
+    return items.add(Objects.requireNonNull(item));
   }
 
   public boolean remove(TierItem item) throws TierItemNotFoundException {
-    if (!items.remove(item))
+    if (!items.remove(Objects.requireNonNull(item)))
       throw new TierItemNotFoundException(
           "[ERROR] --- Removal of item: " + item + " was not successful ---");
-    else
-      return true;
+    return true;
   }
 
   public TierItem remove(int i) throws TierItemNotFoundException {
@@ -113,7 +111,7 @@ public class Tier {
   }
 
   public boolean contains(TierItem item) {
-    return items.contains(item);
+    return items.contains(Objects.requireNonNull(item));
   }
 
   public int itemCount() {
@@ -130,15 +128,15 @@ public class Tier {
     items.add(destIndex, src);
   }
 
-  public void move(TierItem item, int toIndex) throws TierItemNotFoundException {
-    if (!this.contains(item))
+  public void move(TierItem item, int tierIndex) throws TierItemNotFoundException {
+    if (!contains(item))
       throw new TierItemNotFoundException("[ERROR] --- Item to move not found: " + item + " ---");
 
-    if (toIndex > items.size())
-      throw new TierItemNotFoundException("[ERROR] --- Index to move to is out of bounds: " + toIndex + " ---");
+    if (tierIndex > items.size())
+      throw new TierItemNotFoundException("[ERROR] --- Index to move to is out of bounds: " + tierIndex + " ---");
 
     items.remove(item);
-    items.add(toIndex, item);
+    items.add(tierIndex, item);
   }
 
   public Tier copy() {
@@ -150,14 +148,14 @@ public class Tier {
   }
 
   public int indexOf(TierItem item) {
-    return items.indexOf(item);
+    return items.indexOf(Objects.requireNonNull(item));
   }
 
   public void setName(String name) throws IllegalArgumentException {
     Objects.requireNonNull(name);
     if (name.isBlank())
       throw new IllegalArgumentException("[ERROR] --- Tier name cannot be set to null ---");
-    setHeader(new TierHeader(name, this.header.color()));
+    setHeader(new TierHeader(name, header.color()));
   }
 
   public void setColor(String color) throws IllegalArgumentException {

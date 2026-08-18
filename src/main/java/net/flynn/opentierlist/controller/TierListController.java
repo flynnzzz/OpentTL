@@ -12,157 +12,47 @@ import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
-/**
- * Controller interface for creating and modifying tier lists.
- * 
- * @author flynnz
- * @version 2.7.2
- * @since v0.0.0
- */
 public interface TierListController {
 
-  /**
-   * Controller factory for a tier list
-   *
-   * @param tl tier list to control
-   * @return {@link TierListController}
-   */
   static TierListController of(TierList tl) {
     Objects.requireNonNull(tl);
     return new StandardTierListController(tl);
   }
 
-  /**
-   * Controller factory for a default tier list
-   * 
-   * @return {@link TierListController}
-   */
   static TierListController ofDefaultTiers() {
     return new StandardTierListController(TierList.ofDefaultTiers());
   }
 
-  /**
-   * Rank an untiered item
-   *
-   * @param unTiered item to rank
-   * @param toTier   destination
-   */
   void tier(TierItem unTiered, Tier toTier);
 
-  /**
-   * Rank an untiered item to a specified position
-   *
-   * @param unTiered item to rank
-   * @param toTier   destination
-   * @param position destination position
-   */
   void tier(TierItem unTiered, Tier toTier, TierItem position);
 
-  /**
-   * Rank an untiered item to a specified position
-   *
-   * @param unTiered item to rank
-   * @param toTier   destination
-   * @param toIndex  position
-   */
   void tier(TierItem unTiered, Tier toTier, int toIndex);
 
-  /**
-   * Un-rank a tiered item
-   *
-   * @param tiered item to un-rank
-   */
   void unTier(TierItem tiered);
 
-  /**
-   * Un-rank a tiered item to a specified position
-   *
-   * @param tiered   item to un-rank
-   * @param position destination position
-   */
   void unTier(TierItem tiered, TierItem position);
 
-  /**
-   * Un-rank a tiered item to a specified position
-   *
-   * @param tiered  item to un-rank
-   * @param toIndex position
-   */
   void unTier(TierItem tiered, int toIndex);
 
-  /**
-   * Add a tier to the tier list
-   *
-   * @param tier tier to add
-   */
   void addTier(Tier tier);
 
-  /**
-   * Add a default tier to the tier list
-   */
   void addDefaultTier();
 
-  /**
-   * Add an unranked item to the tier list
-   *
-   * @param unTiered item to add
-   */
   void addUnTiered(TierItem unTiered);
 
-  /**
-   * Remove a tier from the tier list
-   *
-   * @param tier tier to delete
-   */
   void removeTier(Tier tier);
 
-  /**
-   * Remove an item from the tier list
-   *
-   * @param item to delete
-   */
   void removeItem(TierItem item);
 
-  /**
-   * Move and append a ranked item to a specified tier
-   *
-   * @param tiered item to append
-   * @param toTier destination
-   */
   void moveItem(TierItem tiered, Tier toTier);
 
-  /**
-   * Move and a ranked item to a specified tier
-   *
-   * @param item     to move
-   * @param toTier   destination
-   * @param position to move to
-   */
   void insertItem(TierItem item, Tier toTier, TierItem position);
 
-  /**
-   * Move and a ranked item to a specified tier
-   *
-   * @param item   to move
-   * @param toTier destination
-   * @param index  to move to
-   */
   void insertItem(TierItem item, Tier toTier, int index);
 
-  /**
-   * Move a tier to a destination
-   *
-   * @param from source
-   * @param to   destination
-   */
   void moveTier(Tier from, Tier to);
 
-  /**
-   * Move a tier to a destination
-   *
-   * @param from    source
-   * @param toIndex destination
-   */
   void moveTier(Tier from, int toIndex);
 
   void setTierList(TierList tierList);
@@ -191,12 +81,12 @@ public interface TierListController {
 
   boolean exportTierList(TieredPane node, Path path);
 
-  Optional<TierList> loadTierList(File file);
+  boolean itemExists(Integer hash);
+
+  Optional<TierList> parseTierList(File file);
 
   String toString();
 
   String toString(TierStringFormat format);
-
-  boolean itemExists(Integer hash);
 
 }

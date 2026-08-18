@@ -130,7 +130,7 @@ public class StandardTierListController implements TierListController {
   @Override
   public void addUnTiered(TierItem item) {
     try {
-      tierList.addItem(item, DefaultTier.__UNTIERED__.value());
+      tierList.addItem(item, DefaultTier.UNTIERED.value());
     } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println(ex.getMessage());
     }
@@ -278,7 +278,22 @@ public class StandardTierListController implements TierListController {
   }
 
   @Override
-  public Optional<TierList> loadTierList(File file) {
+  public boolean itemExists(Integer hash) {
+
+    return Stream
+        .concat(
+            tierList.getTiered()
+                .stream()
+                .map(Tier::getItems)
+                .flatMap(List::stream),
+            tierList.getUnTiered()
+                .stream())
+        .anyMatch(e -> Objects.equals(e.hashCode(), hash));
+
+  }
+
+  @Override
+  public Optional<TierList> parseTierList(File file) {
     return dataHandler.load(file);
   }
 
@@ -317,7 +332,7 @@ public class StandardTierListController implements TierListController {
           .findFirst();
 
       if (potentialItem.isEmpty() && getUnTiered().contains(item))
-        potentialItem = Optional.of(DefaultTier.__UNTIERED__.value());
+        potentialItem = Optional.of(DefaultTier.UNTIERED.value());
 
     } catch (NullPointerException | IllegalArgumentException ex) {
       System.err.println(ex.getMessage());
@@ -352,8 +367,8 @@ public class StandardTierListController implements TierListController {
 
   @Override
   public Tier getTierByHash(Integer hashCode) {
-    if (hashCode == DefaultTier.__UNTIERED__.value().hashCode())
-      return DefaultTier.__UNTIERED__.value();
+    if (hashCode == DefaultTier.UNTIERED.value().hashCode())
+      return DefaultTier.UNTIERED.value();
 
     Optional<Tier> tier;
     try {
@@ -369,21 +384,6 @@ public class StandardTierListController implements TierListController {
       System.err.println("[ERROR] --- " + ex.getClass() + ": in 'getTierByHash' method ---");
       return null;
     }
-  }
-
-  @Override
-  public boolean itemExists(Integer hash) {
-
-    return Stream
-        .concat(
-            tierList.getTiered()
-                .stream()
-                .map(Tier::getItems)
-                .flatMap(List::stream),
-            tierList.getUnTiered()
-                .stream())
-        .anyMatch(e -> Objects.equals(e.hashCode(), hash));
-
   }
 
 }

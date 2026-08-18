@@ -7,13 +7,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Custom class to handle image resources
- *
- * @author flynnz
- * @version 0.10
- * @since v1.7.0
- */
 public record ImagePath(URI uri) {
   private static final String DEFAULT_IMAGE_RESOURCE = ResourceHolder.DEFAULT_ITEM_IMAGE;
 
@@ -46,20 +39,20 @@ public record ImagePath(URI uri) {
   }
 
   public static ImagePath defaultResource() {
-    URL url = ImagePath.class.getResource(DEFAULT_IMAGE_RESOURCE);
+    final URL url = ImagePath.class.getResource(DEFAULT_IMAGE_RESOURCE);
     if (url == null)
       throw new IllegalStateException("Resource missing: " + DEFAULT_IMAGE_RESOURCE);
     try {
       return new ImagePath(url.toURI());
-    } catch (URISyntaxException e) {
+    } catch (URISyntaxException _) {
       System.err.println("[ERROR] --- Default resource not found, aborting ---");
       System.exit(-1);
       return null;
     }
   }
 
-  public String getUri() {
-    return this.uri.toString();
+  public String getUriAsString() {
+    return uri.toString();
   }
 
   public boolean exists() {

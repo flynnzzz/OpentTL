@@ -2,12 +2,6 @@ package net.flynn.opentierlist.model.exceptions;
 
 import java.io.Serial;
 
-/**
- * Custom Exception class
- * 
- * @version 0.00
- * @since v1.0.0
- */
 public class TierItemNotFoundException extends IndexOutOfBoundsException {
 
 	@Serial

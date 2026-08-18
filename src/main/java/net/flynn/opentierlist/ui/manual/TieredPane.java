@@ -6,14 +6,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import net.flynn.opentierlist.ui.ConfigHolder;
+import net.flynn.opentierlist.persistence.DataHandler;
 import net.flynn.opentierlist.controller.GraphicsController;
 
-/**
- * 
- * @version 2.20
- * @since v1.2.5
- */
 public class TieredPane extends ScrollPane {
   private final VBox tiersVBox;
   private final GraphicsController graphicsController;
@@ -23,31 +18,25 @@ public class TieredPane extends ScrollPane {
     this.graphicsController = graphicsController;
     this.tierBoxList = FXCollections.observableArrayList();
     this.tiersVBox = new VBox();
-    setupPane();
-  }
-
-  private void setupPane() {
-
-    tierBoxList = graphicsController.loadTiers();
+    tierBoxList = graphicsController.constructTierBoxes();
     tiersVBox.getChildren().addAll(tierBoxList);
 
-    this.setContent(tiersVBox);
-    this.setFitToWidth(true);
-    this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    this.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    setContent(tiersVBox);
+    setFitToWidth(true);
+    setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
     graphicsController.updateBorders(this);
 
     tiersVBox.setAlignment(Pos.CENTER);
-    tiersVBox.setPadding(new Insets(ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));
-
+    tiersVBox.setPadding(new Insets(DataHandler.ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));
   }
 
   public void update() {
     tiersVBox.getChildren().clear();
     tierBoxList.clear();
 
-    tierBoxList = graphicsController.loadTiers();
+    tierBoxList = graphicsController.constructTierBoxes();
     tiersVBox.getChildren().addAll(tierBoxList);
   }
 
@@ -65,7 +54,7 @@ public class TieredPane extends ScrollPane {
         .forEach(TierBox::showEditButton);
   }
 
-  public void setButtonThemes(ConfigHolder.Theme theme) {
+  public void setButtonThemes(DataHandler.ConfigHolder.Theme theme) {
     for (var box : tierBoxList)
       box.setButtonTheme(theme);
   }

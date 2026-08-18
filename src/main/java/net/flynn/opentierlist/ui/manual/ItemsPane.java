@@ -1,7 +1,5 @@
 package net.flynn.opentierlist.ui.manual;
 
-import java.util.List;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -10,13 +8,11 @@ import javafx.scene.layout.FlowPane;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.model.enums.DefaultTier;
-import net.flynn.opentierlist.ui.ConfigHolder;
+import net.flynn.opentierlist.persistence.DataHandler;
 
 public class ItemsPane extends FlowPane {
-
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
-  private final boolean isUnTiered;
   private final int tierHash;
 
   public ItemsPane(int tierHash, TierListController tierListController, GraphicsController graphicsController) {
@@ -24,57 +20,48 @@ public class ItemsPane extends FlowPane {
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
     this.tierHash = tierHash;
-
-    final var tier = tierListController.getTierByHash(tierHash);
-
-    final var items = tier.getItems();
-    this.isUnTiered = tier.equalsTier(DefaultTier.__UNTIERED__.value());
-    setupPane(graphicsController.loadImages(this, items));
+    final var items = tierListController.getTierByHash(tierHash).getItems();
+    final var images = graphicsController.constructItemViews(this, items);
+    getChildren().addAll(images);
+    graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+    setPrefWidth(DataHandler.ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
+    setMaxHeight(DataHandler.ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
+    setMinHeight(DataHandler.ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
+    setupDragAndDrop();
   }
 
   public ItemsPane(TierListController tierListController, GraphicsController graphicsController) {
-    this(DefaultTier.__UNTIERED__.value().hashCode(), tierListController, graphicsController);
-  }
-
-  private void setupPane(List<ItemView> images) {
-    this.getChildren().addAll(images);
-
-    graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
-    this.setPrefWidth(ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
-    this.setMaxHeight(ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
-    this.setMinHeight(ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
-
-    this.setupDragAndDrop();
+    this(DefaultTier.UNTIERED.value().hashCode(), tierListController, graphicsController);
   }
 
   private void setupDragAndDrop() {
-    this.setOnDragOver(event -> {
+    setOnDragOver(event -> {
       if (event.getGestureSource() != event.getSource() && event.getDragboard().hasImage())
         event.acceptTransferModes(TransferMode.MOVE);
       event.consume();
     });
 
-    this.setOnDragEntered(event -> {
+    setOnDragEntered(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
+        graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
       }
       event.consume();
     });
 
-    this.setOnDragExited(event -> {
+    setOnDragExited(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+        graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
       }
       event.consume();
     });
 
-    this.setOnDragDropped(this::handleDragDropped);
+    setOnDragDropped(this::handleDragDropped);
 
-    this.setOnDragDone(event -> {
+    setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
-        graphicsController.updateImages(this);
+        graphicsController.updateItemViews(this);
       event.consume();
     });
   }
@@ -86,22 +73,17 @@ public class ItemsPane extends FlowPane {
     if (dragBoard.hasImage() && dragBoard.hasString()
         && event.getTarget() instanceof ItemsPane) {
 
-      Integer itemHash = Integer.parseInt(dragBoard.getString());
-
+      final Integer itemHash = Integer.parseInt(dragBoard.getString());
       final var source = tierListController.getItemByHash(itemHash);
       tierListController.moveItem(source, tierListController.getTierByHash(tierHash));
       success = true;
     }
 
     if (success)
-      graphicsController.updateImages(this);
+      graphicsController.updateItemViews(this);
 
     event.setDropCompleted(success);
     event.consume();
-  }
-
-  public boolean isUnTiered() {
-    return isUnTiered;
   }
 
   public int getTierHash() {

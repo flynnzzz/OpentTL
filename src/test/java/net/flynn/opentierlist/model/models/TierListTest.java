@@ -25,7 +25,7 @@ public class TierListTest {
   @Before
   public void setUp() {
 
-    untiered = DefaultTier.__UNTIERED__.value();
+    untiered = DefaultTier.UNTIERED.value();
 
     el1 = new TierItem("itemName1");
     el2 = new TierItem("itemName2");
@@ -139,15 +139,17 @@ public class TierListTest {
   @Test
   public void tierInsertIndex() {
 
-    assertThrows(TierItemNotFoundException.class, () -> tierList.tierInsert(el1, t1, 0));
     assertThrows(TierItemNotFoundException.class, () -> tierList.tierInsert(el1, t1, 1));
     assertThrows(TierItemNotFoundException.class, () -> tierList.tierInsert(el1, t1, -1));
 
     tierList.removeItem(el1);
     tierList.removeItem(el2);
 
-    tierList.addItem(el1, t1);
-    tierList.addItem(el2, t1);
+    tierList.addItem(el1, untiered);
+    tierList.addItem(el2, untiered);
+
+    tierList.tierInsert(el1, t1, 0);
+    tierList.tier(el2, t1);
 
     el1.changeTo(TieredStatus.TIERED);
     el2.changeTo(TieredStatus.TIERED);

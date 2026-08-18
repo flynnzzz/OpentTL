@@ -59,7 +59,7 @@ public class ImagePathTest {
 
   @Test
   public void getUri() {
-    assertEquals(resource.toString(), imagePath.getUri());
+    assertEquals(resource.toString(), imagePath.getUriAsString());
   }
 
   @Test

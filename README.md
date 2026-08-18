@@ -43,19 +43,19 @@
 
 - The application JAR file
 - Required JavaFX runtime JARs and binaries
-- The `otl.sh` or `otl.bat` script for easy execution depending on your system
+- The `opentl.sh` or `opentl.bat` script for easy execution depending on your system
 
 Once downloaded, run the application using the provided run script in the terminal:
 
 ```bash
-./otl.sh
+./opentl.sh
 ```
 *On **Linux** systems*
 
 `note: You may have to give the script execution permission by running:`
 
 ```bash
-chmod x+u otl.sh
+chmod x+u opentl.sh
 ```
 
 or on **Windows**:

@@ -20,7 +20,7 @@ public class StandardTierListControllerTest {
   private TierList tl;
   private TierItem el1, el2, el3, el4;
   private TierListController controller;
-  private Tier untiered = DefaultTier.__UNTIERED__.value();
+  private Tier untiered = DefaultTier.UNTIERED.value();
 
   @Before
   public void setUp() {

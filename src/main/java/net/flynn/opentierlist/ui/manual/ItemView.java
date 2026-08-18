@@ -10,16 +10,14 @@ import javafx.scene.input.*;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.ui.ConfigHolder;
+import net.flynn.opentierlist.persistence.DataHandler;
 import net.flynn.opentierlist.controller.GraphicsController;
 
 import java.util.Optional;
 
 public class ItemView extends ImageView {
-
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
-
   private final ItemsPane parent;
 
   public ItemView(
@@ -28,39 +26,37 @@ public class ItemView extends ImageView {
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
     this.parent = parent;
-
-    this.setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
-    this.setFitWidth(ConfigHolder.DEFAULT_CELL_SIZE);
-
+    this.setFitHeight(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
+    this.setFitWidth(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
     setupEventHandlers();
   }
 
   private void setupEventHandlers() {
 
-    this.setOnMouseClicked(mouseEvent -> {
+    setOnMouseClicked(mouseEvent -> {
 
       final var imageContextMenu = new ContextMenu();
       if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 
         final var deleteImageMenu = new MenuItem("Delete");
         deleteImageMenu.setOnAction(_ -> {
-          if (this.getUserData() instanceof TierItem item) {
+          if (getUserData() instanceof TierItem item) {
 
             tierListController.removeItem(item);
             parent.getChildren().remove(this);
-            graphicsController.updateImages(parent);
+            graphicsController.updateItemViews(parent);
 
           }
         });
 
-        if (this.getUserData() instanceof TierItem item && item.isTiered()) {
+        if (getUserData() instanceof TierItem item && item.isTiered()) {
 
           final var unTierImageMenu = new MenuItem("UnTier");
           imageContextMenu.getItems().add(unTierImageMenu);
           unTierImageMenu.setOnAction(_ -> {
 
             tierListController.unTier(item);
-            graphicsController.updateTierList();
+            graphicsController.updateAll();
           });
         }
 
@@ -70,30 +66,30 @@ public class ItemView extends ImageView {
       }
     });
 
-    this.setOnDragDetected(this::handleDragDetectedImage);
+    setOnDragDetected(this::handleDragDetectedImage);
 
-    this.setOnDragOver(event -> {
+    setOnDragOver(event -> {
       if (event.getDragboard().hasImage())
         event.acceptTransferModes(TransferMode.MOVE);
       event.consume();
     });
-    this.setOnDragEntered(event -> {
+    setOnDragEntered(event -> {
       if (event.getDragboard().hasImage())
-        this.setFitHeight(ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
+        setFitHeight(DataHandler.ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
       event.consume();
     });
 
-    this.setOnDragExited(event -> {
+    setOnDragExited(event -> {
       if (event.getTarget() instanceof ImageView && event.getSource() instanceof ImageView)
-        this.setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
+        setFitHeight(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
       event.consume();
     });
 
-    this.setOnDragDropped(this::handleDragDroppedImage);
+    setOnDragDropped(this::handleDragDroppedImage);
 
-    this.setOnDragDone(event -> {
+    setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
-        graphicsController.updateImages(parent);
+        graphicsController.updateItemViews(parent);
       event.consume();
     });
   }
@@ -125,13 +121,13 @@ public class ItemView extends ImageView {
 
     final var sourceItem = tierListController.getItemByHash(Integer.parseInt(itemHash));
 
-    EventTarget eventTarget = event.getTarget();
+    final EventTarget eventTarget = event.getTarget();
     if (dragBoard.hasImage() && dragBoard.hasString()
         && eventTarget instanceof ImageView targetImage
         && targetImage.getUserData() instanceof TierItem targetitem
         && !sourceItem.equals(targetitem)) {
 
-      Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetitem);
+      final Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetitem);
 
       potentialTargetTier.ifPresent(
           targetTier -> tierListController.insertItem(sourceItem, targetTier, targetitem));
@@ -139,7 +135,7 @@ public class ItemView extends ImageView {
       success = true;
     }
     if (success)
-      graphicsController.updateImages(parent);
+      graphicsController.updateItemViews(parent);
 
     event.setDropCompleted(success);
     event.consume();

@@ -3,7 +3,7 @@ package net.flynn.opentierlist.model.models;
 import javafx.scene.paint.Color;
 import net.flynn.opentierlist.model.enums.TieredStatus;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
-import net.flynn.opentierlist.ui.ConfigHolder;
+import net.flynn.opentierlist.persistence.DataHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -299,7 +299,7 @@ public class TierTest {
   @Test
   public void setColor() {
 
-    assertEquals(ConfigHolder.DEFAULT_NEW_TIER_COLOR, defaultTier.getColor());
+    assertEquals(DataHandler.ConfigHolder.DEFAULT_NEW_TIER_COLOR, defaultTier.getColor());
     defaultTier.setColor(Color.RED.toString());
     assertEquals(Color.RED.toString(), defaultTier.getColor());
     defaultTier.setColor(Color.rgb(3, 2, 1).toString());

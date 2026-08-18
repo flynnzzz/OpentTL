@@ -15,7 +15,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.ui.ConfigHolder;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
 public class TierListWriter {
@@ -27,7 +26,7 @@ public class TierListWriter {
   private static WritableImage screenshot(TieredPane node) {
 
     final Bounds bounds = node.getContent().getBoundsInLocal();
-    final double fixedWidth = ConfigHolder.SCREENSHOT_WIDTH,
+    final double fixedWidth = DataHandler.ConfigHolder.SCREENSHOT_WIDTH,
         dynamicWidth = bounds.getWidth();
 
     final double targetWidth = Math.min(fixedWidth, dynamicWidth),
@@ -41,7 +40,7 @@ public class TierListWriter {
     params.setViewport(new Rectangle2D(x, 0, targetWidth, inboundHeight));
 
     final var darkModeColor = "#2e3440";
-    if (ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.DARK)
+    if (DataHandler.ConfigHolder.getCurrentTheme() == DataHandler.ConfigHolder.Theme.DARK)
       // background color appears white in the screenshot otherwise
       params.setFill(Color.valueOf((darkModeColor)));
 
