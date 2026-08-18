@@ -1,6 +1,7 @@
 @echo off
 setlocal
 
+:: TODO update
 set "MODULE_PATH=.\lib\windows\"
 set "BINARIES=.\lib\windows\dll\"
 set "ADD_MODULES=javafx.controls"
