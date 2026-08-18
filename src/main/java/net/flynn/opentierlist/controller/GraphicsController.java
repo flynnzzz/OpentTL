@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -247,6 +248,10 @@ public class GraphicsController {
       mainStage.requestFocus();
       reloadImageCache();
       updateAll();
+      alert(
+          AlertType.CONFIRMATION, "Load Tier List", "File '" + toParse + "' was loaded correctly");
+    } else {
+      alert(AlertType.ERROR, "Load Tier List", "File '" + toParse + "' could not be loaded");
     }
 
   }
