@@ -2,11 +2,11 @@
 export JAVA_HOME=/home/flynn/.local/jdks/jdk-26.0.1
 export PATH=$JAVA_HOME/bin:$PATH
 
-curdir=$(pwd)
-MODULE_PATH="$curdir/lib/linux"
+scriptdir=$(dirname "${BASH_SOURCE[0]}")
+MODULE_PATH="$scriptdir/lib/linux"
 ADD_MODULES="javafx.controls"
-JAR_FILE="$curdir/target/opentierlist.jar"
-LOG_FOLDER="$curdir/log"
+JAR_FILE="$scriptdir/target/opentierlist.jar"
+LOG_FOLDER="$scriptdir/log"
 LOG_FILE="$LOG_FOLDER/otl.log"
 
 if [ ! -d "$MODULE_PATH" ]; then
