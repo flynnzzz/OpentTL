@@ -64,6 +64,7 @@ public class TierList {
     Arrays.stream(DefaultTier.values())
         .filter(d -> !d.equals(DefaultTier.UNTIERED))
         .map(DefaultTier::value)
+        .map(Tier::copy)
         .peek(Tier::clear)
         .forEach(tierList::addTier);
 
