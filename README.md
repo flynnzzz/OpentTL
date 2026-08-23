@@ -16,7 +16,7 @@
 
 <div align="center">
   <p>
-    <i>graphical interface built manually using the JavaFX library</i>i>
+    <i>graphical interface built manually using the JavaFX library</i>
   </p> 
 </div>
 
