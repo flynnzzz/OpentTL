@@ -9,17 +9,29 @@ import java.util.Optional;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
+import net.flynn.opentierlist.persistence.DesktopTierListDataHandler;
+import net.flynn.opentierlist.persistence.TierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
 public interface TierListController {
 
   static TierListController of(TierList tl) {
     Objects.requireNonNull(tl);
-    return new DesktopTierListController(tl);
+
+    boolean onAndroid = false;
+    try {
+      Class.forName("android.os.Build");
+      onAndroid = true;
+    } catch (ClassNotFoundException _) { }
+
+    final TierListDataHandler dataHandler = onAndroid ? null : new DesktopTierListDataHandler();
+    if (onAndroid) throw new UnsupportedOperationException("Android Not Yet Implemented");
+
+    return new StdTierListController(tl, dataHandler);
   }
 
   static TierListController ofDefaultTiers() {
-    return new DesktopTierListController(TierList.ofDefaultTiers());
+    return TierListController.of(TierList.ofDefaultTiers());
   }
 
   void tier(TierItem unTiered, Tier toTier);

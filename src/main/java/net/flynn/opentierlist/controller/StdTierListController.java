@@ -18,14 +18,14 @@ import net.flynn.opentierlist.persistence.DesktopTierListDataHandler;
 import net.flynn.opentierlist.persistence.TierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
-public class DesktopTierListController implements TierListController {
+public class StdTierListController implements TierListController {
 
   private TierList tierList;
-  private final TierListDataHandler desktopDataHandler;
+  private final TierListDataHandler dataHandler;
 
-  public DesktopTierListController(TierList tierList) {
+  public StdTierListController(TierList tierList, TierListDataHandler dataHandler) {
     this.tierList = tierList;
-    this.desktopDataHandler = new DesktopTierListDataHandler();
+    this.dataHandler = dataHandler;
   }
 
   @Override
@@ -237,7 +237,7 @@ public class DesktopTierListController implements TierListController {
       if (!path.toString().endsWith(".tson"))
         path = Path.of(path + ".tson");
 
-      desktopDataHandler.save(path.toFile(), tierList);
+      dataHandler.save(path.toFile(), tierList);
       return true;
     } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException ex) {
       System.err.println(ex.getMessage());
@@ -269,7 +269,7 @@ public class DesktopTierListController implements TierListController {
       if (!path.toString().endsWith(".png"))
         path = Path.of(path + ".png");
 
-      desktopDataHandler.export(path, node);
+      dataHandler.export(path, node);
       return true;
     } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException ex) {
       System.err.println(ex.getMessage());
@@ -294,7 +294,7 @@ public class DesktopTierListController implements TierListController {
 
   @Override
   public Optional<TierList> parseTierList(File file) {
-    return desktopDataHandler.load(file);
+    return dataHandler.load(file);
   }
 
   @Override
