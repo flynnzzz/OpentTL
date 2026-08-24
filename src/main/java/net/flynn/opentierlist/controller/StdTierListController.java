@@ -14,7 +14,6 @@ import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.persistence.DesktopTierListDataHandler;
 import net.flynn.opentierlist.persistence.TierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 

@@ -1,59 +1,59 @@
 package net.flynn.opentierlist.persistence;
 
+import net.flynn.opentierlist.MainApplication;
+import net.flynn.opentierlist.persistence.implementations.DesktopImagePath;
+
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-public record ImagePath(URI uri) {
-
-  public static ImagePath of(File file) throws IllegalArgumentException {
-    if (file != null && file.exists()) {
-      return new ImagePath(file.toURI());
+public interface ImagePath {
+    static ImagePath of(File file) throws IllegalArgumentException {
+        if (file != null && file.exists()) {
+            return MainApplication.isOnAndroid()
+                    ? null
+                    : new DesktopImagePath(file.toURI());
+        }
+        return ImagePath.defaultResource();
     }
-    return defaultResource();
-  }
 
-  public static ImagePath of(String uri) {
+    static ImagePath of(String uri) {
 
-    try {
-      return ImagePath.of(new URI(uri));
-    } catch (URISyntaxException _) {
-      System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
-      return defaultResource();
+        try {
+            return ImagePath.of(new URI(uri));
+        } catch (URISyntaxException _) {
+            System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
+            return ImagePath.defaultResource();
+        }
     }
-  }
 
-  public static ImagePath of(URI uri) {
+    static ImagePath of(URI uri) {
 
-    try {
-      return ImagePath.of(new File(uri));
-    } catch (IllegalArgumentException _) {
-      System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
-      return ImagePath.defaultResource();
+        try {
+            return ImagePath.of(new File(uri));
+        } catch (IllegalArgumentException _) {
+            System.err.println("[INFO] --- Invalid URL: " + uri + ", loading default resource ---");
+            return ImagePath.defaultResource();
+        }
     }
-  }
 
-  public static ImagePath defaultResource() {
-    final URL url = ImagePath.class.getResource(ResourceHolder.DEFAULT_ITEM_IMAGE);
-    if (url == null)
-      throw new IllegalStateException("Resource missing: " + ResourceHolder.DEFAULT_ITEM_IMAGE);
-    try {
-      return new ImagePath(url.toURI());
-    } catch (URISyntaxException _) {
-      System.err.println("[ERROR] --- Default resource not found, aborting ---");
-      System.exit(-1);
-      return null;
+    static ImagePath defaultResource() {
+        final URL url = ImagePath.class.getResource(ResourceHolder.DEFAULT_ITEM_IMAGE);
+        if (url == null)
+            throw new IllegalStateException("Resource missing: " + ResourceHolder.DEFAULT_ITEM_IMAGE);
+        try {
+            return MainApplication.isOnAndroid()
+                    ? null
+                    : new DesktopImagePath(url.toURI());
+        } catch (URISyntaxException _) {
+            System.err.println("[ERROR] --- Default resource not found, aborting ---");
+            System.exit(-1);
+            return null;
+        }
     }
-  }
 
-  public String getUriAsString() {
-    return uri.toString();
-  }
+    String getUriAsString();
 
-  public boolean exists() {
-    return Files.exists(Path.of(uri));
-  }
+    boolean exists();
 }

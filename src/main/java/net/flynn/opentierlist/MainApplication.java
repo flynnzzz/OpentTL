@@ -17,6 +17,8 @@ public class MainApplication extends Application {
   @Override
   public void start(Stage stage) {
 
+    if (MainApplication.isOnAndroid()) throw new UnsupportedOperationException("Android Not Yet Implemented");
+
     final var controller = TierListController.ofDefaultTiers();
     final BorderPane root = new MainPane(controller, stage);
     final var scene = new Scene(root);
@@ -38,4 +40,12 @@ public class MainApplication extends Application {
 
   }
 
+  public static boolean isOnAndroid() {
+    try {
+      Class.forName("android.os.Build");
+      return true;
+    } catch (ClassNotFoundException _) { }
+
+    return false;
+  }
 }

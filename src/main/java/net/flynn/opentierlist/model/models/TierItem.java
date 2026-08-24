@@ -1,7 +1,5 @@
 package net.flynn.opentierlist.model.models;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,7 +14,7 @@ import net.flynn.opentierlist.persistence.ResourceHolder;
 public class TierItem {
   private TieredStatus status;
   private String itemName;
-  private ImagePath imagePath;
+  private final ImagePath imagePath;
 
   private static long NEXT_ID = 1;
   private final long id;
@@ -63,11 +61,7 @@ public class TierItem {
     this.itemName = itemName;
     this.status = status;
     this.id = id;
-    try {
-      this.imagePath = new ImagePath(new URI(imageUri));
-    } catch (URISyntaxException _) {
-      this.imagePath = ImagePath.defaultResource();
-    }
+    this.imagePath = ImagePath.of(imageUri);
   }
 
   @JsonIgnore

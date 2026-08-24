@@ -1,8 +1,5 @@
 package net.flynn.opentierlist;
 
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-
 public class ConfigHolder {
 
     public final static int DEFAULT_CELL_SIZE = 64 + 32;
@@ -10,15 +7,14 @@ public class ConfigHolder {
     public final static int DEFAULT_TIERED_BAR_WIDTH = (8 + 1) * DEFAULT_CELL_SIZE + 2;
     public final static int DEFAULT_UNTIERED_BAR_WIDTH = (8 + 1) * DEFAULT_CELL_SIZE + (8 + 4);
 
-    public final static double DEFAULT_BAR_MAX_HEIGHT = Region.USE_COMPUTED_SIZE;
     public final static int DEFAULT_BAR_MIN_HEIGHT = DEFAULT_CELL_SIZE;
     public final static double DEFAULT_UNRANKED_PANE_HEIGHT = DEFAULT_CELL_SIZE * 1.6;
 
     public final static double DEFAULT_EXPANDED_IMAGE_SIZE = DEFAULT_CELL_SIZE * (0.8 + 0.4);
     public final static int DEFAULT_TIERS_VBOX_PADDING = 8;
 
-    public final static String DEFAULT_BAR_BORDER_COLOR = Color.DIMGRAY.toString();
-    public final static String DEFAULT_BAR_HIGHLIGHT_COLOR = Color.DEEPSKYBLUE.toString();
+    public final static String DEFAULT_BAR_BORDER_COLOR = "0x696969ff";
+    public final static String DEFAULT_BAR_HIGHLIGHT_COLOR = "0x00bfffff";
 
     public final static int COLOR_MENU_WIDTH = 256;
     public final static int COLOR_MENU_HEIGHT = 128 + 32;
@@ -55,7 +51,7 @@ public class ConfigHolder {
     public static final String DEFAULT_E_COLOR = "#81a1c1";
     public static final String DEFAULT_F_COLOR = "#434c5e";
     public static final String DEFAULT_UNTIERED_COLOR = "#ffffff";
-    public static final String DEFAULT_NEW_TIER_COLOR = Color.GRAY.toString();
+    public static final String DEFAULT_NEW_TIER_COLOR = "#808080";
 
     public final static int DEFAULT_UNRANKED_PADDING_TOP = 16;
     public final static int DEFAULT_UNRANKED_PADDING_RIGHT = 16;

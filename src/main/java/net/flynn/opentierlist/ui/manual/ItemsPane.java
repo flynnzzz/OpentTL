@@ -5,6 +5,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Region;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.model.enums.DefaultTier;
@@ -25,7 +26,7 @@ public class ItemsPane extends FlowPane {
     getChildren().addAll(images);
     graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
     setPrefWidth(ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
-    setMaxHeight(ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
+    setMaxHeight(Region.USE_COMPUTED_SIZE);
     setMinHeight(ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
     setupDragAndDrop();
   }

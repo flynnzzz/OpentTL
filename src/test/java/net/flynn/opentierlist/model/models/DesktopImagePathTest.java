@@ -1,6 +1,6 @@
 package net.flynn.opentierlist.model.models;
 
-import net.flynn.opentierlist.persistence.ImagePath;
+import net.flynn.opentierlist.persistence.implementations.DesktopImagePath;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import org.junit.After;
 import org.junit.Before;
@@ -13,8 +13,8 @@ import java.util.Objects;
 
 import static org.junit.Assert.*;
 
-public class ImagePathTest {
-  private ImagePath imagePath;
+public class DesktopImagePathTest {
+  private DesktopImagePath desktopImagePath;
   private URI resource;
   private String pathResource;
 
@@ -23,47 +23,47 @@ public class ImagePathTest {
     pathResource = "/greyyakuza.jpg";
 
     resource = Objects.requireNonNull(getClass().getResource(pathResource)).toURI();
-    imagePath = new ImagePath(resource);
+    desktopImagePath = new DesktopImagePath(resource);
   }
 
   @After
   public void tearDown() {
     resource = null;
-    imagePath = null;
+    desktopImagePath = null;
     pathResource = null;
   }
 
   @Test
   public void ofURI() throws URISyntaxException {
-    assertEquals(imagePath, ImagePath.of(resource));
-    assertEquals(ImagePath.defaultResource(), ImagePath.of(new URI("_")));
+    assertEquals(desktopImagePath, DesktopImagePath.of(resource));
+    assertEquals(DesktopImagePath.defaultResource(), DesktopImagePath.of(new URI("_")));
   }
 
   @Test
   public void ofString() {
-    assertEquals(ImagePath.defaultResource(), ImagePath.of("_"));
+    assertEquals(DesktopImagePath.defaultResource(), DesktopImagePath.of("_"));
   }
 
   @Test
   public void ofFile() {
-    assertEquals(imagePath, ImagePath.of(new File(resource)));
-    assertEquals(ImagePath.defaultResource(), ImagePath.of(new File("_")));
+    assertEquals(desktopImagePath, DesktopImagePath.of(new File(resource)));
+    assertEquals(DesktopImagePath.defaultResource(), DesktopImagePath.of(new File("_")));
   }
 
   @Test
   public void defaultResource() throws URISyntaxException {
-    assertEquals(ImagePath.defaultResource(), new ImagePath(
+    assertEquals(DesktopImagePath.defaultResource(), new DesktopImagePath(
         Objects.requireNonNull(
             getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE)).toURI()));
   }
 
   @Test
   public void getUri() {
-    assertEquals(resource.toString(), imagePath.getUriAsString());
+    assertEquals(resource.toString(), desktopImagePath.getUriAsString());
   }
 
   @Test
   public void exists() {
-    assertTrue(imagePath.exists());
+    assertTrue(desktopImagePath.exists());
   }
 }
