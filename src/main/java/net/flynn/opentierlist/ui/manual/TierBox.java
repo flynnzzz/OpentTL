@@ -124,7 +124,7 @@ public class TierBox extends HBox {
       tier.getItems().forEach(tierListController::unTier);
 
       tierListController.removeTier(tier);
-      graphicsController.updateAll();
+      graphicsController.constructorInstance().updateAll();
     });
 
     duplicateOption.setOnAction(_ -> {
@@ -132,7 +132,7 @@ public class TierBox extends HBox {
       tierListController.addTier(clone);
       tierListController.moveTier(clone, tierListController.getTiers().indexOf(tier) + 1);
 
-      graphicsController.updateAll();
+      graphicsController.constructorInstance().updateAll();
     });
 
     colorOption.setOnAction(_ -> {
@@ -155,7 +155,7 @@ public class TierBox extends HBox {
         return;
 
       tier.setColor(chosenColor.get().toString());
-      graphicsController.updateAll();
+      graphicsController.constructorInstance().updateAll();
       colorStage.close();
     });
   }
@@ -233,7 +233,7 @@ public class TierBox extends HBox {
 
     tierNameText.setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
-        graphicsController.updateAll();
+        graphicsController.constructorInstance().updateAll();
       event.consume();
     });
 
@@ -308,8 +308,8 @@ public class TierBox extends HBox {
   public void setButtonTheme(ConfigHolder.Theme theme) {
 
     switch (theme) {
-      case LIGHT -> graphicsController.setGraphic(editTierButton, ResourceHolder.EDIT_BUTTON_ICON_LIGHT);
-      case DARK -> graphicsController.setGraphic(editTierButton, ResourceHolder.EDIT_BUTTON_ICON_DARK);
+      case LIGHT -> GraphicsController.setButtonGraphic(editTierButton, ResourceHolder.EDIT_BUTTON_ICON_LIGHT);
+      case DARK -> GraphicsController.setButtonGraphic(editTierButton, ResourceHolder.EDIT_BUTTON_ICON_DARK);
     }
   }
 }

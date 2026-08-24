@@ -5,7 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
@@ -18,7 +19,7 @@ public class TieredPane extends ScrollPane {
     this.graphicsController = graphicsController;
     this.tierBoxList = FXCollections.observableArrayList();
     this.tiersVBox = new VBox();
-    tierBoxList = graphicsController.constructTierBoxes();
+    tierBoxList = graphicsController.constructorInstance().constructTierBoxes();
     tiersVBox.getChildren().addAll(tierBoxList);
 
     setContent(tiersVBox);
@@ -26,7 +27,17 @@ public class TieredPane extends ScrollPane {
     setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
     setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
-    graphicsController.updateBorders(this);
+    final var color = ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.LIGHT
+            ? ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT
+            : ConfigHolder.DEFAULT_ACCENT_COLOR_DARK;
+
+    final var border = new Border(
+            new BorderStroke(
+                    Paint.valueOf(color),
+                    BorderStrokeStyle.SOLID,
+                    CornerRadii.EMPTY,
+                    BorderWidths.DEFAULT));
+    setBorder(border);
 
     tiersVBox.setAlignment(Pos.CENTER);
     tiersVBox.setPadding(new Insets(ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));
@@ -36,7 +47,7 @@ public class TieredPane extends ScrollPane {
     tiersVBox.getChildren().clear();
     tierBoxList.clear();
 
-    tierBoxList = graphicsController.constructTierBoxes();
+    tierBoxList = graphicsController.constructorInstance().constructTierBoxes();
     tiersVBox.getChildren().addAll(tierBoxList);
   }
 

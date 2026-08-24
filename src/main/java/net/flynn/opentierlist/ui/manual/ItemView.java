@@ -44,7 +44,7 @@ public class ItemView extends ImageView {
 
             tierListController.removeItem(item);
             parent.getChildren().remove(this);
-            graphicsController.updateItemViews(parent);
+            graphicsController.constructorInstance().updateItemViews(parent);
 
           }
         });
@@ -56,7 +56,7 @@ public class ItemView extends ImageView {
           unTierImageMenu.setOnAction(_ -> {
 
             tierListController.unTier(item);
-            graphicsController.updateAll();
+            graphicsController.constructorInstance().updateAll();
           });
         }
 
@@ -89,7 +89,7 @@ public class ItemView extends ImageView {
 
     setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
-        graphicsController.updateItemViews(parent);
+        graphicsController.constructorInstance().updateItemViews(parent);
       event.consume();
     });
   }
@@ -136,7 +136,7 @@ public class ItemView extends ImageView {
         success = true;
     }
     if (success)
-      graphicsController.updateItemViews(parent);
+      graphicsController.constructorInstance().updateItemViews(parent);
 
     event.setDropCompleted(success);
     event.consume();

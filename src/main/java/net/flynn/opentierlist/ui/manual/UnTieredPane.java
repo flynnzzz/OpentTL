@@ -33,6 +33,6 @@ public class UnTieredPane extends ScrollPane {
   }
 
   public void update() {
-    graphicsController.updateItemViews(unTieredPane);
+    graphicsController.constructorInstance().updateItemViews(unTieredPane);
   }
 }

@@ -3,13 +3,10 @@ package net.flynn.opentierlist.controller;
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -18,37 +15,27 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.ui.manual.*;
+import net.flynn.opentierlist.ui.manual.MainPane;
+import net.flynn.opentierlist.ui.manual.TieredPane;
+import net.flynn.opentierlist.ui.manual.UnTieredPane;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GraphicsController {
 
   private final TierListController tierListController;
+  private final GraphicsConstructor graphicsConstructor;
 
   private Stage mainStage;
   private MainPane mainPane;
   private TieredPane tieredPane;
   private UnTieredPane unTieredPane;
+
   private final FileChooser tierListFileChooser;
-  private final Map<Integer, Image> imageCache;
 
-  private void setTieredBorder(String color) {
-
-    if (tieredPane == null || unTieredPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot set borders: Controller is missing the necessary instance ---");
-      return;
-    }
-
-    setBorder(tieredPane, color);
-  }
-
-  private FileChooser createSaveChooser(
+  private FileChooser saveChooser(
       String title, FileChooser.ExtensionFilter filter, File initialDir) {
 
     final var saveChooser = new FileChooser();
@@ -67,11 +54,12 @@ public class GraphicsController {
   public GraphicsController(TierListController tierListController) {
     this.tierListController = tierListController;
     this.tierListFileChooser = new FileChooser();
+    this.graphicsConstructor = new GraphicsConstructor(tierListController, this);
 
     tierListFileChooser.setTitle("Load tier list");
     tierListFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Tier List json files", "*.tson"));
+    tierListFileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Documents"));
 
-    this.imageCache = new HashMap<>();
     System.err.println("[INFO] --- Instantiating new image cache ---");
 
   }
@@ -86,102 +74,6 @@ public class GraphicsController {
     alert.show();
   }
 
-  public ObservableList<TierBox> constructTierBoxes() {
-    return FXCollections.observableArrayList(
-        tierListController
-            .getTiers().stream()
-            .map(t -> new TierBox(t.hashCode(), tierListController, this))
-            .toList());
-  }
-
-  public ObservableList<ItemView> constructItemViews(ItemsPane flowPane, List<TierItem> items) {
-
-    final ObservableList<ItemView> images = FXCollections.observableArrayList();
-
-    items.forEach(item -> {
-
-      final String url = item.getImageUriOrDefault();
-
-      Image img = imageCache.get(item.hashCode());
-
-      if (img == null) {
-        img = new Image(url,
-            ConfigHolder.DEFAULT_CELL_SIZE,
-            ConfigHolder.DEFAULT_CELL_SIZE,
-            false,
-            false);
-        imageCache.put(item.hashCode(), img);
-      }
-
-      final var imageViewer = new ItemView(
-          img,
-          tierListController,
-          this,
-          flowPane);
-      imageViewer.setUserData(item);
-      images.add(imageViewer);
-
-    });
-
-    return images;
-  }
-
-  public void updateItemViews(ItemsPane flowPane) {
-
-    final List<TierItem> items = tierListController
-        .getTierByHash(flowPane.getTierHash())
-        .getItems();
-
-    imageCache.keySet()
-        .removeIf(hash -> !tierListController.itemExists(hash));
-
-    final List<ItemView> images = constructItemViews(flowPane, items);
-
-    flowPane.getChildren().clear();
-    flowPane.getChildren().addAll(images);
-
-  }
-
-  public void updateTiered() {
-
-    if (tieredPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot update Tiers: Controller is missing the necessary instance ---");
-      return;
-    }
-    tieredPane.update();
-  }
-
-  public void updateUnTiered() {
-    if (unTieredPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot update untiered: Controller is missing the necessary instance ---");
-      return;
-    }
-    unTieredPane.update();
-  }
-
-  public void updateAll() {
-
-    if (mainPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot update Tier List: Controller is missing a MainPane instance ---");
-      return;
-    }
-
-    if (mainStage == null) {
-      System.err.println(
-          "[ERROR] --- Cannot update Tier List: Controller is missing a Stage instance ---");
-      return;
-    }
-
-    final String newTitle = tierListController.getTierListName();
-    mainPane.updateTitleLabel(newTitle);
-    mainStage.setTitle("OpenTL - " + newTitle);
-
-    updateTiered();
-    updateUnTiered();
-  }
 
   public void addItemHandle(ActionEvent ignoredEvent) {
 
@@ -197,7 +89,6 @@ public class GraphicsController {
     imageFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
         "Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
     imageFileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Pictures"));
-    imageFileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Documents"));
 
     final List<File> files = imageFileChooser.showOpenMultipleDialog(mainStage);
     if (files == null || files.isEmpty()) {
@@ -217,13 +108,13 @@ public class GraphicsController {
       }
     });
 
-    updateAll();
+    graphicsConstructor.updateAll();
 
   }
 
   public void addTierHandle(ActionEvent ignoredEvent) {
     tierListController.addDefaultTier();
-    updateTiered();
+    graphicsConstructor.updateTiered();
   }
 
   public void parseAndLoadTierList(ActionEvent ignoredEvent) {
@@ -246,8 +137,8 @@ public class GraphicsController {
     if (parsedTier.isPresent()) {
       tierListController.setTierList(parsedTier.get());
       mainStage.requestFocus();
-      reloadImageCache();
-      updateAll();
+      graphicsConstructor.reloadImageCache();
+      graphicsConstructor.updateAll();
       alert(
           AlertType.CONFIRMATION, "Load Tier List", "File '" + toParse + "' was loaded correctly");
     } else {
@@ -277,7 +168,7 @@ public class GraphicsController {
       return;
     }
 
-    final var saveChooser = createSaveChooser(
+    final var saveChooser = saveChooser(
         "Save Tier List as...",
         new FileChooser.ExtensionFilter("Tier List json files", "*.tson"),
         new File(System.getProperty("user.home") + "/Documents"));
@@ -326,14 +217,13 @@ public class GraphicsController {
           "[ERROR] --- Cannot export Tier List: Controller is missing a Stage instance ---");
       return;
     }
-
     if (tieredPane == null) {
       System.err.println(
           "[ERROR] --- Cannot export Tier List: Controller is missing the necessary instance ---");
       return;
     }
 
-    final var saveChooser = createSaveChooser(
+    final var saveChooser = saveChooser(
         "Export Tier List as...",
         new FileChooser.ExtensionFilter("PNG images", "*.png"),
         new File(System.getProperty("user.home") + "/Pictures"));
@@ -355,48 +245,56 @@ public class GraphicsController {
 
   }
 
-  public void reloadImageCache() {
-    System.err.println("[INFO] --- Reloading image cache ---");
-    imageCache.clear();
-  }
-
-  public void setStageTitle(String string) {
-    if (mainStage == null) {
+  public void changeTheme(ConfigHolder.Theme theme) {
+    if (mainPane == null) {
       System.err.println(
-          "[ERROR] --- Cannot set stage title: Controller is missing a Stage instance ---");
+              "[ERROR] --- Cannot set theme: Controller is missing a MainPane instance ---");
       return;
     }
-    mainStage.setTitle(string);
+    if (tieredPane == null) {
+      System.err.println(
+              "[ERROR] --- Cannot set theme: Controller is missing the necessary instance ---");
+      return;
+    }
+
+    ConfigHolder.setCurrentTheme(theme);
+
+    String color = null;
+    switch (theme) {
+      case LIGHT -> {
+        Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        mainPane.setButtonGraphics(ConfigHolder.Theme.LIGHT);
+        tieredPane.setButtonThemes(ConfigHolder.Theme.LIGHT);
+        color = ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT;
+      }
+      case DARK -> {
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+        mainPane.setButtonGraphics(ConfigHolder.Theme.DARK);
+        tieredPane.setButtonThemes(ConfigHolder.Theme.DARK);
+        color = ConfigHolder.DEFAULT_ACCENT_COLOR_DARK;
+      }
+    }
+    tieredPane.setBorder(new Border(
+            new BorderStroke(
+                    Paint.valueOf(color),
+                    BorderStrokeStyle.SOLID,
+                    CornerRadii.EMPTY,
+                    BorderWidths.DEFAULT)));
   }
 
-  public void setBorder(ScrollPane pane, String color) {
-    pane.setBorder(new Border(
-        new BorderStroke(
-            Paint.valueOf(color),
-            BorderStrokeStyle.SOLID,
-            CornerRadii.EMPTY,
-            BorderWidths.DEFAULT)));
+  public void changeFlowPaneBorder(FlowPane flowPane, String color) {
+    flowPane.setBorder(new Border(
+            new BorderStroke(
+                    Paint.valueOf(color),
+                    BorderStrokeStyle.SOLID,
+                    CornerRadii.EMPTY,
+                    BorderWidths.DEFAULT)));
   }
 
-  public void updateBorders(ScrollPane pane) {
 
-    final var color = ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.LIGHT
-        ? ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT
-        : ConfigHolder.DEFAULT_ACCENT_COLOR_DARK;
-
-    final var border = new Border(
-        new BorderStroke(
-            Paint.valueOf(color),
-            BorderStrokeStyle.SOLID,
-            CornerRadii.EMPTY,
-            BorderWidths.DEFAULT));
-    pane.setBorder(border);
-
-  }
-
-  public void setGraphic(Button button, String resource) {
+  public static void setButtonGraphic(Button button, String resource) {
     try {
-      var imageURI = getClass().getResource(resource);
+      final var imageURI = GraphicsController.class.getResource(resource);
       if (imageURI == null)
         throw new URISyntaxException("imageURI", "[ERROR] --- add tier button resource not found, exiting ---");
       button.setGraphic(new ImageView(new Image(imageURI.toURI().toString())));
@@ -407,67 +305,32 @@ public class GraphicsController {
     }
   }
 
-  public void setTheme(ConfigHolder.Theme theme) {
-    if (mainPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot set theme: Controller is missing a MainPane instance ---");
-      return;
-    }
-
-    if (tieredPane == null) {
-      System.err.println(
-          "[ERROR] --- Cannot set theme: Controller is missing the necessary instance ---");
-      return;
-    }
-
-    ConfigHolder.setCurrentTheme(theme);
-
-    final var lightTheme = new NordLight().getUserAgentStylesheet();
-    final var darkTheme = new NordDark().getUserAgentStylesheet();
-
-    switch (theme) {
-      case LIGHT -> {
-        Application.setUserAgentStylesheet(lightTheme);
-        mainPane.setButtonGraphics(ConfigHolder.Theme.LIGHT);
-        tieredPane.setButtonThemes(ConfigHolder.Theme.LIGHT);
-        setTieredBorder(ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT);
-      }
-      case DARK -> {
-        Application.setUserAgentStylesheet(darkTheme);
-        mainPane.setButtonGraphics(ConfigHolder.Theme.DARK);
-        tieredPane.setButtonThemes(ConfigHolder.Theme.DARK);
-        setTieredBorder(ConfigHolder.DEFAULT_ACCENT_COLOR_DARK);
-      }
-    }
-  }
-
-  public void setFlowPaneBorder(FlowPane flowPane, String color) {
-    flowPane.setBorder(new Border(
-        new BorderStroke(
-            Paint.valueOf(color),
-            BorderStrokeStyle.SOLID,
-            CornerRadii.EMPTY,
-            BorderWidths.DEFAULT)));
-  }
-
-  public void setMainStage(Stage mainStage) {
+  public void attachMainStage(Stage mainStage) {
     this.mainStage = mainStage;
   }
 
-  public void setMainPane(MainPane mainPane) {
+  public void attachMainPane(MainPane mainPane) {
     this.mainPane = mainPane;
   }
 
-  public void setTieredPane(TieredPane tieredPane) {
+  public void attachTieredPane(TieredPane tieredPane) {
     this.tieredPane = tieredPane;
   }
 
-  public void setUnTieredPane(UnTieredPane unTieredPane) {
+  public void attachUnTieredPane(UnTieredPane unTieredPane) {
     this.unTieredPane = unTieredPane;
   }
 
   public Stage getMainStage() {
     return mainStage;
   }
+
+  public MainPane getMainPane() { return mainPane; }
+
+  public TieredPane getTieredPane() { return tieredPane; }
+
+  public UnTieredPane getUnTieredPane() { return unTieredPane; }
+
+  public GraphicsConstructor constructorInstance() { return graphicsConstructor; }
 
 }

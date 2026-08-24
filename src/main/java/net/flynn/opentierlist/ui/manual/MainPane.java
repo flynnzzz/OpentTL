@@ -36,18 +36,18 @@ public class MainPane extends BorderPane {
 
     final TieredPane tieredPane = new TieredPane(graphicsController);
     final UnTieredPane unTieredPane = new UnTieredPane(tierListController, graphicsController);
-    graphicsController.setMainStage(mainStage);
-    graphicsController.setMainPane(this);
-    graphicsController.setTieredPane(tieredPane);
-    graphicsController.setUnTieredPane(unTieredPane);
+    graphicsController.attachMainStage(mainStage);
+    graphicsController.attachMainPane(this);
+    graphicsController.attachTieredPane(tieredPane);
+    graphicsController.attachUnTieredPane(unTieredPane);
 
     {
       final MenuItem menuNewTierList = new MenuItem("New...\t\t");
       menuNewTierList.setOnAction(_ -> {
 
         tierListController.setTierList(TierList.ofDefaultTiers());
-        graphicsController.reloadImageCache();
-        graphicsController.updateAll();
+        graphicsController.constructorInstance().reloadImageCache();
+        graphicsController.constructorInstance().updateAll();
 
       });
 
@@ -66,12 +66,12 @@ public class MainPane extends BorderPane {
       final MenuItem menuExportAs = new MenuItem("Export as PNG to...\t\t");
       menuExportAs.setOnAction(graphicsController::exportAsPathHandle);
 
-      graphicsController.setTheme(ConfigHolder.Theme.LIGHT);
+      graphicsController.changeTheme(ConfigHolder.Theme.LIGHT);
 
       final MenuItem menuLightTheme = new MenuItem("Light Theme\t\t"), menuDarkTheme = new MenuItem("Dark Theme\t\t");
 
-      menuLightTheme.setOnAction(_ -> graphicsController.setTheme(ConfigHolder.Theme.LIGHT));
-      menuDarkTheme.setOnAction(_ -> graphicsController.setTheme(ConfigHolder.Theme.DARK));
+      menuLightTheme.setOnAction(_ -> graphicsController.changeTheme(ConfigHolder.Theme.LIGHT));
+      menuDarkTheme.setOnAction(_ -> graphicsController.changeTheme(ConfigHolder.Theme.DARK));
 
       final MenuBar menuBar = new MenuBar();
       final Menu fileMenu = new Menu("File");
@@ -89,8 +89,8 @@ public class MainPane extends BorderPane {
       addTierButton.setFocusTraversable(false);
       addItemButton.setFocusTraversable(false);
 
-      graphicsController.setGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_LIGHT);
-      graphicsController.setGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_LIGHT);
+      GraphicsController.setButtonGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_LIGHT);
+      GraphicsController.setButtonGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_LIGHT);
 
     }
 
@@ -150,7 +150,7 @@ public class MainPane extends BorderPane {
       if (!titleLabel.getText().isBlank()) {
 
         tierListController.setTierListName(titleLabel.getText());
-        graphicsController.setStageTitle("OpenTL - " + titleLabel.getText());
+        graphicsController.getMainStage().setTitle("OpenTL - " + titleLabel.getText());
         updateOldTitle(titleLabel.getText());
       }
 
@@ -165,12 +165,12 @@ public class MainPane extends BorderPane {
   public void setButtonGraphics(ConfigHolder.Theme theme) {
     switch (theme) {
       case LIGHT -> {
-        graphicsController.setGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_LIGHT);
-        graphicsController.setGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_LIGHT);
+        GraphicsController.setButtonGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_LIGHT);
+        GraphicsController.setButtonGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_LIGHT);
       }
       case DARK -> {
-        graphicsController.setGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_DARK);
-        graphicsController.setGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_DARK);
+        GraphicsController.setButtonGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_DARK);
+        GraphicsController.setButtonGraphic(addItemButton, ResourceHolder.ADD_ITEM_BUTTON_ICON_DARK);
       }
     }
   }

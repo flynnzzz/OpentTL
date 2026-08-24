@@ -22,9 +22,9 @@ public class ItemsPane extends FlowPane {
     this.graphicsController = graphicsController;
     this.tierHash = tierHash;
     final var items = tierListController.getTierByHash(tierHash).getItems();
-    final var images = graphicsController.constructItemViews(this, items);
+    final var images = graphicsController.constructorInstance().constructItemViews(this, items);
     getChildren().addAll(images);
-    graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+    graphicsController.changeFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
     setPrefWidth(ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
     setMaxHeight(Region.USE_COMPUTED_SIZE);
     setMinHeight(ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
@@ -45,7 +45,7 @@ public class ItemsPane extends FlowPane {
     setOnDragEntered(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
+        graphicsController.changeFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
       }
       event.consume();
     });
@@ -53,7 +53,7 @@ public class ItemsPane extends FlowPane {
     setOnDragExited(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+        graphicsController.changeFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
       }
       event.consume();
     });
@@ -62,7 +62,7 @@ public class ItemsPane extends FlowPane {
 
     setOnDragDone(event -> {
       if (event.getTransferMode() == TransferMode.MOVE)
-        graphicsController.updateItemViews(this);
+        graphicsController.constructorInstance().updateItemViews(this);
       event.consume();
     });
   }
@@ -81,7 +81,7 @@ public class ItemsPane extends FlowPane {
     }
 
     if (success)
-      graphicsController.updateItemViews(this);
+      graphicsController.constructorInstance().updateItemViews(this);
 
     event.setDropCompleted(success);
     event.consume();
