@@ -844,8 +844,8 @@ public class TierListTest {
     assertNotNull(t3.getColor());
     assertNotNull(t4.getColor());
 
-    assertTrue(t1.getColor().matches("0x[0-9a-fA-F]{8}"));
-    assertTrue(t2.getColor().matches("0x[0-9a-fA-F]{8}"));
+    assertTrue(t1.getColor().matches("#[0-9a-fA-F]{6}"));
+    assertTrue(t2.getColor().matches("#[0-9a-fA-F]{6}"));
 
   }
 

@@ -10,8 +10,5 @@ public class TierNotFoundException extends IndexOutOfBoundsException {
 	public TierNotFoundException(String message) {
 		super(message);
 	}
-	
-	public TierNotFoundException() {
-		super();
-	}
+
 }

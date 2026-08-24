@@ -16,8 +16,8 @@ import net.flynn.opentierlist.controller.GraphicsController;
 public class MainPane extends BorderPane {
 
   private final TextField titleLabel;
-    private final Button addTierButton, addItemButton;
-    private final TierListController tierListController;
+  private final Button addTierButton, addItemButton;
+  private final TierListController tierListController;
   private final GraphicsController graphicsController;
 
   private String oldTitle;

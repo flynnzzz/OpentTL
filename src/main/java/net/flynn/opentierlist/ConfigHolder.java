@@ -13,8 +13,8 @@ public class ConfigHolder {
     public final static double DEFAULT_EXPANDED_IMAGE_SIZE = DEFAULT_CELL_SIZE * (0.8 + 0.4);
     public final static int DEFAULT_TIERS_VBOX_PADDING = 8;
 
-    public final static String DEFAULT_BAR_BORDER_COLOR = "0x696969ff";
-    public final static String DEFAULT_BAR_HIGHLIGHT_COLOR = "0x00bfffff";
+    public final static String DEFAULT_BAR_BORDER_COLOR = "#696969";
+    public final static String DEFAULT_BAR_HIGHLIGHT_COLOR = "#00bfff";
 
     public final static int COLOR_MENU_WIDTH = 256;
     public final static int COLOR_MENU_HEIGHT = 128 + 32;
