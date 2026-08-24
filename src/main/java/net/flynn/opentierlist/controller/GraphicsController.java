@@ -17,7 +17,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.ui.manual.*;
 
 import java.io.File;
@@ -106,8 +106,8 @@ public class GraphicsController {
 
       if (img == null) {
         img = new Image(url,
-            DataHandler.ConfigHolder.DEFAULT_CELL_SIZE,
-            DataHandler.ConfigHolder.DEFAULT_CELL_SIZE,
+            ConfigHolder.DEFAULT_CELL_SIZE,
+            ConfigHolder.DEFAULT_CELL_SIZE,
             false,
             false);
         imageCache.put(item.hashCode(), img);
@@ -380,9 +380,9 @@ public class GraphicsController {
 
   public void updateBorders(ScrollPane pane) {
 
-    final var color = DataHandler.ConfigHolder.getCurrentTheme() == DataHandler.ConfigHolder.Theme.LIGHT
-        ? DataHandler.ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT
-        : DataHandler.ConfigHolder.DEFAULT_ACCENT_COLOR_DARK;
+    final var color = ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.LIGHT
+        ? ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT
+        : ConfigHolder.DEFAULT_ACCENT_COLOR_DARK;
 
     final var border = new Border(
         new BorderStroke(
@@ -407,7 +407,7 @@ public class GraphicsController {
     }
   }
 
-  public void setTheme(DataHandler.ConfigHolder.Theme theme) {
+  public void setTheme(ConfigHolder.Theme theme) {
     if (mainPane == null) {
       System.err.println(
           "[ERROR] --- Cannot set theme: Controller is missing a MainPane instance ---");
@@ -420,7 +420,7 @@ public class GraphicsController {
       return;
     }
 
-    DataHandler.ConfigHolder.setCurrentTheme(theme);
+    ConfigHolder.setCurrentTheme(theme);
 
     final var lightTheme = new NordLight().getUserAgentStylesheet();
     final var darkTheme = new NordDark().getUserAgentStylesheet();
@@ -428,15 +428,15 @@ public class GraphicsController {
     switch (theme) {
       case LIGHT -> {
         Application.setUserAgentStylesheet(lightTheme);
-        mainPane.setButtonGraphics(DataHandler.ConfigHolder.Theme.LIGHT);
-        tieredPane.setButtonThemes(DataHandler.ConfigHolder.Theme.LIGHT);
-        setTieredBorder(DataHandler.ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT);
+        mainPane.setButtonGraphics(ConfigHolder.Theme.LIGHT);
+        tieredPane.setButtonThemes(ConfigHolder.Theme.LIGHT);
+        setTieredBorder(ConfigHolder.DEFAULT_ACCENT_COLOR_LIGHT);
       }
       case DARK -> {
         Application.setUserAgentStylesheet(darkTheme);
-        mainPane.setButtonGraphics(DataHandler.ConfigHolder.Theme.DARK);
-        tieredPane.setButtonThemes(DataHandler.ConfigHolder.Theme.DARK);
-        setTieredBorder(DataHandler.ConfigHolder.DEFAULT_ACCENT_COLOR_DARK);
+        mainPane.setButtonGraphics(ConfigHolder.Theme.DARK);
+        tieredPane.setButtonThemes(ConfigHolder.Theme.DARK);
+        setTieredBorder(ConfigHolder.DEFAULT_ACCENT_COLOR_DARK);
       }
     }
   }

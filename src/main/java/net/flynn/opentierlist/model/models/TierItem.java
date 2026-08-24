@@ -97,7 +97,7 @@ public class TierItem {
   @JsonIgnore
   public String getImageUriOrDefault() {
     return imagePath.exists() ? imagePath.getUriAsString()
-        : getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE).toString();
+        : Objects.requireNonNull(Objects.requireNonNull(getClass().getResource(ResourceHolder.DEFAULT_ITEM_IMAGE))).toString();
   }
 
   public TieredStatus getStatus() {

@@ -36,15 +36,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.flynn.opentierlist.controller.TierListController;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
 public class TierBox extends HBox {
 
   private final TextField tierNameText;
-  private final ItemsPane tieredPane;
-  private final Button editTierButton;
+    private final Button editTierButton;
   private final TierListController tierListController;
   private final GraphicsController graphicsController;
   private int tierHash;
@@ -64,7 +63,7 @@ public class TierBox extends HBox {
     this.tierHash = tierHash;
     this.tierNameText = new TextField(tierListController.getTierByHash(tierHash).getName());
     this.editTierButton = new Button();
-    this.tieredPane = new ItemsPane(tierHash, tierListController, graphicsController);
+      ItemsPane tieredPane = new ItemsPane(tierHash, tierListController, graphicsController);
     this.oldTextValue = "";
 
     getChildren().addAll(tierNameText, tieredPane, editTierButton);
@@ -73,22 +72,22 @@ public class TierBox extends HBox {
       tierNameText.setEditable(true);
       tierNameText.setFocusTraversable(false);
       tierNameText.setAlignment(Pos.CENTER);
-      tierNameText.setPrefSize(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE, DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
+      tierNameText.setPrefSize(ConfigHolder.DEFAULT_CELL_SIZE, ConfigHolder.DEFAULT_CELL_SIZE);
 
       editTierButton.setAlignment(Pos.CENTER);
       editTierButton.setFocusTraversable(false);
 
       setTierNameLabelBackground();
-      setTierNameLabelBorder(DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+      setTierNameLabelBorder(ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
 
       setAlignment(Pos.CENTER);
 
-      setSpacing(DataHandler.ConfigHolder.DEFAULT_TIER_SPACING);
+      setSpacing(ConfigHolder.DEFAULT_TIER_SPACING);
       setPadding(new Insets(
-          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_TOP,
-          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_RIGHT,
-          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_BOTTOM,
-          DataHandler.ConfigHolder.DEFAULT_TIER_PADDING_LEFT));
+          ConfigHolder.DEFAULT_TIER_PADDING_TOP,
+          ConfigHolder.DEFAULT_TIER_PADDING_RIGHT,
+          ConfigHolder.DEFAULT_TIER_PADDING_BOTTOM,
+          ConfigHolder.DEFAULT_TIER_PADDING_LEFT));
     }
 
     colorPickerMenu = new ContextMenu();
@@ -184,15 +183,15 @@ public class TierBox extends HBox {
 
     final BorderPane colorPane = new BorderPane();
 
-    final Scene colorMenu = new Scene(colorPane, DataHandler.ConfigHolder.COLOR_MENU_WIDTH,
-        DataHandler.ConfigHolder.COLOR_MENU_HEIGHT);
+    final Scene colorMenu = new Scene(colorPane, ConfigHolder.COLOR_MENU_WIDTH,
+        ConfigHolder.COLOR_MENU_HEIGHT);
     colorPicker = new ColorPicker();
     colorPicker.setPadding(
         new Insets(
-            DataHandler.ConfigHolder.COLOR_PADDING_TOP,
-            DataHandler.ConfigHolder.COLOR_PADDING_RIGHT,
-            DataHandler.ConfigHolder.COLOR_PADDING_BOTTOM,
-            DataHandler.ConfigHolder.COLOR_PADDING_LEFT));
+            ConfigHolder.COLOR_PADDING_TOP,
+            ConfigHolder.COLOR_PADDING_RIGHT,
+            ConfigHolder.COLOR_PADDING_BOTTOM,
+            ConfigHolder.COLOR_PADDING_LEFT));
 
     final VBox colorBox = new VBox();
     final Label colorLabel = new Label("Pick a color");
@@ -201,7 +200,7 @@ public class TierBox extends HBox {
 
     colorBox.getChildren().addAll(colorLabel, colorPicker, confirmColor);
     colorBox.setAlignment(Pos.CENTER);
-    colorBox.setSpacing(DataHandler.ConfigHolder.COLOR_SPACING);
+    colorBox.setSpacing(ConfigHolder.COLOR_SPACING);
 
     colorPane.setCenter(colorBox);
     colorStage.setTitle("Color picker");
@@ -214,7 +213,7 @@ public class TierBox extends HBox {
 
   private void setupEditButton() {
     try {
-      final String resource = DataHandler.ConfigHolder.getCurrentTheme() == DataHandler.ConfigHolder.Theme.LIGHT
+      final String resource = ConfigHolder.getCurrentTheme() == ConfigHolder.Theme.LIGHT
           ? ResourceHolder.EDIT_BUTTON_ICON_LIGHT
           : ResourceHolder.EDIT_BUTTON_ICON_DARK;
 
@@ -239,14 +238,14 @@ public class TierBox extends HBox {
     tierNameText.setOnDragEntered(event -> {
       if (event.getTarget() instanceof TextField target && event.getGestureSource() != target
           && event.getDragboard().hasString() && !event.getDragboard().hasImage())
-        setTierNameLabelBorder(DataHandler.ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
+        setTierNameLabelBorder(ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
       event.consume();
     });
 
     tierNameText.setOnDragExited(event -> {
       if (event.getTarget() instanceof TextField target && event.getGestureSource() != target
           && event.getDragboard().hasString() && !event.getDragboard().hasImage())
-        setTierNameLabelBorder(DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+        setTierNameLabelBorder(ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
       event.consume();
     });
 
@@ -324,7 +323,7 @@ public class TierBox extends HBox {
     getChildren().add(editTierButton);
   }
 
-  public void setButtonTheme(DataHandler.ConfigHolder.Theme theme) {
+  public void setButtonTheme(ConfigHolder.Theme theme) {
 
     switch (theme) {
       case LIGHT -> graphicsController.setGraphic(editTierButton, ResourceHolder.EDIT_BUTTON_ICON_LIGHT);

@@ -1,53 +1,9 @@
-package net.flynn.opentierlist.persistence;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Optional;
-
-import com.fasterxml.jackson.databind.DatabindException;
+package net.flynn.opentierlist;
 
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.ui.manual.TieredPane;
 
-public class DataHandler {
-  public DataHandler() {
-  }
-
-  public void save(File file, TierList tierList) {
-    try {
-      TierListWriter.write(file, tierList);
-    } catch (IOException _) {
-      System.err.println("[ERROR] --- Could not save tier list '" + tierList.getName() + "', aborting ---");
-    }
-  }
-
-  public void export(Path path, TieredPane node) {
-    try {
-      TierListWriter.export(path.toFile(), node);
-    } catch (IOException _) {
-      System.err.println(
-          "[ERROR] --- IO exception: could not export Tier List to " + path.getFileName() + " ---");
-    }
-  }
-
-  public Optional<TierList> load(File file) {
-    Optional<TierList> res = Optional.empty();
-    try {
-      res = Optional.of(TierListReader.read(file));
-    } catch (DatabindException e) {
-      System.err
-          .println("[ERROR|DataBindException] --- Failed to parse tier list from file '" + file.getAbsolutePath() + "', aborting ---");
-    } catch (IOException _) {
-      System.err
-          .println("[ERROR|IOException] --- Could not load tier list from path '" + file.getAbsolutePath() + "', aborting ---");
-    }
-    return res;
-  }
-
-  public static class ConfigHolder {
+public class ConfigHolder {
 
     public final static int DEFAULT_CELL_SIZE = 64 + 32;
 
@@ -67,23 +23,23 @@ public class DataHandler {
     public final static int COLOR_MENU_WIDTH = 256;
     public final static int COLOR_MENU_HEIGHT = 128 + 32;
     public final static int COLOR_PADDING_TOP = 4 + 1,
-        COLOR_PADDING_RIGHT = 16 + 4,
-        COLOR_PADDING_BOTTOM = 4 + 1,
-        COLOR_PADDING_LEFT = 16 + 4;
+            COLOR_PADDING_RIGHT = 16 + 4,
+            COLOR_PADDING_BOTTOM = 4 + 1,
+            COLOR_PADDING_LEFT = 16 + 4;
     public final static int COLOR_SPACING = 16;
 
     public enum Theme {
-      LIGHT, DARK
+        LIGHT, DARK
     }
 
     private static Theme currentTheme = Theme.LIGHT;
 
     public static void setCurrentTheme(Theme theme) {
-      currentTheme = theme;
+        currentTheme = theme;
     }
 
     public static Theme getCurrentTheme() {
-      return currentTheme;
+        return currentTheme;
     }
 
     public final static double SCREENSHOT_WIDTH = DEFAULT_TIERED_BAR_WIDTH + 128 + DEFAULT_CELL_SIZE;
@@ -119,5 +75,4 @@ public class DataHandler {
 
     public final static int DEFAULT_BUTTON_PADDING = 8;
     public final static double DEFAULT_BUTTON_SPACING = DEFAULT_BUTTON_PADDING / 1.6;
-  }
 }

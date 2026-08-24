@@ -10,7 +10,7 @@ import javafx.scene.input.*;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
 import java.util.Optional;
@@ -26,8 +26,8 @@ public class ItemView extends ImageView {
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
     this.parent = parent;
-    this.setFitHeight(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
-    this.setFitWidth(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
+    this.setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
+    this.setFitWidth(ConfigHolder.DEFAULT_CELL_SIZE);
     setupEventHandlers();
   }
 
@@ -75,13 +75,13 @@ public class ItemView extends ImageView {
     });
     setOnDragEntered(event -> {
       if (event.getDragboard().hasImage())
-        setFitHeight(DataHandler.ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
+        setFitHeight(ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
       event.consume();
     });
 
     setOnDragExited(event -> {
       if (event.getTarget() instanceof ImageView && event.getSource() instanceof ImageView)
-        setFitHeight(DataHandler.ConfigHolder.DEFAULT_CELL_SIZE);
+        setFitHeight(ConfigHolder.DEFAULT_CELL_SIZE);
       event.consume();
     });
 
@@ -124,13 +124,13 @@ public class ItemView extends ImageView {
     final EventTarget eventTarget = event.getTarget();
     if (dragBoard.hasImage() && dragBoard.hasString()
         && eventTarget instanceof ImageView targetImage
-        && targetImage.getUserData() instanceof TierItem targetitem
-        && !sourceItem.equals(targetitem)) {
+        && targetImage.getUserData() instanceof TierItem targetItem
+        && !sourceItem.equals(targetItem)) {
 
-      final Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetitem);
+      final Optional<Tier> potentialTargetTier = tierListController.getTierByItem(targetItem);
 
       potentialTargetTier.ifPresent(
-          targetTier -> tierListController.insertItem(sourceItem, targetTier, targetitem));
+          targetTier -> tierListController.insertItem(sourceItem, targetTier, targetItem));
 
       if (potentialTargetTier.isPresent())
         success = true;

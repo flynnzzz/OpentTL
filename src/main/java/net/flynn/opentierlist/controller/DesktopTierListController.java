@@ -9,23 +9,23 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import net.flynn.opentierlist.model.enums.DefaultTier;
-import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.persistence.DesktopTierListDataHandler;
+import net.flynn.opentierlist.persistence.TierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
-public class StandardTierListController implements TierListController {
+public class DesktopTierListController implements TierListController {
 
   private TierList tierList;
-  private final DataHandler dataHandler;
+  private final TierListDataHandler desktopDataHandler;
 
-  public StandardTierListController(TierList tierList) {
+  public DesktopTierListController(TierList tierList) {
     this.tierList = tierList;
-    this.dataHandler = new DataHandler();
+    this.desktopDataHandler = new DesktopTierListDataHandler();
   }
 
   @Override
@@ -237,7 +237,7 @@ public class StandardTierListController implements TierListController {
       if (!path.toString().endsWith(".tson"))
         path = Path.of(path + ".tson");
 
-      dataHandler.save(path.toFile(), tierList);
+      desktopDataHandler.save(path.toFile(), tierList);
       return true;
     } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException ex) {
       System.err.println(ex.getMessage());
@@ -269,7 +269,7 @@ public class StandardTierListController implements TierListController {
       if (!path.toString().endsWith(".png"))
         path = Path.of(path + ".png");
 
-      dataHandler.export(path, node);
+      desktopDataHandler.export(path, node);
       return true;
     } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException ex) {
       System.err.println(ex.getMessage());
@@ -294,17 +294,12 @@ public class StandardTierListController implements TierListController {
 
   @Override
   public Optional<TierList> parseTierList(File file) {
-    return dataHandler.load(file);
+    return desktopDataHandler.load(file);
   }
 
   @Override
   public String toString() {
     return tierList.toString();
-  }
-
-  @Override
-  public String toString(TierStringFormat format) {
-    return tierList.toString(format);
   }
 
   @Override

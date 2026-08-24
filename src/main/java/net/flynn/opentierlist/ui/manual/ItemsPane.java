@@ -8,7 +8,7 @@ import javafx.scene.layout.FlowPane;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.model.enums.DefaultTier;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 
 public class ItemsPane extends FlowPane {
   private final TierListController tierListController;
@@ -23,10 +23,10 @@ public class ItemsPane extends FlowPane {
     final var items = tierListController.getTierByHash(tierHash).getItems();
     final var images = graphicsController.constructItemViews(this, items);
     getChildren().addAll(images);
-    graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
-    setPrefWidth(DataHandler.ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
-    setMaxHeight(DataHandler.ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
-    setMinHeight(DataHandler.ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
+    graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+    setPrefWidth(ConfigHolder.DEFAULT_TIERED_BAR_WIDTH);
+    setMaxHeight(ConfigHolder.DEFAULT_BAR_MAX_HEIGHT);
+    setMinHeight(ConfigHolder.DEFAULT_BAR_MIN_HEIGHT);
     setupDragAndDrop();
   }
 
@@ -44,7 +44,7 @@ public class ItemsPane extends FlowPane {
     setOnDragEntered(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
+        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_HIGHLIGHT_COLOR);
       }
       event.consume();
     });
@@ -52,7 +52,7 @@ public class ItemsPane extends FlowPane {
     setOnDragExited(event -> {
       var sourceData = event.getGestureSource();
       if (sourceData instanceof ImageView && event.getDragboard().hasImage()) {
-        graphicsController.setFlowPaneBorder(this, DataHandler.ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
+        graphicsController.setFlowPaneBorder(this, ConfigHolder.DEFAULT_BAR_BORDER_COLOR);
       }
       event.consume();
     });

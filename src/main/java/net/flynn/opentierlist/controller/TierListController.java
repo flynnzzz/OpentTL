@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
@@ -16,11 +15,11 @@ public interface TierListController {
 
   static TierListController of(TierList tl) {
     Objects.requireNonNull(tl);
-    return new StandardTierListController(tl);
+    return new DesktopTierListController(tl);
   }
 
   static TierListController ofDefaultTiers() {
-    return new StandardTierListController(TierList.ofDefaultTiers());
+    return new DesktopTierListController(TierList.ofDefaultTiers());
   }
 
   void tier(TierItem unTiered, Tier toTier);
@@ -86,7 +85,5 @@ public interface TierListController {
   Optional<TierList> parseTierList(File file);
 
   String toString();
-
-  String toString(TierStringFormat format);
 
 }

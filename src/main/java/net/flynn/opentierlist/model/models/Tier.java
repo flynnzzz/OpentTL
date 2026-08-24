@@ -2,7 +2,6 @@ package net.flynn.opentierlist.model.models;
 
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
-import net.flynn.opentierlist.persistence.DataHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +10,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.flynn.opentierlist.ConfigHolder;
 
 public class Tier {
   private TierHeader header;
@@ -20,7 +20,7 @@ public class Tier {
   private final long id;
 
   public static final String DEFAULT_TIER_NAME = "New Tier";
-  public static final String DEFAULT_TIER_COLOR = DataHandler.ConfigHolder.DEFAULT_NEW_TIER_COLOR;
+  public static final String DEFAULT_TIER_COLOR = ConfigHolder.DEFAULT_NEW_TIER_COLOR;
 
   private void setHeader(TierHeader header) {
     this.header = Objects.requireNonNull(header);

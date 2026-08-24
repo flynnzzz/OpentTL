@@ -6,7 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
 public class TieredPane extends ScrollPane {
@@ -29,7 +29,7 @@ public class TieredPane extends ScrollPane {
     graphicsController.updateBorders(this);
 
     tiersVBox.setAlignment(Pos.CENTER);
-    tiersVBox.setPadding(new Insets(DataHandler.ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));
+    tiersVBox.setPadding(new Insets(ConfigHolder.DEFAULT_TIERS_VBOX_PADDING));
   }
 
   public void update() {
@@ -54,7 +54,7 @@ public class TieredPane extends ScrollPane {
         .forEach(TierBox::showEditButton);
   }
 
-  public void setButtonThemes(DataHandler.ConfigHolder.Theme theme) {
+  public void setButtonThemes(ConfigHolder.Theme theme) {
     for (var box : tierBoxList)
       box.setButtonTheme(theme);
   }

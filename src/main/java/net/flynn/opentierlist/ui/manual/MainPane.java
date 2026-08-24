@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.persistence.DataHandler;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
@@ -66,12 +66,12 @@ public class MainPane extends BorderPane {
       final MenuItem menuExportAs = new MenuItem("Export as PNG to...\t\t");
       menuExportAs.setOnAction(graphicsController::exportAsPathHandle);
 
-      graphicsController.setTheme(DataHandler.ConfigHolder.Theme.LIGHT);
+      graphicsController.setTheme(ConfigHolder.Theme.LIGHT);
 
       final MenuItem menuLightTheme = new MenuItem("Light Theme\t\t"), menuDarkTheme = new MenuItem("Dark Theme\t\t");
 
-      menuLightTheme.setOnAction(_ -> graphicsController.setTheme(DataHandler.ConfigHolder.Theme.LIGHT));
-      menuDarkTheme.setOnAction(_ -> graphicsController.setTheme(DataHandler.ConfigHolder.Theme.DARK));
+      menuLightTheme.setOnAction(_ -> graphicsController.setTheme(ConfigHolder.Theme.LIGHT));
+      menuDarkTheme.setOnAction(_ -> graphicsController.setTheme(ConfigHolder.Theme.DARK));
 
       final MenuBar menuBar = new MenuBar();
       final Menu fileMenu = new Menu("File");
@@ -99,22 +99,22 @@ public class MainPane extends BorderPane {
       buttonsHBox.getChildren().addAll(addTierButton, addItemButton);
 
       buttonsHBox.setPadding(new Insets(
-              DataHandler.ConfigHolder.DEFAULT_BUTTON_PADDING,
-              DataHandler.ConfigHolder.DEFAULT_BUTTON_PADDING,
-              DataHandler.ConfigHolder.DEFAULT_BUTTON_PADDING,
-              DataHandler.ConfigHolder.DEFAULT_BUTTON_PADDING));
+              ConfigHolder.DEFAULT_BUTTON_PADDING,
+              ConfigHolder.DEFAULT_BUTTON_PADDING,
+              ConfigHolder.DEFAULT_BUTTON_PADDING,
+              ConfigHolder.DEFAULT_BUTTON_PADDING));
 
-      buttonsHBox.setSpacing(DataHandler.ConfigHolder.DEFAULT_BUTTON_SPACING);
+      buttonsHBox.setSpacing(ConfigHolder.DEFAULT_BUTTON_SPACING);
       buttonsHBox.setAlignment(Pos.BOTTOM_CENTER);
     }
     {
       titleLabel.setFocusTraversable(false);
       HBox titleBox = new HBox(titleLabel);
       titleBox.setPadding(new Insets(
-              DataHandler.ConfigHolder.DEFAULT_TITLE_PADDING_TOP,
-              DataHandler.ConfigHolder.DEFAULT_TITLE_PADDING_RIGHT,
-              DataHandler.ConfigHolder.DEFAULT_TITLE_PADDING_BOTTOM,
-              DataHandler.ConfigHolder.DEFAULT_TITLE_PADDING_LEFT));
+              ConfigHolder.DEFAULT_TITLE_PADDING_TOP,
+              ConfigHolder.DEFAULT_TITLE_PADDING_RIGHT,
+              ConfigHolder.DEFAULT_TITLE_PADDING_BOTTOM,
+              ConfigHolder.DEFAULT_TITLE_PADDING_LEFT));
 
       titleBox.setAlignment(Pos.BASELINE_CENTER);
       var centerBox = new VBox(titleBox, tieredPane, buttonsHBox);
@@ -125,10 +125,10 @@ public class MainPane extends BorderPane {
       unrankedBox.setAlignment(Pos.CENTER);
       unrankedBox.setPadding(
               new Insets(
-                      DataHandler.ConfigHolder.DEFAULT_UNRANKED_PADDING_TOP,
-                      DataHandler.ConfigHolder.DEFAULT_UNRANKED_PADDING_RIGHT,
-                      DataHandler.ConfigHolder.DEFAULT_UNRANKED_PADDING_BOTTOM,
-                      DataHandler.ConfigHolder.DEFAULT_UNRANKED_PADDING_LEFT));
+                      ConfigHolder.DEFAULT_UNRANKED_PADDING_TOP,
+                      ConfigHolder.DEFAULT_UNRANKED_PADDING_RIGHT,
+                      ConfigHolder.DEFAULT_UNRANKED_PADDING_BOTTOM,
+                      ConfigHolder.DEFAULT_UNRANKED_PADDING_LEFT));
 
       setBottom(unrankedBox);
     }
@@ -162,7 +162,7 @@ public class MainPane extends BorderPane {
     addItemButton.setOnAction(graphicsController::addItemHandle);
   }
 
-  public void setButtonGraphics(DataHandler.ConfigHolder.Theme theme) {
+  public void setButtonGraphics(ConfigHolder.Theme theme) {
     switch (theme) {
       case LIGHT -> {
         graphicsController.setGraphic(addTierButton, ResourceHolder.ADD_TIER_BUTTON_ICON_LIGHT);

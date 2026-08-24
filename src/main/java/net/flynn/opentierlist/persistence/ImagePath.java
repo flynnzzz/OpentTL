@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public record ImagePath(URI uri) {
-  private static final String DEFAULT_IMAGE_RESOURCE = ResourceHolder.DEFAULT_ITEM_IMAGE;
 
   public static ImagePath of(File file) throws IllegalArgumentException {
     if (file != null && file.exists()) {
@@ -38,9 +37,9 @@ public record ImagePath(URI uri) {
   }
 
   public static ImagePath defaultResource() {
-    final URL url = ImagePath.class.getResource(DEFAULT_IMAGE_RESOURCE);
+    final URL url = ImagePath.class.getResource(ResourceHolder.DEFAULT_ITEM_IMAGE);
     if (url == null)
-      throw new IllegalStateException("Resource missing: " + DEFAULT_IMAGE_RESOURCE);
+      throw new IllegalStateException("Resource missing: " + ResourceHolder.DEFAULT_ITEM_IMAGE);
     try {
       return new ImagePath(url.toURI());
     } catch (URISyntaxException _) {
