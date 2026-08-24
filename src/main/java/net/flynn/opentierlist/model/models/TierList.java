@@ -1,19 +1,18 @@
 package net.flynn.opentierlist.model.models;
 
-import static net.flynn.opentierlist.model.enums.TieredStatus.TIERED;
-import static net.flynn.opentierlist.model.enums.TieredStatus.UNTIERED;
-
-import java.util.*;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.enums.TieredStatus;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 import net.flynn.opentierlist.model.exceptions.TierNotFoundException;
+
+import java.util.*;
+import java.util.stream.Stream;
+
+import static net.flynn.opentierlist.model.enums.TieredStatus.TIERED;
+import static net.flynn.opentierlist.model.enums.TieredStatus.UNTIERED;
 
 public class TierList {
 

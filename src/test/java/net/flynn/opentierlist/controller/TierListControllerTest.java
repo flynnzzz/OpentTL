@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class StdTierListControllerTest {
+public class TierListControllerTest {
 
   private Tier t1, t2, t3, t4;
   private TierList tl;

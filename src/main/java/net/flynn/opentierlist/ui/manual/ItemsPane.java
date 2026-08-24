@@ -6,10 +6,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
-import net.flynn.opentierlist.controller.TierListController;
-import net.flynn.opentierlist.controller.GraphicsController;
-import net.flynn.opentierlist.model.enums.DefaultTier;
 import net.flynn.opentierlist.ConfigHolder;
+import net.flynn.opentierlist.controller.GraphicsController;
+import net.flynn.opentierlist.controller.TierListController;
+import net.flynn.opentierlist.model.enums.DefaultTier;
 
 public class ItemsPane extends FlowPane {
   private final TierListController tierListController;

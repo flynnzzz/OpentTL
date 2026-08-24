@@ -1,15 +1,14 @@
 package net.flynn.opentierlist.model.models;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.enums.TieredStatus;
 import net.flynn.opentierlist.persistence.ImagePath;
 import net.flynn.opentierlist.persistence.ResourceHolder;
+
+import java.util.Objects;
 
 public class TierItem {
   private TieredStatus status;

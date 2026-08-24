@@ -7,11 +7,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import net.flynn.opentierlist.ConfigHolder;
+import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
-import net.flynn.opentierlist.ConfigHolder;
-import net.flynn.opentierlist.controller.GraphicsController;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class ItemView extends ImageView {
   private final ItemsPane parent;
 
   public ItemView(
-      Image image, TierListController tierListController, GraphicsController graphicsController, ItemsPane parent) {
+          Image image, TierListController tierListController, GraphicsController graphicsController, ItemsPane parent) {
     super(image);
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;

@@ -3,9 +3,9 @@ package net.flynn.opentierlist.ui.manual;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Region;
-import net.flynn.opentierlist.controller.TierListController;
-import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.ConfigHolder;
+import net.flynn.opentierlist.controller.GraphicsController;
+import net.flynn.opentierlist.controller.TierListController;
 
 public class UnTieredPane extends ScrollPane {
   private final ItemsPane unTieredPane;

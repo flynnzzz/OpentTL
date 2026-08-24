@@ -1,7 +1,7 @@
 package net.flynn.opentierlist.model.enums;
 
-import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.ConfigHolder;
+import net.flynn.opentierlist.model.models.Tier;
 
 public enum DefaultTier {
   S(ConfigHolder.DEFAULT_S_COLOR),

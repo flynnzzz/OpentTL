@@ -7,11 +7,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.flynn.opentierlist.ConfigHolder;
+import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.TierList;
-import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.persistence.ResourceHolder;
-import net.flynn.opentierlist.controller.GraphicsController;
 
 public class MainPane extends BorderPane {
 

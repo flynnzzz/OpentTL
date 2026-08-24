@@ -1,5 +1,8 @@
 package net.flynn.opentierlist.model.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.model.enums.TierStringFormat;
 import net.flynn.opentierlist.model.exceptions.TierItemNotFoundException;
 
@@ -7,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import net.flynn.opentierlist.ConfigHolder;
 
 public class Tier {
   private TierHeader header;

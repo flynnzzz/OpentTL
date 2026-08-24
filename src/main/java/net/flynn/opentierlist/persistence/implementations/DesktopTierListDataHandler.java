@@ -1,12 +1,6 @@
 package net.flynn.opentierlist.persistence.implementations;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.DatabindException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
@@ -21,6 +15,10 @@ import net.flynn.opentierlist.persistence.TierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
 import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Optional;
 
 public class DesktopTierListDataHandler implements TierListDataHandler {
 

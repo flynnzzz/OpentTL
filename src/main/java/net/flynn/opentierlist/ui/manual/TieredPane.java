@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 
