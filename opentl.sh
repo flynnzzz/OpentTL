@@ -1,6 +1,4 @@
 #!/bin/bash
-export JAVA_HOME=/home/flynn/.local/jdks/jdk-26.0.1
-export PATH=$JAVA_HOME/bin:$PATH
 
 scriptdir=$(dirname "${BASH_SOURCE[0]}")
 MODULE_PATH="$scriptdir/lib/linux"
