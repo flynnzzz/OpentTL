@@ -5,8 +5,8 @@
 </div>
 
 <br/>
-<h3 align="center">
-  A simple and straightforward Java-developed Tier List Maker
+<h2 align="center">
+  A simple and straightforward Tier List Maker
 </h3>
 <br/>
 
@@ -47,11 +47,10 @@
 
 Once downloaded, run the application using the provided run script in the terminal:
 
+*On **Linux** systems*:
 ```bash
 ./opentl.sh
 ```
-*On **Linux** systems*
-
 `note: You may have to give the script execution permission by running:`
 
 ```bash
@@ -69,7 +68,7 @@ or on **Windows**:
 If you prefer to run the JAR without the script:
 
 ```bash
-java --enable-native-access=javafx.graphics --module-path lib --add-modules javafx.controls -jar opentierlist.jar
+java --enable-native-access=javafx.graphics --module-path lib/<your-system> --add-modules javafx.controls -jar target/opentierlist.jar
 ```
 
 ---
@@ -111,7 +110,7 @@ mvn javafx:run
 ```bash
 mvn package
 
-# ... run options
+# ... <run options>
 ```
 
 The compiled JAR will be available in the `./target` directory.
@@ -135,7 +134,7 @@ Tier Lists can be **saved** and later **loaded** as *.json* files (*.tson*).
 
 This project was created as a **learning exercise** to explore:
 
-- JavaFX for GUI development
+- JavaFX for old style GUI development
 - Event handling and mouse interactions
 - MVC architecture patterns
 - Maven build automation
