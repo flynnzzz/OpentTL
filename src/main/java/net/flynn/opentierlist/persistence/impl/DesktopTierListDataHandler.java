@@ -1,4 +1,4 @@
-package net.flynn.opentierlist.persistence.implementations;
+package net.flynn.opentierlist.persistence.impl;
 
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,11 +26,11 @@ public class DesktopTierListDataHandler implements TierListDataHandler {
 
     final Bounds bounds = node.getContent().getBoundsInLocal();
     final double fixedWidth = ConfigHolder.SCREENSHOT_WIDTH,
-            dynamicWidth = bounds.getWidth();
+        dynamicWidth = bounds.getWidth();
 
     final double targetWidth = Math.min(fixedWidth, dynamicWidth),
-            inboundHeight = bounds.getHeight(),
-            x = bounds.getMinX() + (dynamicWidth - targetWidth) / 2;
+        inboundHeight = bounds.getHeight(),
+        x = bounds.getMinX() + (dynamicWidth - targetWidth) / 2;
 
     final WritableImage image = new WritableImage((int) targetWidth, (int) inboundHeight);
 
@@ -88,14 +88,16 @@ public class DesktopTierListDataHandler implements TierListDataHandler {
   @Override
   public Optional<TierList> load(File file) {
     try {
-       return Optional.of(read(file));
+      return Optional.of(read(file));
     } catch (DatabindException e) {
       System.err
-          .println("[ERROR|DataBindException] --- Failed to parse tier list from file '" + file.getAbsolutePath() + "', aborting ---");
+          .println("[ERROR|DataBindException] --- Failed to parse tier list from file '" + file.getAbsolutePath()
+              + "', aborting ---");
     } catch (IOException _) {
       System.err
-          .println("[ERROR|IOException] --- Could not load tier list from path '" + file.getAbsolutePath() + "', aborting ---");
+          .println("[ERROR|IOException] --- Could not load tier list from path '" + file.getAbsolutePath()
+              + "', aborting ---");
     }
-      return Optional.empty();
+    return Optional.empty();
   }
 }

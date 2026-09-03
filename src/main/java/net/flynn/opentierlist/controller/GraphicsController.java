@@ -1,27 +1,38 @@
 package net.flynn.opentierlist.controller;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.List;
+
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Side;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.model.models.TierItem;
+import net.flynn.opentierlist.ui.manual.ItemView;
 import net.flynn.opentierlist.ui.manual.MainPane;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 import net.flynn.opentierlist.ui.manual.UnTieredPane;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.List;
 
 public class GraphicsController {
 
@@ -74,7 +85,6 @@ public class GraphicsController {
     alert.show();
   }
 
-
   public void addItemHandle(ActionEvent ignoredEvent) {
 
     if (mainStage == null) {
@@ -115,6 +125,41 @@ public class GraphicsController {
   public void addTierHandle(ActionEvent ignoredEvent) {
     tierListController.addDefaultTier();
     graphicsConstructor.updateTiered();
+  }
+
+  public void rightClickImageHandle(MouseEvent mouseEvent, ItemView itemView) {
+
+    final var imageContextMenu = new ContextMenu();
+    if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+
+      final var deleteImageMenu = new MenuItem("Delete");
+      deleteImageMenu.setOnAction(_ -> {
+        if (itemView.getUserData() instanceof TierItem item) {
+
+          tierListController.removeItem(item);
+          final var parent = itemView.parentInstance();
+          parent.getChildren().remove(itemView);
+          constructorInstance().updateItemViews(parent);
+
+        }
+      });
+
+      if (itemView.getUserData() instanceof TierItem item && item.isTiered()) {
+
+        final var unTierImageMenu = new MenuItem("UnTier");
+        imageContextMenu.getItems().add(unTierImageMenu);
+        unTierImageMenu.setOnAction(_ -> {
+
+          tierListController.unTier(item);
+          constructorInstance().updateAll();
+        });
+      }
+
+      imageContextMenu.getItems().add(deleteImageMenu);
+      imageContextMenu.show(itemView, Side.RIGHT, 0, 0);
+
+    }
+
   }
 
   public void parseAndLoadTierList(ActionEvent ignoredEvent) {
@@ -248,12 +293,12 @@ public class GraphicsController {
   public void changeTheme(ConfigHolder.Theme theme) {
     if (mainPane == null) {
       System.err.println(
-              "[ERROR] --- Cannot set theme: Controller is missing a MainPane instance ---");
+          "[ERROR] --- Cannot set theme: Controller is missing a MainPane instance ---");
       return;
     }
     if (tieredPane == null) {
       System.err.println(
-              "[ERROR] --- Cannot set theme: Controller is missing the necessary instance ---");
+          "[ERROR] --- Cannot set theme: Controller is missing the necessary instance ---");
       return;
     }
 
@@ -275,22 +320,21 @@ public class GraphicsController {
       }
     }
     tieredPane.setBorder(new Border(
-            new BorderStroke(
-                    Paint.valueOf(color),
-                    BorderStrokeStyle.SOLID,
-                    CornerRadii.EMPTY,
-                    BorderWidths.DEFAULT)));
+        new BorderStroke(
+            Paint.valueOf(color),
+            BorderStrokeStyle.SOLID,
+            CornerRadii.EMPTY,
+            BorderWidths.DEFAULT)));
   }
 
   public void changeFlowPaneBorder(FlowPane flowPane, String color) {
     flowPane.setBorder(new Border(
-            new BorderStroke(
-                    Paint.valueOf(color),
-                    BorderStrokeStyle.SOLID,
-                    CornerRadii.EMPTY,
-                    BorderWidths.DEFAULT)));
+        new BorderStroke(
+            Paint.valueOf(color),
+            BorderStrokeStyle.SOLID,
+            CornerRadii.EMPTY,
+            BorderWidths.DEFAULT)));
   }
-
 
   public static void setButtonGraphic(Button button, String resource) {
     try {
@@ -325,12 +369,20 @@ public class GraphicsController {
     return mainStage;
   }
 
-  public MainPane getMainPane() { return mainPane; }
+  public MainPane getMainPane() {
+    return mainPane;
+  }
 
-  public TieredPane getTieredPane() { return tieredPane; }
+  public TieredPane getTieredPane() {
+    return tieredPane;
+  }
 
-  public UnTieredPane getUnTieredPane() { return unTieredPane; }
+  public UnTieredPane getUnTieredPane() {
+    return unTieredPane;
+  }
 
-  public GraphicsConstructor constructorInstance() { return graphicsConstructor; }
+  public GraphicsConstructor constructorInstance() {
+    return graphicsConstructor;
+  }
 
 }

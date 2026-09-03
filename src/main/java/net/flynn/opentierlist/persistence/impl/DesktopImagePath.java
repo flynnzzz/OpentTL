@@ -1,4 +1,4 @@
-package net.flynn.opentierlist.persistence.implementations;
+package net.flynn.opentierlist.persistence.impl;
 
 import net.flynn.opentierlist.persistence.ImagePath;
 import net.flynn.opentierlist.persistence.ResourceHolder;

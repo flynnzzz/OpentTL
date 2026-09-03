@@ -8,7 +8,7 @@ import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
 import net.flynn.opentierlist.model.models.TierList;
 import net.flynn.opentierlist.persistence.TierListDataHandler;
-import net.flynn.opentierlist.persistence.implementations.DesktopTierListDataHandler;
+import net.flynn.opentierlist.persistence.impl.DesktopTierListDataHandler;
 import net.flynn.opentierlist.ui.manual.TieredPane;
 
 import java.io.File;

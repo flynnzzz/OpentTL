@@ -1,19 +1,20 @@
 package net.flynn.opentierlist.ui.manual;
 
+import java.util.Optional;
+
 import javafx.event.EventTarget;
-import javafx.geometry.Side;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import net.flynn.opentierlist.ConfigHolder;
 import net.flynn.opentierlist.controller.GraphicsController;
 import net.flynn.opentierlist.controller.TierListController;
 import net.flynn.opentierlist.model.models.Tier;
 import net.flynn.opentierlist.model.models.TierItem;
-
-import java.util.Optional;
 
 public class ItemView extends ImageView {
   private final TierListController tierListController;
@@ -21,7 +22,7 @@ public class ItemView extends ImageView {
   private final ItemsPane parent;
 
   public ItemView(
-          Image image, TierListController tierListController, GraphicsController graphicsController, ItemsPane parent) {
+      Image image, TierListController tierListController, GraphicsController graphicsController, ItemsPane parent) {
     super(image);
     this.tierListController = tierListController;
     this.graphicsController = graphicsController;
@@ -33,38 +34,7 @@ public class ItemView extends ImageView {
 
   private void setupEventHandlers() {
 
-    setOnMouseClicked(mouseEvent -> {
-
-      final var imageContextMenu = new ContextMenu();
-      if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-
-        final var deleteImageMenu = new MenuItem("Delete");
-        deleteImageMenu.setOnAction(_ -> {
-          if (getUserData() instanceof TierItem item) {
-
-            tierListController.removeItem(item);
-            parent.getChildren().remove(this);
-            graphicsController.constructorInstance().updateItemViews(parent);
-
-          }
-        });
-
-        if (getUserData() instanceof TierItem item && item.isTiered()) {
-
-          final var unTierImageMenu = new MenuItem("UnTier");
-          imageContextMenu.getItems().add(unTierImageMenu);
-          unTierImageMenu.setOnAction(_ -> {
-
-            tierListController.unTier(item);
-            graphicsController.constructorInstance().updateAll();
-          });
-        }
-
-        imageContextMenu.getItems().add(deleteImageMenu);
-        imageContextMenu.show(this, Side.RIGHT, 0, 0);
-
-      }
-    });
+    setOnMouseClicked(mouseEvent -> graphicsController.rightClickImageHandle(mouseEvent, this));
 
     setOnDragDetected(this::handleDragDetectedImage);
 
@@ -73,6 +43,7 @@ public class ItemView extends ImageView {
         event.acceptTransferModes(TransferMode.MOVE);
       event.consume();
     });
+
     setOnDragEntered(event -> {
       if (event.getDragboard().hasImage())
         setFitHeight(ConfigHolder.DEFAULT_EXPANDED_IMAGE_SIZE);
@@ -141,5 +112,9 @@ public class ItemView extends ImageView {
     event.setDropCompleted(success);
     event.consume();
 
+  }
+
+  public ItemsPane parentInstance() {
+    return parent;
   }
 }

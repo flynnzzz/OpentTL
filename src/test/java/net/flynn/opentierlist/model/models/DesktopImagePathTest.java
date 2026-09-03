@@ -1,6 +1,6 @@
 package net.flynn.opentierlist.model.models;
 
-import net.flynn.opentierlist.persistence.implementations.DesktopImagePath;
+import net.flynn.opentierlist.persistence.impl.DesktopImagePath;
 import net.flynn.opentierlist.persistence.ResourceHolder;
 import org.junit.After;
 import org.junit.Before;
