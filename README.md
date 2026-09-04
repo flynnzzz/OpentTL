@@ -75,8 +75,8 @@ java --enable-native-access=javafx.graphics \
 - **Clone the repository:**
 
   ```bash
-  git clone https://github.com/flynnzzz/OpenTL.git
-  cd OpenTL
+  git clone https://github.com/flynnzzz/opentl.git
+  cd opentl
   ```
 
 - **Compile the project:**
