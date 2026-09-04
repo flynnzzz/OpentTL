@@ -17,23 +17,12 @@
 <div align="center">
   <p>
     <i>graphical interface built manually using the JavaFX library</i>
-  </p> 
+  </p>
 </div>
-
-## Features
-
-- **Visual tier list creation** — Drag and drop items into tier categories
-- **Customizable tiers** — Add, remove, and rename tiers as needed
-- **Mouse-based interaction** — Intuitive point-and-click controls
-- **Exporting tier list as PNG** — Save your tier lists on disk with the export feature 
-
----
 
 ## Requirements
 
 - **Java 25+**
-
----
 
 ## Installation
 
@@ -48,9 +37,11 @@
 Once downloaded, run the application using the provided run script in the terminal:
 
 *On **Linux** systems*:
+
 ```bash
 ./opentl.sh
 ```
+
 `note: You may have to give the script execution permission by running:`
 
 ```bash
@@ -68,10 +59,11 @@ or on **Windows**:
 If you prefer to run the JAR without the script:
 
 ```bash
-java --enable-native-access=javafx.graphics --module-path lib/<your-system> --add-modules javafx.controls -jar target/opentierlist.jar
+java --enable-native-access=javafx.graphics \
+     --module-path lib/<your-system> \
+     --add-modules javafx.controls \
+     -jar target/opentierlist.jar
 ```
-
----
 
 ## Building with Maven
 
@@ -115,8 +107,6 @@ mvn package
 
 The compiled JAR will be available in the `./target` directory.
 
----
-
 ## Supported formats
 
 The following **image formats** are supported for imported tier list entries:
@@ -128,9 +118,7 @@ The following **image formats** are supported for imported tier list entries:
 
 Tier Lists can be **saved** and later **loaded** as *.json* files (*.tson*).
 
----
-
-## Development Notes
+## Development notes
 
 This project was created as a **learning exercise** to explore:
 
@@ -139,13 +127,9 @@ This project was created as a **learning exercise** to explore:
 - MVC architecture patterns
 - Maven build automation
 
----
-
-## TODOs and possible improvements
+## Possible improvements
 
 - Keyboard navigation and shortcuts
 - Undo/redo functionality
 - Better UI / model separation
 - Better logging
-
----
