@@ -28,7 +28,8 @@
 
 ### Quick Start
 
-**Download the latest release for your platform** from the [releases](https://github.com/flynnzzz/OpenTierList/releases) page. The release includes:
+**Download the latest release for your platform** from the [releases](https://github.com/flynnzzz/OpenTierList/releases)
+page. The release includes:
 
 - The application JAR file
 - Required JavaFX runtime JARs and binaries
@@ -40,15 +41,12 @@ Once downloaded, run the application using the provided run script in the termin
 
 ```bash
 ./opentl.sh
-```
 
-`note: You may have to give the script execution permission by running:`
-
-```bash
+# note: You may have to give the script execution permission by running:
 chmod x+u opentl.sh
 ```
 
-or on **Windows**:
+Or on **Windows**:
 
 ```batch
 ./opentl.bat
@@ -74,14 +72,14 @@ java --enable-native-access=javafx.graphics \
 
 ### Clone and Build
 
-1. **Clone the repository:**
+- **Clone the repository:**
 
   ```bash
   git clone https://github.com/flynnzzz/OpenTL.git
   cd OpenTL
   ```
 
-1. **Compile the project:**
+- **Compile the project:**
 
   ```bash
   mvn clean compile
@@ -91,13 +89,13 @@ java --enable-native-access=javafx.graphics \
 
 After compilation, you can run the application in two ways:
 
-**Option 1: Using Maven directly**
+- **Option 1: Using Maven directly**
 
 ```bash
 mvn javafx:run
 ```
 
-**Option 2: Package and run as a JAR**
+- **Option 2: Package and run as a JAR**
 
 ```bash
 mvn package
